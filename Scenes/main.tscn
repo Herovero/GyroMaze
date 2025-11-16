@@ -1,17 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://d2m5xmblwajxw"]
+[gd_scene load_steps=3 format=3 uid="uid://d2m5xmblwajxw"]
 
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/rigidbody.tscn" id="1_bo1nx"]
-[ext_resource type="PackedScene" uid="uid://i8h7xu6xcytv" path="res://Scenes/player.tscn" id="2_8gbba"]
 [ext_resource type="PackedScene" uid="uid://c4tscaf8aybxk" path="res://Scenes/wall.tscn" id="2_bo1nx"]
 
 [node name="Node2D" type="Node2D"]
 
 [node name="RigidBody2D" parent="." instance=ExtResource("1_bo1nx")]
-position = Vector2(-240, 0)
 gravity_scale = 0.0
-
-[node name="CharacterBody2D" parent="." instance=ExtResource("2_8gbba")]
-position = Vector2(200, 0)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
