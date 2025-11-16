@@ -6,6 +6,7 @@
 [node name="Node2D" type="Node2D"]
 
 [node name="CharacterBody2D" parent="." instance=ExtResource("1_jjgbg")]
+gravity_scale = 0.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
