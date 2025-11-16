@@ -10,10 +10,12 @@ config_version=5
 
 [application]
 
-config/name="GyroMaze"
+config/name="TiltMaze"
+run/main_scene="uid://d2m5xmblwajxw"
 config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://icon.svg"
 
 [rendering]
 
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
