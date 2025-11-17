@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://d2m5xmblwajxw"]
 
-[ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/rigidbody.tscn" id="1_bo1nx"]
+[ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="1_bo1nx"]
 [ext_resource type="PackedScene" uid="uid://dy3wtqmdcmjnb" path="res://Scenes/maze_test.tscn" id="2_bo1nx"]
 
 [node name="Node2D" type="Node2D"]
@@ -13,3 +13,19 @@ position = Vector2(1169, -1020)
 zoom = Vector2(0.25, 0.25)
 
 [node name="Node2D" parent="." instance=ExtResource("2_bo1nx")]
+
+[node name="Label" type="Label" parent="."]
+offset_left = 339.0
+offset_top = -99.0
+offset_right = 574.0
+offset_bottom = 38.0
+theme_override_font_sizes/font_size = 100
+text = "Start"
+
+[node name="Label2" type="Label" parent="."]
+offset_left = 2062.0
+offset_top = -1107.0
+offset_right = 2297.0
+offset_bottom = -970.0
+theme_override_font_sizes/font_size = 100
+text = "Finish"
