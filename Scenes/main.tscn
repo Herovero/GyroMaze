@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://d2m5xmblwajxw"]
 
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/rigidbody.tscn" id="1_bo1nx"]
-[ext_resource type="PackedScene" uid="uid://c4tscaf8aybxk" path="res://Scenes/wall.tscn" id="2_bo1nx"]
+[ext_resource type="PackedScene" uid="uid://dy3wtqmdcmjnb" path="res://Scenes/maze_test.tscn" id="2_bo1nx"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -9,6 +9,7 @@
 gravity_scale = 0.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(1169, -1020)
+zoom = Vector2(0.25, 0.25)
 
-[node name="Wall" parent="." instance=ExtResource("2_bo1nx")]
-position = Vector2(0, 256)
+[node name="Node2D" parent="." instance=ExtResource("2_bo1nx")]

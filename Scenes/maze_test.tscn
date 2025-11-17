@@ -1,0 +1,258 @@
+[gd_scene load_steps=7 format=3 uid="uid://dy3wtqmdcmjnb"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_fjsar"]
+size = Vector2(3000, 100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wti7s"]
+size = Vector2(3000, 100)
+
+[sub_resource type="QuadMesh" id="QuadMesh_j4fcw"]
+size = Vector2(75, 500)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fjsar"]
+size = Vector2(75, 500)
+
+[sub_resource type="QuadMesh" id="QuadMesh_wti7s"]
+size = Vector2(1500, 75)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j4fcw"]
+size = Vector2(1500, 74)
+
+[node name="Node2D" type="Node2D"]
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+gravity_scale = 0.0
+freeze = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RigidBody2D"]
+position = Vector2(1176, 205)
+mesh = SubResource("QuadMesh_fjsar")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+position = Vector2(1176, 205)
+shape = SubResource("RectangleShape2D_wti7s")
+
+[node name="RigidBody2D2" type="RigidBody2D" parent="."]
+position = Vector2(0, -2446)
+gravity_scale = 0.0
+freeze = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RigidBody2D2"]
+position = Vector2(1176, 205)
+mesh = SubResource("QuadMesh_fjsar")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D2"]
+position = Vector2(1176, 205)
+shape = SubResource("RectangleShape2D_wti7s")
+
+[node name="RigidBody2D3" type="RigidBody2D" parent="."]
+position = Vector2(-479, -69)
+rotation = -1.5707964
+gravity_scale = 0.0
+freeze = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RigidBody2D3"]
+position = Vector2(1176, 205)
+mesh = SubResource("QuadMesh_fjsar")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D3"]
+position = Vector2(1176, 205)
+shape = SubResource("RectangleShape2D_wti7s")
+
+[node name="RigidBody2D4" type="RigidBody2D" parent="."]
+position = Vector2(2304, -69)
+rotation = -1.5707964
+gravity_scale = 0.0
+freeze = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RigidBody2D4"]
+position = Vector2(1176, 205)
+mesh = SubResource("QuadMesh_fjsar")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D4"]
+position = Vector2(1176, 205)
+shape = SubResource("RectangleShape2D_wti7s")
+
+[node name="RigidBody2D5" type="RigidBody2D" parent="."]
+gravity_scale = 0.0
+freeze = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RigidBody2D5"]
+position = Vector2(741, -96)
+mesh = SubResource("QuadMesh_j4fcw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D5"]
+position = Vector2(741, -96)
+shape = SubResource("RectangleShape2D_fjsar")
+
+[node name="RigidBody2D6" type="RigidBody2D" parent="."]
+position = Vector2(454, -308)
+rotation = 1.5707964
+gravity_scale = 0.0
+freeze = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RigidBody2D6"]
+position = Vector2(-0.5, 0)
+mesh = SubResource("QuadMesh_j4fcw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D6"]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_fjsar")
+
+[node name="RigidBody2D7" type="RigidBody2D" parent="."]
+position = Vector2(1604, -308)
+rotation = 1.5707964
+gravity_scale = 0.0
+freeze = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RigidBody2D7"]
+position = Vector2(-0.5, 0)
+mesh = SubResource("QuadMesh_j4fcw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D7"]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_fjsar")
+
+[node name="RigidBody2D8" type="RigidBody2D" parent="."]
+position = Vector2(1316, -521)
+gravity_scale = 0.0
+freeze = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RigidBody2D8"]
+position = Vector2(0.5, 0)
+mesh = SubResource("QuadMesh_j4fcw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D8"]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_fjsar")
+
+[node name="RigidBody2D9" type="RigidBody2D" parent="."]
+freeze = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RigidBody2D9"]
+position = Vector2(527, -733)
+mesh = SubResource("QuadMesh_wti7s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D9"]
+position = Vector2(527, -733)
+shape = SubResource("RectangleShape2D_j4fcw")
+
+[node name="RigidBody2D10" type="RigidBody2D" parent="."]
+position = Vector2(-481, -1427)
+gravity_scale = 0.0
+freeze = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RigidBody2D10"]
+position = Vector2(741, -96)
+mesh = SubResource("QuadMesh_j4fcw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D10"]
+position = Vector2(741, -96)
+shape = SubResource("RectangleShape2D_fjsar")
+
+[node name="RigidBody2D11" type="RigidBody2D" parent="."]
+position = Vector2(445, -502)
+freeze = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RigidBody2D11"]
+position = Vector2(527, -733)
+mesh = SubResource("QuadMesh_wti7s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D11"]
+position = Vector2(527, -733)
+shape = SubResource("RectangleShape2D_j4fcw")
+
+[node name="RigidBody2D12" type="RigidBody2D" parent="."]
+position = Vector2(2048, -810)
+rotation = 1.5707964
+gravity_scale = 0.0
+freeze = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RigidBody2D12"]
+position = Vector2(-0.5, 0)
+mesh = SubResource("QuadMesh_j4fcw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D12"]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_fjsar")
+
+[node name="RigidBody2D13" type="RigidBody2D" parent="."]
+position = Vector2(1759, -1023)
+gravity_scale = 0.0
+freeze = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RigidBody2D13"]
+position = Vector2(0.5, 0)
+mesh = SubResource("QuadMesh_j4fcw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D13"]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_fjsar")
+
+[node name="RigidBody2D14" type="RigidBody2D" parent="."]
+position = Vector2(1316, -1522)
+gravity_scale = 0.0
+freeze = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RigidBody2D14"]
+position = Vector2(0.5, 0)
+mesh = SubResource("QuadMesh_j4fcw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D14"]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_fjsar")
+
+[node name="RigidBody2D15" type="RigidBody2D" parent="."]
+position = Vector2(39, -1843)
+gravity_scale = 0.0
+freeze = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RigidBody2D15"]
+position = Vector2(741, -96)
+mesh = SubResource("QuadMesh_j4fcw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D15"]
+position = Vector2(741, -96)
+shape = SubResource("RectangleShape2D_fjsar")
+
+[node name="RigidBody2D16" type="RigidBody2D" parent="."]
+position = Vector2(1605, -1733)
+rotation = 1.5707964
+gravity_scale = 0.0
+freeze = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RigidBody2D16"]
+position = Vector2(-0.5, 0)
+mesh = SubResource("QuadMesh_j4fcw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D16"]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_fjsar")
+
+[node name="RigidBody2D17" type="RigidBody2D" parent="."]
+position = Vector2(2413, -1235)
+rotation = 1.5707964
+gravity_scale = 0.0
+freeze = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RigidBody2D17"]
+position = Vector2(-0.5, 0)
+mesh = SubResource("QuadMesh_j4fcw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D17"]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_fjsar")
+
+[node name="RigidBody2D18" type="RigidBody2D" parent="."]
+position = Vector2(2309, -811)
+rotation = 1.5707964
+gravity_scale = 0.0
+freeze = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="RigidBody2D18"]
+position = Vector2(-0.5, 0)
+mesh = SubResource("QuadMesh_j4fcw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D18"]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_fjsar")
