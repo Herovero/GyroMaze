@@ -17,7 +17,7 @@ func _process(delta):
 	if OS.has_feature("mobile"):
 		var sensor_data = Input.get_gravity()
 		input_direction = Vector2(sensor_data.x, -sensor_data.y)
-		input_direction = input_direction / 9.8
+		input_direction = input_direction / 4.9
 	else:
 		input_direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	
