@@ -19,7 +19,7 @@ func _process(delta):
 		input_direction = Vector2(sensor_data.x, -sensor_data.y)
 		input_direction = input_direction / 4.9
 	else:
-		input_direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+		input_direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") / 4
 	
 	var force = input_direction * tilt_strength
 	apply_central_force(force)
