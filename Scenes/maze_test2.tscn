@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dlokkw0eow7kh"]
+
+[ext_resource type="TileSet" uid="uid://5vk1kc8ayhm8" path="res://Assets/maze_tileset.tres" id="1_huvmi"]
+
+[node name="maze" type="TileMapLayer"]
+show_behind_parent = true
+scale = Vector2(9, 9)
+tile_set = ExtResource("1_huvmi")
