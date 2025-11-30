@@ -2,13 +2,19 @@ extends RigidBody2D
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
 
-@export var tilt_strength: float = 5000.0
+@export var tilt_strength: float = 5000.0 
+@export var spin_speed: float = 0.03 # Controls how fast the visual spin is
 
 var should_reset = false
 
+# Keeps track of the total distance traveled
+var rolled_accumulator = Vector2.ZERO
+
+var shader_material: ShaderMaterial
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	shader_material = sprite_2d.material as ShaderMaterial
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -23,6 +29,37 @@ func _process(delta):
 	
 	var force = input_direction * tilt_strength
 	apply_central_force(force)
+	
+	# The easy way
+	rotate_marble_visuals(delta)
+	
+	# The hard way
+	#update_rolling_shader(delta)
+
+func update_rolling_shader(delta):
+	# 1. Add the distance moved this frame to our total counter.
+	# (Velocity = pixels per second. * delta = pixels moved this frame).
+	rolled_accumulator += linear_velocity * delta
+	
+	# 2. Send this total distance to the shader
+	if shader_material:
+		shader_material.set_shader_parameter("roll_offset", rolled_accumulator)
+		
+func rotate_marble_visuals(delta):
+	# 1. Get horizontal movement (Right = Clockwise, Left = Counter-Clockwise)
+	var x_spin = linear_velocity.x
+	
+	# 2. Get vertical movement
+	# Up (-Y) -> Right Spin (+Rot)
+	# Down (+Y) -> Left Spin (-Rot)
+	var y_spin = -linear_velocity.y
+	
+	# 3. Combine them
+	# If moving diagonally, these might cancel out slightly, but that actually
+	# looks okay (it implies sliding).
+	var total_spin = (x_spin + y_spin) * spin_speed * delta
+	
+	sprite_2d.rotation += total_spin
 
 func _input(event):
 	if event is InputEventScreenTouch and event.pressed:
@@ -43,6 +80,9 @@ func _integrate_forces(state):
 		# Kill all momentum (stop it from flying)
 		state.linear_velocity = Vector2.ZERO
 		state.angular_velocity = 0
+		
+		# Reset the visual rolling counter
+		rolled_accumulator = Vector2.ZERO
 		
 		# Turn the flag off so we don't get stuck at (0,0)
 		should_reset = false
