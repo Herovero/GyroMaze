@@ -1,44 +1,44 @@
-[gd_scene load_steps=4 format=3 uid="uid://d2m5xmblwajxw"]
+[gd_scene load_steps=7 format=3 uid="uid://cpv02exs4ywq1"]
 
+[ext_resource type="PackedScene" uid="uid://bwtlejdt7cws6" path="res://Scenes/maze_test2.tscn" id="1_21xkr"]
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="1_bo1nx"]
-[ext_resource type="PackedScene" uid="uid://dy3wtqmdcmjnb" path="res://Scenes/maze_test.tscn" id="2_bo1nx"]
+[ext_resource type="Script" uid="uid://74qm3demslqu" path="res://Scripts/mazegen3.gd" id="2_6bp64"]
 [ext_resource type="PackedScene" uid="uid://bgg64hwixo074" path="res://Scenes/pause_button.tscn" id="3_8gbba"]
+[ext_resource type="PackedScene" uid="uid://dfwo610ckgcq5" path="res://Scenes/hole.tscn" id="3_344ge"]
+[ext_resource type="Texture2D" uid="uid://b7ck8twawfxri" path="res://Assets/uis/restart_button.png" id="6_ynf5e"]
 
 [node name="Node2D" type="Node2D"]
 
-[node name="RigidBody2D" parent="." instance=ExtResource("1_bo1nx")]
+[node name="maze" parent="." instance=ExtResource("1_21xkr")]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+script = ExtResource("2_6bp64")
+hole_scene = ExtResource("3_344ge")
+
+[node name="Player" parent="." instance=ExtResource("1_bo1nx")]
 gravity_scale = 0.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(1169, -1004)
-zoom = Vector2(0.4, 0.4)
+position = Vector2(-624, 0)
+scale = Vector2(2, 2)
+anchor_mode = 0
+zoom = Vector2(0.3, 0.3)
 
 [node name="Control" parent="Camera2D" instance=ExtResource("3_8gbba")]
+visible = false
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = -2984.0
-offset_top = -1377.0
-offset_right = -2984.0
-offset_bottom = -1377.0
+offset_left = -1560.0
+offset_top = -709.5
+offset_right = -1560.0
+offset_bottom = -709.5
 grow_horizontal = 1
 grow_vertical = 1
 metadata/_edit_group_ = true
+metadata/_edit_use_anchors_ = true
 
-[node name="Node2D" parent="." instance=ExtResource("2_bo1nx")]
-
-[node name="Label" type="Label" parent="."]
-offset_left = 339.0
-offset_top = -99.0
-offset_right = 574.0
-offset_bottom = 38.0
-theme_override_font_sizes/font_size = 100
-text = "Start"
-
-[node name="Label2" type="Label" parent="."]
-offset_left = 2062.0
-offset_top = -1107.0
-offset_right = 2297.0
-offset_bottom = -970.0
-theme_override_font_sizes/font_size = 100
-text = "Finish"
+[node name="ResetButton" type="TouchScreenButton" parent="."]
+position = Vector2(6699, 241)
+texture_normal = ExtResource("6_ynf5e")
+action = "ui_accept"

@@ -25,6 +25,9 @@ signal done
 
 var effective_tile_size = 16 * 9.0 
 
+@export var hole_scene: PackedScene  # Drag your Hole.tscn here in Inspector
+@export var hole_count: int = 15     # How many holes do you want?
+
 func _ready() -> void:
 	fill_map_with_walls()
 	
@@ -44,9 +47,8 @@ func _ready() -> void:
 	dig_room(maze_pos, tile_v)
 	
 	generate_maze()
-	
-	# Step 4: Move Player
 	move_player_to_start()
+	spawn_holes()
 
 func fill_map_with_walls() -> void:
 	for x in range(map_width):
@@ -140,3 +142,45 @@ func move_player_to_start():
 		
 		if player.has_method("set_start_position"):
 			player.set_start_position(start_pixel_pos)
+
+func spawn_holes() -> void:
+	if not hole_scene:
+		print("Error: No Hole Scene assigned!")
+		return
+		
+	var holes_spawned = 0
+	
+	# Keep doing until exceeding max hole count
+	while holes_spawned < hole_count:
+		
+		# 1. Pick a random coordinate on the map
+		var rand_x = randi() % map_width
+		var rand_y = randi() % map_height
+		var check_pos = Vector2i(rand_x, rand_y)
+		
+		# 2. Check: Is this a FLOOR tile?
+		# We only want holes on the path (tile_v), not inside walls (tile_n)
+		if Maze.get_cell_atlas_coords(check_pos) == tile_v:
+			
+			# 3. SAFETY CHECK: Don't spawn on top of the player!
+			# We calculate distance to the start position we saved earlier
+			# If it's too close (e.g. within 3 tiles), skip it.
+			if Vector2(check_pos).distance_to(Vector2(maze_pos)) < 3:
+				continue
+			
+			# 4. Spawn the Hole
+			var new_hole = hole_scene.instantiate()
+			
+			# Calculate pixel position (Same math as Player)
+			# Note: We need to calculate the specific center for this tile
+			# Since your tiles are large, we want the hole centered in the 16x16 grid cell
+			# OR centered in the large room depending on your preference.
+			# For now, let's center it on the specific grid cell:
+			var center_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
+			new_hole.position = (Vector2(check_pos) * effective_tile_size) + center_offset
+			
+			# Add it to the game scene (usually as a sibling of the maze)
+			# We add it to the parent so it's not part of the TileMap itself
+			get_parent().call_deferred("add_child", new_hole)
+			
+			holes_spawned += 1
