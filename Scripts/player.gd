@@ -69,7 +69,11 @@ func rotate_marble_visuals(delta):
 
 func _input(event):
 	if event.is_action_pressed("ui_accept"):
-		reset_position()
+		# Reset player position
+		#reset_position()
+		
+		# Reset the maze
+		get_tree().reload_current_scene()
 
 # 1. Trigger the flag
 func reset_position():
