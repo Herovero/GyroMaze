@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cpv02exs4ywq1"]
+[gd_scene load_steps=6 format=3 uid="uid://cpv02exs4ywq1"]
 
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="1_m8whx"]
 [ext_resource type="PackedScene" uid="uid://dlokkw0eow7kh" path="res://Scenes/maze_test2.tscn" id="1_ri278"]
 [ext_resource type="Script" uid="uid://74qm3demslqu" path="res://Scripts/mazegen3.gd" id="2_ri278"]
 [ext_resource type="PackedScene" uid="uid://bgg64hwixo074" path="res://Scenes/pause_button.tscn" id="2_skii6"]
+[ext_resource type="Texture2D" uid="uid://b7ck8twawfxri" path="res://Assets/uis/restart_button.png" id="5_ri278"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -34,3 +35,8 @@ grow_horizontal = 1
 grow_vertical = 1
 metadata/_edit_group_ = true
 metadata/_edit_use_anchors_ = true
+
+[node name="ResetButton" type="TouchScreenButton" parent="."]
+position = Vector2(6699, 241)
+texture_normal = ExtResource("5_ri278")
+action = "ui_accept"

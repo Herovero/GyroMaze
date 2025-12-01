@@ -1,7 +1,7 @@
 extends Sprite2D
 
 # --- CONFIGURATION ---
-var map_width = 46  # Make this larger now since we are using more tiles per room!
+var map_width = 46 
 var map_height = 25
 
 # How wide (in tiles) should the path be?
@@ -22,7 +22,7 @@ var directions = [Vector2i.UP, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT]
 signal done
 
 @onready var Maze = $"../maze"
-# IMPORTANT: Reset this to 16 * Scale. Don't multiply by path_thickness here.
+
 var effective_tile_size = 16 * 9.0 
 
 func _ready() -> void:
@@ -40,7 +40,7 @@ func _ready() -> void:
 	var random_y = (randi() % possible_rooms_y) * step_size + 1
 	maze_pos = Vector2i(random_x, random_y)
 	
-	# Step 3: Dig the STARTING Room (It needs to be a block now!)
+	# Step 3: Dig the STARTING Room
 	dig_room(maze_pos, tile_v)
 	
 	generate_maze()
@@ -53,7 +53,6 @@ func fill_map_with_walls() -> void:
 		for y in range(map_height):
 			Maze.set_cell(Vector2i(x, y), 0, tile_n)
 
-# --- HELPER: DIGS A SQUARE ROOM INSTEAD OF 1 TILE ---
 func dig_room(center_pos: Vector2i, tile_type: Vector2i):
 	# We dig a square starting from the top-left of the current "cell"
 	for x in range(path_thickness):
@@ -93,7 +92,6 @@ func generate_maze() -> void:
 		else:
 			var dir = dlist.pick_random()
 			
-			# --- THE FIX: Dig a Bridge ---
 			# We are moving from 'maze_pos' to 'maze_pos + (dir * step_size)'
 			# We need to clear everything in between.
 			
@@ -139,3 +137,6 @@ func move_player_to_start():
 		
 		player.global_position = start_pixel_pos
 		player.linear_velocity = Vector2.ZERO
+		
+		if player.has_method("set_start_position"):
+			player.set_start_position(start_pixel_pos)

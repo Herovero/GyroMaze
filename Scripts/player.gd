@@ -12,12 +12,18 @@ var rolled_accumulator = Vector2.ZERO
 
 var shader_material: ShaderMaterial
 
+# Remember where the player should reset position to 
+var current_start_pos = Vector2.ZERO
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	shader_material = sprite_2d.material as ShaderMaterial
 
+func set_start_position(pos: Vector2):
+	current_start_pos = pos
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _physics_process(delta):
 	var input_direction = Vector2.ZERO
 	
 	if OS.has_feature("mobile"):
@@ -62,9 +68,7 @@ func rotate_marble_visuals(delta):
 	sprite_2d.rotation += total_spin
 
 func _input(event):
-	if event is InputEventScreenTouch and event.pressed:
-		reset_position()
-	elif event.is_action_pressed("ui_accept"):
+	if event.is_action_pressed("ui_accept"):
 		reset_position()
 
 # 1. Trigger the flag
@@ -75,7 +79,7 @@ func reset_position():
 func _integrate_forces(state):
 	if should_reset:
 		# Teleport the body
-		state.transform.origin = Vector2(0, 0)
+		state.transform.origin = current_start_pos
 		
 		# Kill all momentum (stop it from flying)
 		state.linear_velocity = Vector2.ZERO
