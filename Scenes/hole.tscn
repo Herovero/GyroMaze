@@ -1,20 +1,20 @@
 [gd_scene load_steps=4 format=3 uid="uid://dfwo610ckgcq5"]
 
 [ext_resource type="Script" uid="uid://diqnagyai61xc" path="res://Scripts/hole.gd" id="1_i6jlm"]
-[ext_resource type="Texture2D" uid="uid://du6n22db78p13" path="res://Assets/red square.png" id="2_i6jlm"]
+[ext_resource type="Texture2D" uid="uid://peykpr8siwik" path="res://Assets/hole2.png" id="2_i6jlm"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_i6jlm"]
-size = Vector2(500, 500)
+[sub_resource type="CircleShape2D" id="CircleShape2D_i6jlm"]
+radius = 255.51689
 
 [node name="Hole1" type="Area2D" groups=["Holes"]]
 script = ExtResource("1_i6jlm")
 
 [node name="hole" type="Sprite2D" parent="."]
-scale = Vector2(0.3, 0.3)
+scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_i6jlm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2(0.3, 0.3)
-shape = SubResource("RectangleShape2D_i6jlm")
+shape = SubResource("CircleShape2D_i6jlm")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
