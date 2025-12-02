@@ -10,7 +10,7 @@ var map_height = 25
 # 1 = Standard (Same size as wall)
 # 2 = Wide path (2x2 tiles)
 # 3 = Very wide path (3x3 tiles)
-var path_thickness = 3
+var path_thickness = 2
 
 # --- TILE DEFINITIONS ---
 var tile_n = Vector2i(0, 0) # Wall (Dark Blue)
@@ -31,41 +31,51 @@ var effective_tile_size = 16 * 9.0
 @export var hole_count: int = 10     # How many holes do you want?
 
 func _ready() -> void:
-	# 1. Calculate minimum safe size
-	# We need at least one "step" (Path + Wall) + border walls
-	var min_size = (path_thickness + 1) + 2
+	# --- 1. RANDOMIZE PATH THICKNESS ---
+	# Randomly choose between 1 (Standard), 2 (Wide), or 3 (Very Wide)
+	path_thickness = randi_range(2, 5)
 	
-	# 2. Pick random dimensions (e.g. between min_size and 60)
-	# Ensure the max is large enough to be interesting!
-	var random_w = randi_range(min_size, 60)
-	var random_h = randi_range(min_size, 25)
+	# Define constraints
+	var max_w_limit = 45
+	var max_h_limit = 25
 	
-	# 3. Force them to be ODD numbers
-	# If random_w is even (e.g., 20), add 1 to make it odd (21).
-	if random_w % 2 == 0: random_w += 1
-	if random_h % 2 == 0: random_h += 1
-	
-	# 4. Assign to your class variables
-	map_width = random_w
-	map_height = random_h
-	print("width: " + str(map_width))
-	print("height: " + str(map_height))
-	
-	fill_map_with_walls()
-	
-	# Step 1: Calculate "Grid Step"
-	# The step is: Path Thickness + 1 Wall Unit
+	# --- 2. CALCULATE MAX ROOMS THAT FIT ---
+	# Step size = Path + 1 Wall
 	var step_size = path_thickness + 1
 	
+	# How many steps fit inside 45? 
+	# Formula: (Limit - 1 Wall) / Step
+	var max_rooms_x = (max_w_limit - 1) / step_size
+	var max_rooms_y = (max_h_limit - 1) / step_size
+	
+	# --- 3. PICK RANDOM ROOM COUNT (WITHIN LIMITS) ---
+	# We ensure we have at least 2 rooms, and no more than the max that fits.
+	var rooms_x = randi_range(2, max_rooms_x)
+	var rooms_y = randi_range(2, max_rooms_y)
+	
+	# --- 4. RECALCULATE EXACT MAP SIZE ---
+	# This ensures the map is exactly the right size for the grid.
+	# No remainders = No extra wide walls.
+	map_width = (rooms_x * step_size) + 1
+	map_height = (rooms_y * step_size) + 1
+	
+	# --- DEBUG PRINTS ---
+	print("Path Thickness: ", path_thickness)
+	print("Map Size: ", map_width, "x", map_height)
+	
+	# --- CONTINUE GENERATION ---
+	fill_map_with_walls()
+	
+	# Recalculate possible rooms for the generator (should match rooms_x/y)
 	var possible_rooms_x = (map_width - 1) / step_size
 	var possible_rooms_y = (map_height - 1) / step_size
 	
-	# Step 2: Pick Random Start
+	# Pick random start
 	var random_x = (randi() % possible_rooms_x) * step_size + 1
 	var random_y = (randi() % possible_rooms_y) * step_size + 1
 	maze_pos = Vector2i(random_x, random_y)
 	
-	# Step 3: Dig the STARTING Room
+	# Dig Start
 	dig_room(maze_pos, tile_v)
 	
 	generate_maze()

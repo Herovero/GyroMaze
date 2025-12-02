@@ -1,7 +1,6 @@
 extends Label
 
-@onready var timer: Timer = $"../Timer"
-@onready var time_countdown: Label = $"."
+@onready var level_count: Label = $"."
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -9,6 +8,4 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	time_countdown.text = str(int(timer.time_left + 1))
-	await get_tree().create_timer(3).timeout
-	time_countdown.hide()
+	pass
