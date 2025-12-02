@@ -26,7 +26,7 @@ signal done
 var effective_tile_size = 16 * 9.0 
 
 @export var hole_scene: PackedScene  # Drag your Hole.tscn here in Inspector
-@export var hole_count: int = 20     # How many holes do you want?
+@export var hole_count: int = 10     # How many holes do you want?
 
 func _ready() -> void:
 	fill_map_with_walls()
