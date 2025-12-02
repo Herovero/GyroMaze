@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cpv02exs4ywq1"]
+[gd_scene load_steps=8 format=3 uid="uid://cpv02exs4ywq1"]
 
 [ext_resource type="PackedScene" uid="uid://bwtlejdt7cws6" path="res://Scenes/maze_test2.tscn" id="1_21xkr"]
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="1_bo1nx"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bgg64hwixo074" path="res://Scenes/pause_button.tscn" id="3_8gbba"]
 [ext_resource type="PackedScene" uid="uid://dfwo610ckgcq5" path="res://Scenes/hole.tscn" id="3_344ge"]
 [ext_resource type="Texture2D" uid="uid://b7ck8twawfxri" path="res://Assets/uis/restart_button.png" id="6_ynf5e"]
+[ext_resource type="Script" uid="uid://qdaco07pmcty" path="res://Scripts/time_countdown.gd" id="7_6bp64"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -47,5 +48,21 @@ action = "ui_accept"
 [node name="Timer" type="Timer" parent="."]
 wait_time = 3.0
 autostart = true
+
+[node name="time_countdown" type="Label" parent="."]
+z_index = 2
+offset_left = 2538.0
+offset_top = 1328.0
+offset_right = 4259.0
+offset_bottom = 2010.0
+theme_override_colors/font_color = Color(0.99600416, 0.9688861, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 100
+theme_override_font_sizes/font_size = 500
+text = "(Timer)"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("7_6bp64")
 
 [connection signal="timeout" from="Timer" to="Player" method="_on_timer_timeout"]

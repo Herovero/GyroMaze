@@ -2,8 +2,9 @@ extends RigidBody2D
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
 
-@export var tilt_strength: float = 5000.0 
-@export var spin_speed: float = 0.03 # Controls how fast the visual spin is
+@export var tilt_strength: float = 2000.0 
+@export var spin_speed: float = 0.02 # Controls how fast the visual spin is
+
 
 var input_enabled: bool = false
 var should_reset: bool = false
@@ -31,7 +32,7 @@ func _physics_process(delta):
 		if input_enabled == true:
 			var sensor_data = Input.get_gravity()
 			input_direction = Vector2(sensor_data.x, -sensor_data.y)
-			input_direction = input_direction / 9.8
+			input_direction = input_direction / 5
 	else:
 		if input_enabled == true:
 			input_direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") / 4
