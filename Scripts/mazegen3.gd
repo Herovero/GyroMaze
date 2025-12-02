@@ -31,6 +31,26 @@ var effective_tile_size = 16 * 9.0
 @export var hole_count: int = 10     # How many holes do you want?
 
 func _ready() -> void:
+	# 1. Calculate minimum safe size
+	# We need at least one "step" (Path + Wall) + border walls
+	var min_size = (path_thickness + 1) + 2
+	
+	# 2. Pick random dimensions (e.g. between min_size and 60)
+	# Ensure the max is large enough to be interesting!
+	var random_w = randi_range(min_size, 60)
+	var random_h = randi_range(min_size, 25)
+	
+	# 3. Force them to be ODD numbers
+	# If random_w is even (e.g., 20), add 1 to make it odd (21).
+	if random_w % 2 == 0: random_w += 1
+	if random_h % 2 == 0: random_h += 1
+	
+	# 4. Assign to your class variables
+	map_width = random_w
+	map_height = random_h
+	print("width: " + str(map_width))
+	print("height: " + str(map_height))
+	
 	fill_map_with_walls()
 	
 	# Step 1: Calculate "Grid Step"
@@ -154,9 +174,14 @@ func spawn_holes() -> void:
 
 	# Add array here to store currently spawned holes
 	var hole_positions: Array[Vector2i] = []
+	
+	# Stop the loop if we try too many times (prevents infinite freeze)
+	var attempts = 0
+	var max_attempts = 2000
 
-	while holes_spawned < hole_count:
-
+	while holes_spawned < hole_count and attempts < max_attempts:
+		attempts += 1
+		
 		var rand_x = randi() % map_width
 		var rand_y = randi() % map_height
 		var check_pos = Vector2i(rand_x, rand_y)
@@ -189,3 +214,6 @@ func spawn_holes() -> void:
 			get_parent().call_deferred("add_child", new_hole)
 
 			holes_spawned += 1
+			
+	if attempts >= max_attempts:
+		print("Warning: Could not fit all holes! Spawned ", holes_spawned, " of ", hole_count)
