@@ -77,6 +77,7 @@ func _input(event):
 		#reset_position()
 		
 		# Reset the maze
+		Global.current_level += 1
 		get_tree().reload_current_scene()
 
 # 1. Trigger the flag
