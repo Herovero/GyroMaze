@@ -14,6 +14,7 @@
 [node name="Sprite2D" type="Sprite2D" parent="."]
 script = ExtResource("2_6bp64")
 hole_scene = ExtResource("3_344ge")
+hole_count = 20
 
 [node name="Player" parent="." instance=ExtResource("1_bo1nx")]
 gravity_scale = 0.0
@@ -42,3 +43,9 @@ metadata/_edit_use_anchors_ = true
 position = Vector2(6699, 241)
 texture_normal = ExtResource("6_ynf5e")
 action = "ui_accept"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="Player" method="_on_timer_timeout"]

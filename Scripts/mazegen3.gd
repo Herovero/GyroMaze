@@ -1,8 +1,10 @@
 extends Sprite2D
 
 # --- CONFIGURATION ---
-var map_width = 46 
+var map_width = 45 
 var map_height = 25
+#var map_width = randi_range(10, 30)
+#var map_height = randi_range(10, 30)
 
 # How wide (in tiles) should the path be?
 # 1 = Standard (Same size as wall)
@@ -147,40 +149,43 @@ func spawn_holes() -> void:
 	if not hole_scene:
 		print("Error: No Hole Scene assigned!")
 		return
-		
+
 	var holes_spawned = 0
-	
-	# Keep doing until exceeding max hole count
+
+	# Add array here to store currently spawned holes
+	var hole_positions: Array[Vector2i] = []
+
 	while holes_spawned < hole_count:
-		
-		# 1. Pick a random coordinate on the map
+
 		var rand_x = randi() % map_width
 		var rand_y = randi() % map_height
 		var check_pos = Vector2i(rand_x, rand_y)
-		
-		# 2. Check: Is this a FLOOR tile?
-		# We only want holes on the path (tile_v), not inside walls (tile_n)
+
+		# Check if this is within x tiles distance of an existing hole
+		var too_close := false
+		for existing in hole_positions:
+			if existing.distance_to(check_pos) <= 5:
+				too_close = true
+				break
+
+		if too_close:
+			continue
+
+		# Must be floor
 		if Maze.get_cell_atlas_coords(check_pos) == tile_v:
-			
-			# 3. SAFETY CHECK: Don't spawn on top of the player!
-			# We calculate distance to the start position we saved earlier
-			# If it's too close (e.g. within 3 tiles), skip it.
+
+			# Avoid spawning too close to player start
 			if Vector2(check_pos).distance_to(Vector2(maze_pos)) < 3:
 				continue
-			
-			# 4. Spawn the Hole
+
 			var new_hole = hole_scene.instantiate()
-			
-			# Calculate pixel position (Same math as Player)
-			# Note: We need to calculate the specific center for this tile
-			# Since your tiles are large, we want the hole centered in the 16x16 grid cell
-			# OR centered in the large room depending on your preference.
-			# For now, let's center it on the specific grid cell:
+
+			# chatgpt instruction: add to array
+			hole_positions.append(check_pos)
+
 			var center_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
 			new_hole.position = (Vector2(check_pos) * effective_tile_size) + center_offset
-			
-			# Add it to the game scene (usually as a sibling of the maze)
-			# We add it to the parent so it's not part of the TileMap itself
+
 			get_parent().call_deferred("add_child", new_hole)
-			
+
 			holes_spawned += 1

@@ -5,7 +5,8 @@ extends RigidBody2D
 @export var tilt_strength: float = 5000.0 
 @export var spin_speed: float = 0.03 # Controls how fast the visual spin is
 
-var should_reset = false
+var input_enabled: bool = false
+var should_reset: bool = false
 
 # Keeps track of the total distance traveled
 var rolled_accumulator = Vector2.ZERO
@@ -27,11 +28,13 @@ func _physics_process(delta):
 	var input_direction = Vector2.ZERO
 	
 	if OS.has_feature("mobile"):
-		var sensor_data = Input.get_gravity()
-		input_direction = Vector2(sensor_data.x, -sensor_data.y)
-		input_direction = input_direction / 4.9
+		if input_enabled == true:
+			var sensor_data = Input.get_gravity()
+			input_direction = Vector2(sensor_data.x, -sensor_data.y)
+			input_direction = input_direction / 9.8
 	else:
-		input_direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") / 4
+		if input_enabled == true:
+			input_direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") / 4
 	
 	var force = input_direction * tilt_strength
 	apply_central_force(force)
@@ -94,3 +97,6 @@ func _integrate_forces(state):
 		
 		# Turn the flag off so we don't get stuck at (0,0)
 		should_reset = false
+
+func _on_timer_timeout():
+	input_enabled = true

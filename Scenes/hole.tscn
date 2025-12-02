@@ -4,16 +4,17 @@
 [ext_resource type="Texture2D" uid="uid://du6n22db78p13" path="res://Assets/red square.png" id="2_i6jlm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i6jlm"]
-size = Vector2(400, 400)
+size = Vector2(500, 500)
 
 [node name="Hole1" type="Area2D" groups=["Holes"]]
 script = ExtResource("1_i6jlm")
 
 [node name="hole" type="Sprite2D" parent="."]
-scale = Vector2(0.8, 0.8)
+scale = Vector2(0.3, 0.3)
 texture = ExtResource("2_i6jlm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(0.3, 0.3)
 shape = SubResource("RectangleShape2D_i6jlm")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
