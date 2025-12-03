@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://peykpr8siwik" path="res://Assets/hole2.png" id="2_i6jlm"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i6jlm"]
-radius = 255.51689
+radius = 196.66666
 
 [node name="Hole1" type="Area2D" groups=["Holes"]]
 script = ExtResource("1_i6jlm")

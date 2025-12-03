@@ -30,6 +30,9 @@ var effective_tile_size = 16 * 9.0
 @export var hole_scene: PackedScene  # Drag your Hole.tscn here in Inspector
 @export var hole_count: int = 10     # How many holes do you want?
 
+@export var finish_scene: PackedScene
+var finish_grid_pos = Vector2i.ZERO
+
 func _ready() -> void:
 	# --- 1. RANDOMIZE PATH THICKNESS ---
 	# Randomly choose between 1 (Standard), 2 (Wide), or 3 (Very Wide)
@@ -80,6 +83,7 @@ func _ready() -> void:
 	
 	generate_maze()
 	move_player_to_start()
+	spawn_finish()
 	spawn_holes()
 
 func fill_map_with_walls() -> void:
@@ -175,55 +179,124 @@ func move_player_to_start():
 		if player.has_method("set_start_position"):
 			player.set_start_position(start_pixel_pos)
 
+func spawn_finish() -> void:
+	if not finish_scene: return
+	
+	var attempts = 0
+	var spawned = false
+	
+	while not spawned and attempts < 2000:
+		attempts += 1
+		
+		# 1. Pick random spot
+		var rand_x = randi() % map_width
+		var rand_y = randi() % map_height
+		var check_pos = Vector2i(rand_x, rand_y)
+		
+		# 2. Check if Floor
+		if Maze.get_cell_atlas_coords(check_pos) == tile_v:
+			
+			# 3. DISTANCE CHECK (The Important Part)
+			# Calculate distance from Player Start (maze_pos)
+			# We want it to be at least 50% across the map
+			var dist = Vector2(check_pos).distance_to(Vector2(maze_pos))
+			
+			# Minimum distance required (e.g., half the map width)
+			var min_dist = map_width / 2
+			
+			if dist > min_dist:
+				# --- VALID SPOT FOUND ---
+				var new_finish = finish_scene.instantiate()
+				
+				# Position it
+				var center_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
+				new_finish.position = (Vector2(check_pos) * effective_tile_size) + center_offset
+				
+				# Randomize Size (Optional)
+				# new_finish.scale = Vector2(path_thickness, path_thickness) * 0.8
+				
+				get_parent().call_deferred("add_child", new_finish)
+				
+				# Save position so holes avoid it
+				finish_grid_pos = check_pos
+				spawned = true
+
+	if not spawned:
+		print("Warning: Could not find a far enough spot for Finish line!")
+
 func spawn_holes() -> void:
 	if not hole_scene:
 		print("Error: No Hole Scene assigned!")
 		return
 
 	var holes_spawned = 0
+	var step_size = path_thickness + 1
 
 	# Add array here to store currently spawned holes
 	var hole_positions: Array[Vector2i] = []
 	
 	# Stop the loop if we try too many times (prevents infinite freeze)
 	var attempts = 0
-	var max_attempts = 2000
+	
+	# Calculate how many "Rooms" exist
+	var rooms_x = (map_width - 1) / step_size
+	var rooms_y = (map_height - 1) / step_size
 
-	while holes_spawned < hole_count and attempts < max_attempts:
+	while holes_spawned < hole_count and attempts < 2000:
 		attempts += 1
 		
-		var rand_x = randi() % map_width
-		var rand_y = randi() % map_height
-		var check_pos = Vector2i(rand_x, rand_y)
+		# 1. Pick a Random ROOM (Grid Cell), not a random pixel
+		var rx = randi() % rooms_x
+		var ry = randi() % rooms_y
+		
+		# 2. Convert Room Coordinate to Tile Coordinate
+		# This gives us the top-left corner of that "room"
+		var tile_x = (rx * step_size) + 1
+		var tile_y = (ry * step_size) + 1
+		
+		# 3. Check the Center of that room
+		# We add roughly half the path thickness to find the center
+		var center_offset = int(path_thickness / 2)
+		var check_pos = Vector2i(tile_x + center_offset, tile_y + center_offset)
 
-		# Check if this is within x tiles distance of an existing hole
-		var too_close := false
+		# 4. Check if it's Floor (It should be, but good to verify)
+		if Maze.get_cell_atlas_coords(check_pos) != tile_v:
+			continue
+			
+		# Avoid spawning too close to player start
+		if Vector2(check_pos).distance_to(Vector2(maze_pos)) < 3:
+			continue
+			
+		if Vector2(check_pos).distance_to(Vector2(finish_grid_pos)) < 3:
+			continue
+		
+		# 7. Distance Check: Avoid OTHER Holes (Prevent Stacking)
+		var too_close = false
 		for existing in hole_positions:
-			if existing.distance_to(check_pos) <= 5:
+			if existing == check_pos: # If a hole is already exactly here
 				too_close = true
 				break
-
+		
 		if too_close:
 			continue
 
-		# Must be floor
-		if Maze.get_cell_atlas_coords(check_pos) == tile_v:
+		var new_hole = hole_scene.instantiate()
 
-			# Avoid spawning too close to player start
-			if Vector2(check_pos).distance_to(Vector2(maze_pos)) < 3:
-				continue
+		# Save position to array so we don't spawn here again
+		hole_positions.append(check_pos)
 
-			var new_hole = hole_scene.instantiate()
-
-			# chatgpt instruction: add to array
-			hole_positions.append(check_pos)
-
-			var center_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
-			new_hole.position = (Vector2(check_pos) * effective_tile_size) + center_offset
-
-			get_parent().call_deferred("add_child", new_hole)
-
-			holes_spawned += 1
+		# Calculate pixel position for the hole
+		# We use the specific check_pos which is now CENTERED in the path
+		var pixel_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
+		new_hole.position = (Vector2(check_pos) * effective_tile_size) + pixel_offset
+		
+		# Randomize size (keep it slightly smaller than path_thickness to avoid clipping)
+		var max_safe_scale = path_thickness * 0.8 # 80% of the path width
+		var random_scale = randf_range(0.5, max_safe_scale)
+		new_hole.scale = Vector2(random_scale, random_scale)
+		
+		get_parent().call_deferred("add_child", new_hole)
+		holes_spawned += 1
 			
-	if attempts >= max_attempts:
+	if attempts >= 2000:
 		print("Warning: Could not fit all holes! Spawned ", holes_spawned, " of ", hole_count)
