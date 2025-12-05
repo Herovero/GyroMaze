@@ -2,6 +2,7 @@ extends RigidBody2D
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
 
+
 @export var tilt_strength: float = 2000.0 
 @export var spin_speed: float = 0.02 # Controls how fast the visual spin is
 
@@ -16,6 +17,11 @@ var shader_material: ShaderMaterial
 
 # Remember where the player should reset position to 
 var current_start_pos = Vector2.ZERO
+
+# Power up activations
+@onready var maze: TileMapLayer = $"../maze"
+var ghost_charges = 0
+var was_inside_wall = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -45,6 +51,9 @@ func _physics_process(delta):
 	
 	# The hard way
 	#update_rolling_shader(delta)
+	
+	if ghost_charges > 0:
+		handle_ghost_logic()
 
 func update_rolling_shader(delta):
 	# 1. Add the distance moved this frame to our total counter.
@@ -102,3 +111,47 @@ func _integrate_forces(state):
 
 func _on_timer_timeout():
 	input_enabled = true
+
+func activate_ghost(charges: int):
+	ghost_charges = charges
+	was_inside_wall = false
+	
+	# Disable collision with walls
+	collision_mask = 0 
+	
+	# Visual Cue: Make player semi-transparent
+	modulate.a = 0.5
+	print("Ghost Mode Activated! Charges: ", ghost_charges)
+
+func handle_ghost_logic():
+	# Convert global position to local since maze scale is 9.0
+	var local_pos = maze.to_local(global_position)
+	
+	# Get the tile coordinate under the player
+	var tile_pos = maze.local_to_map(local_pos)
+	#print(tile_pos)
+	
+	# 2. Check what kind of tile is there (Layer 0)
+	var tile_atlas_coords = maze.get_cell_atlas_coords(tile_pos)
+	#print(tile_atlas_coords)
+	
+	# Based on your mazegen script: Wall is (0,0), Floor is (0,1)
+	var is_wall = (tile_atlas_coords == Vector2i(0, 0))
+	
+	if is_wall:
+		# We are currently inside a wall
+		was_inside_wall = true
+	else:
+		# We are currently on the floor
+		if was_inside_wall:
+			# We JUST exited a wall! Consumed 1 charge.
+			ghost_charges -= 1
+			was_inside_wall = false
+			print("Passed through wall! Charges left: ", ghost_charges)
+			
+			# If we ran out of charges, turn solid again
+			if ghost_charges <= 0:
+				ghost_charges = 0
+				collision_mask = 1 # Reset to default (Collide with Walls/Layer 1)
+				modulate.a = 1.0 # Fully opaque
+				print("Ghost Mode Deactivated")
