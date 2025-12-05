@@ -290,10 +290,30 @@ func spawn_holes() -> void:
 		var pixel_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
 		new_hole.position = (Vector2(check_pos) * effective_tile_size) + pixel_offset
 		
+		# Calculate the Base Center Position (As before)
+		var base_pixel_pos = (Vector2(check_pos) * effective_tile_size) + Vector2(effective_tile_size / 2, effective_tile_size / 2)
+		
 		# Randomize size (keep it slightly smaller than path_thickness to avoid clipping)
 		var max_safe_scale = path_thickness * 0.8 # 80% of the path width
 		var random_scale = randf_range(0.5, max_safe_scale)
 		new_hole.scale = Vector2(random_scale, random_scale)
+		
+		# --- 3. Calculate "Wiggle Room" ---
+		# How wide is the path in pixels?
+		var path_width_px = effective_tile_size * path_thickness
+		
+		# How wide is the hole we just made?
+		var hole_width_px = effective_tile_size * random_scale
+		
+		# The spare space is the difference. Divide by 2 for the radius.
+		# Multiply by 0.8 to leave a small safety margin from the wall.
+		var max_offset = ((path_width_px - hole_width_px) / 2) * 0.8
+		
+		# --- 4. Apply Random Jitter ---
+		var jitter_x = randf_range(-max_offset, max_offset)
+		var jitter_y = randf_range(-max_offset, max_offset)
+		
+		new_hole.position = base_pixel_pos + Vector2(jitter_x, jitter_y)
 		
 		get_parent().call_deferred("add_child", new_hole)
 		holes_spawned += 1
