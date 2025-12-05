@@ -15,6 +15,7 @@ var path_thickness = 2
 # --- TILE DEFINITIONS ---
 var tile_n = Vector2i(0, 0) # Wall (Dark Blue)
 var tile_v = Vector2i(0, 1) # Floor (Light Blue)
+var tile_b = Vector2i(1, 0) # Border (Dark Brown)
 var tile_s = Vector2i(1, 1) # Solved Path (Optional)
 
 # --- INTERNAL VARIABLES ---
@@ -89,7 +90,13 @@ func _ready() -> void:
 func fill_map_with_walls() -> void:
 	for x in range(map_width):
 		for y in range(map_height):
-			Maze.set_cell(Vector2i(x, y), 0, tile_n)
+			# Check if we are on the edge
+			if x == 0 or x == map_width - 1 or y == 0 or y == map_height - 1:
+				# Paint Border
+				Maze.set_cell(Vector2i(x, y), 0, tile_b)
+			else:
+				# Paint Inner Wall
+				Maze.set_cell(Vector2i(x, y), 0, tile_n)
 
 func dig_room(center_pos: Vector2i, tile_type: Vector2i):
 	# We dig a square starting from the top-left of the current "cell"
