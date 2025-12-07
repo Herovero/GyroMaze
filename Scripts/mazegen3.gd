@@ -31,7 +31,8 @@ var effective_tile_size = 16 * 9.0
 @export var hole_scene: PackedScene  # Drag your Hole.tscn here in Inspector
 @export var hole_count: int = 10     # How many holes do you want?
 
-@export var ghost_powerup_scene: PackedScene
+@export var ghost_scene: PackedScene
+@export var wing_scene: PackedScene
 
 @export var finish_scene: PackedScene
 var finish_grid_pos = Vector2i.ZERO
@@ -332,41 +333,35 @@ func spawn_holes() -> void:
 		print("Warning: Could not fit all holes! Spawned ", holes_spawned, " of ", hole_count)
 
 func spawn_powerups() -> void:
-	if not ghost_powerup_scene: 
-		return
-	
-	# Try to spawn 1 powerup (or loop for more)
-	var spawned = false
+	# We will try to spawn a few powerups total (e.g. 2 or 3)
+	var powerups_to_spawn = 2
+	var spawned_count = 0
 	var attempts = 0
 	
-	while not spawned and attempts < 1000:
+	while spawned_count < powerups_to_spawn and attempts < 2000:
 		attempts += 1
 		
-		# 1. Pick random spot
+		# 1. Pick Random Spot (Same logic as holes)
 		var rand_x = randi() % map_width
 		var rand_y = randi() % map_height
 		var check_pos = Vector2i(rand_x, rand_y)
 		
-		# 2. Check if valid Floor
 		if Maze.get_cell_atlas_coords(check_pos) == tile_v:
+			# Safety Checks (Distance)
+			if Vector2(check_pos).distance_to(Vector2(maze_pos)) < 5: continue
+			if Vector2(check_pos).distance_to(Vector2(finish_grid_pos)) < 5: continue
 			
-			# 3. Distance Checks
-			# Avoid Player Start
-			if Vector2(check_pos).distance_to(Vector2(maze_pos)) < 5:
-				continue
-			# Avoid Finish Line
-			if Vector2(check_pos).distance_to(Vector2(finish_grid_pos)) < 5:
-				continue
+			# 2. Pick Random Powerup Type
+			var item_scene
+			if randf() > 0.5:
+				item_scene = ghost_scene # Ghost
+			else:
+				item_scene = wing_scene    # Wing (Make sure you assigned it!)
+			
+			if item_scene:
+				var new_item = item_scene.instantiate()
+				var center_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
+				new_item.position = (Vector2(check_pos) * effective_tile_size) + center_offset
+				get_parent().call_deferred("add_child", new_item)
 				
-			# (Optional) You could also check distance to holes if you stored them in a global array,
-			# but since powerups are good, it's okay if they spawn near holes (risk vs reward!)
-			
-			# --- SPAWN ---
-			var new_powerup = ghost_powerup_scene.instantiate()
-			
-			# Calculate pixel position (Centered)
-			var center_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
-			new_powerup.position = (Vector2(check_pos) * effective_tile_size) + center_offset
-			
-			get_parent().call_deferred("add_child", new_powerup)
-			spawned = true
+				spawned_count += 1

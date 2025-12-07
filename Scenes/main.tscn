@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cpv02exs4ywq1"]
+[gd_scene load_steps=13 format=3 uid="uid://cpv02exs4ywq1"]
 
 [ext_resource type="PackedScene" uid="uid://bwtlejdt7cws6" path="res://Scenes/maze_test2.tscn" id="1_21xkr"]
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="1_bo1nx"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://cepi1p1cjfakw" path="res://Scripts/level_count.gd" id="8_ynf5e"]
 [ext_resource type="PackedScene" uid="uid://dbm528w4u35n0" path="res://Scenes/finish_point.tscn" id="10_hptm8"]
 [ext_resource type="PackedScene" uid="uid://ggicmeg7fv1h" path="res://Scenes/powerup_ghost.tscn" id="11_d1ilt"]
+[ext_resource type="PackedScene" uid="uid://bi5snb0ma00j1" path="res://Scenes/powerup_wing.tscn" id="12_6iyac"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -20,7 +21,8 @@
 script = ExtResource("2_6bp64")
 hole_scene = ExtResource("3_344ge")
 hole_count = 20
-ghost_powerup_scene = ExtResource("11_d1ilt")
+ghost_scene = ExtResource("11_d1ilt")
+wing_scene = ExtResource("12_6iyac")
 finish_scene = ExtResource("10_hptm8")
 
 [node name="Player" parent="." instance=ExtResource("1_bo1nx")]

@@ -1,11 +1,13 @@
 extends RigidBody2D
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
+@onready var wing_sprite: AnimatedSprite2D = $wing_sprite
 
 
 @export var tilt_strength: float = 2000.0 
 @export var spin_speed: float = 0.02 # Controls how fast the visual spin is
 
+@onready var base_scale = sprite_2d.scale
 
 var input_enabled: bool = false
 var should_reset: bool = false
@@ -21,10 +23,14 @@ var current_start_pos = Vector2.ZERO
 # Power up activations
 @onready var maze: TileMapLayer = $"../maze"
 var ghost_charges = 0
-var was_inside_wall = false
+var was_inside_wall: bool = false
+
+var wing_timer = 0.0
+var is_flying: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	lock_rotation = false
 	shader_material = sprite_2d.material as ShaderMaterial
 
 func set_start_position(pos: Vector2):
@@ -54,6 +60,11 @@ func _physics_process(delta):
 	
 	if ghost_charges > 0:
 		handle_ghost_logic()
+	
+	if is_flying:
+		wing_timer -= delta
+		if wing_timer <= 0:
+			deactivate_wing()
 
 func update_rolling_shader(delta):
 	# 1. Add the distance moved this frame to our total counter.
@@ -65,6 +76,9 @@ func update_rolling_shader(delta):
 		shader_material.set_shader_parameter("roll_offset", rolled_accumulator)
 		
 func rotate_marble_visuals(delta):
+	if is_flying:
+		return
+		
 	# 1. Get horizontal movement (Right = Clockwise, Left = Counter-Clockwise)
 	var x_spin = linear_velocity.x
 	
@@ -91,6 +105,9 @@ func _input(event):
 
 # 1. Trigger the flag
 func reset_position():
+	if is_flying:
+		return
+		
 	should_reset = true
 
 # 2. Handle the actual movement safely inside the physics loop
@@ -155,3 +172,21 @@ func handle_ghost_logic():
 				collision_mask = 1 # Reset to default (Collide with Walls/Layer 1)
 				modulate.a = 1.0 # Fully opaque
 				print("Ghost Mode Deactivated")
+
+func activate_wing(duration):
+	is_flying = true
+	wing_timer = duration
+	wing_sprite.show()
+	
+	lock_rotation = true
+	sprite_2d.rotation = 0
+	
+	print("Wing Activated! Flying for ", duration, "s")
+
+func deactivate_wing():
+	is_flying = false
+	wing_sprite.hide()
+	
+	lock_rotation = false
+	
+	print("Wing Deactivated")
