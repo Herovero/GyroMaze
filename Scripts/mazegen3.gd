@@ -30,6 +30,7 @@ var effective_tile_size = 16 * 9.0
 
 @export var hole_scene: PackedScene  # Drag your Hole.tscn here in Inspector
 @export var hole_count: int = 10     # How many holes do you want?
+var hole_positions: Array[Vector2i] = []
 
 @export var ghost_scene: PackedScene
 @export var wing_scene: PackedScene
@@ -242,12 +243,10 @@ func spawn_holes() -> void:
 
 	var holes_spawned = 0
 	var step_size = path_thickness + 1
-
-	# Add array here to store currently spawned holes
-	var hole_positions: Array[Vector2i] = []
-	
-	# Stop the loop if we try too many times (prevents infinite freeze)
 	var attempts = 0
+	
+	# Clear old datas
+	hole_positions.clear()
 	
 	# Calculate how many "Rooms" exist
 	var rooms_x = (map_width - 1) / step_size
@@ -338,6 +337,8 @@ func spawn_powerups() -> void:
 	var spawned_count = 0
 	var attempts = 0
 	
+	var powerup_positions: Array[Vector2i] = []
+	
 	while spawned_count < powerups_to_spawn and attempts < 2000:
 		attempts += 1
 		
@@ -347,11 +348,31 @@ func spawn_powerups() -> void:
 		var check_pos = Vector2i(rand_x, rand_y)
 		
 		if Maze.get_cell_atlas_coords(check_pos) == tile_v:
-			# Safety Checks (Distance)
+			# Distance check with player and finish point
 			if Vector2(check_pos).distance_to(Vector2(maze_pos)) < 5: continue
 			if Vector2(check_pos).distance_to(Vector2(finish_grid_pos)) < 5: continue
 			
-			# 2. Pick Random Powerup Type
+			# Distance check with holes
+			var too_close_to_hole = false
+			for hole_pos in hole_positions:
+				# Use a safe distance (e.g. 2 or 3 tiles)
+				if Vector2(check_pos).distance_to(Vector2(hole_pos)) < 1:
+					too_close_to_hole = true
+					break
+			
+			if too_close_to_hole:
+				continue
+			
+			# Distance check with other power ups
+			var too_close_to_powerup = false
+			for existing_pos in powerup_positions:
+				# Keep them at least 10 tiles apart (spread them out!)
+				if Vector2(check_pos).distance_to(Vector2(existing_pos)) < 10:
+					too_close_to_powerup = true
+					break
+			if too_close_to_powerup: continue
+			
+			# Pick Random Powerup Type
 			var item_scene
 			if randf() > 0.5:
 				item_scene = ghost_scene # Ghost

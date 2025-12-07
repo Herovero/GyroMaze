@@ -432,7 +432,7 @@ visible = false
 scale = Vector2(0.25, 0.25)
 sprite_frames = SubResource("SpriteFrames_5un75")
 autoplay = "default"
-frame_progress = 0.602034
+frame_progress = 0.51362705
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false

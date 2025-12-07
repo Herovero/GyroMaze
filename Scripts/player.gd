@@ -11,6 +11,7 @@ extends RigidBody2D
 
 var input_enabled: bool = false
 var should_reset: bool = false
+var force_rotation_lock: bool = false
 
 # Keeps track of the total distance traveled
 var rolled_accumulator = Vector2.ZERO
@@ -48,7 +49,7 @@ func _physics_process(delta):
 	else:
 		if input_enabled == true:
 			input_direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") / 4
-	
+
 	var force = input_direction * tilt_strength
 	apply_central_force(force)
 	
@@ -125,6 +126,17 @@ func _integrate_forces(state):
 		
 		# Turn the flag off so we don't get stuck at (0,0)
 		should_reset = false
+	
+	if force_rotation_lock:
+		# 1. Kill any spinning momentum instantly
+		state.angular_velocity = 0
+		
+		# 2. Force the rotation angle to 0 (Upright)
+		# This overrides any collision that tried to tilt you this frame
+		var new_transform = state.transform
+		new_transform.x = Vector2(1, 0) # X axis points Right
+		new_transform.y = Vector2(0, 1) # Y axis points Down
+		state.transform = new_transform
 
 func _on_timer_timeout():
 	input_enabled = true
@@ -178,7 +190,7 @@ func activate_wing(duration):
 	wing_timer = duration
 	wing_sprite.show()
 	
-	lock_rotation = true
+	force_rotation_lock = true
 	sprite_2d.rotation = 0
 	
 	print("Wing Activated! Flying for ", duration, "s")
@@ -187,6 +199,6 @@ func deactivate_wing():
 	is_flying = false
 	wing_sprite.hide()
 	
-	lock_rotation = false
+	force_rotation_lock = false
 	
 	print("Wing Deactivated")
