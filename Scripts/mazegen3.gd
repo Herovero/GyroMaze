@@ -31,6 +31,8 @@ var effective_tile_size = 16 * 9.0
 @export var hole_scene: PackedScene  # Drag your Hole.tscn here in Inspector
 @export var hole_count: int = 10     # How many holes do you want?
 
+@export var ghost_powerup_scene: PackedScene
+
 @export var finish_scene: PackedScene
 var finish_grid_pos = Vector2i.ZERO
 
@@ -86,6 +88,7 @@ func _ready() -> void:
 	move_player_to_start()
 	spawn_finish()
 	spawn_holes()
+	spawn_powerups()
 
 func fill_map_with_walls() -> void:
 	for x in range(map_width):
@@ -327,3 +330,43 @@ func spawn_holes() -> void:
 			
 	if attempts >= 2000:
 		print("Warning: Could not fit all holes! Spawned ", holes_spawned, " of ", hole_count)
+
+func spawn_powerups() -> void:
+	if not ghost_powerup_scene: 
+		return
+	
+	# Try to spawn 1 powerup (or loop for more)
+	var spawned = false
+	var attempts = 0
+	
+	while not spawned and attempts < 1000:
+		attempts += 1
+		
+		# 1. Pick random spot
+		var rand_x = randi() % map_width
+		var rand_y = randi() % map_height
+		var check_pos = Vector2i(rand_x, rand_y)
+		
+		# 2. Check if valid Floor
+		if Maze.get_cell_atlas_coords(check_pos) == tile_v:
+			
+			# 3. Distance Checks
+			# Avoid Player Start
+			if Vector2(check_pos).distance_to(Vector2(maze_pos)) < 5:
+				continue
+			# Avoid Finish Line
+			if Vector2(check_pos).distance_to(Vector2(finish_grid_pos)) < 5:
+				continue
+				
+			# (Optional) You could also check distance to holes if you stored them in a global array,
+			# but since powerups are good, it's okay if they spawn near holes (risk vs reward!)
+			
+			# --- SPAWN ---
+			var new_powerup = ghost_powerup_scene.instantiate()
+			
+			# Calculate pixel position (Centered)
+			var center_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
+			new_powerup.position = (Vector2(check_pos) * effective_tile_size) + center_offset
+			
+			get_parent().call_deferred("add_child", new_powerup)
+			spawned = true

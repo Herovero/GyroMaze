@@ -20,6 +20,7 @@
 script = ExtResource("2_6bp64")
 hole_scene = ExtResource("3_344ge")
 hole_count = 20
+ghost_powerup_scene = ExtResource("11_d1ilt")
 finish_scene = ExtResource("10_hptm8")
 
 [node name="Player" parent="." instance=ExtResource("1_bo1nx")]
@@ -97,9 +98,5 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-
-[node name="Area2D" parent="." instance=ExtResource("11_d1ilt")]
-position = Vector2(1318, 658)
-scale = Vector2(0.3, 0.3)
 
 [connection signal="timeout" from="Timer" to="Player" method="_on_timer_timeout"]
