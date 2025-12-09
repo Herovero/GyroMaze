@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cpv02exs4ywq1"]
+[gd_scene load_steps=14 format=3 uid="uid://cpv02exs4ywq1"]
 
 [ext_resource type="PackedScene" uid="uid://bwtlejdt7cws6" path="res://Scenes/maze_test2.tscn" id="1_21xkr"]
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="1_bo1nx"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://dbm528w4u35n0" path="res://Scenes/finish_point.tscn" id="10_hptm8"]
 [ext_resource type="PackedScene" uid="uid://ggicmeg7fv1h" path="res://Scenes/powerup_ghost.tscn" id="11_d1ilt"]
 [ext_resource type="PackedScene" uid="uid://bi5snb0ma00j1" path="res://Scenes/powerup_wing.tscn" id="12_6iyac"]
+[ext_resource type="Texture2D" uid="uid://b3tfysm02hjvn" path="res://icon.svg" id="13_fdnlq"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -49,43 +50,9 @@ grow_vertical = 1
 metadata/_edit_group_ = true
 metadata/_edit_use_anchors_ = true
 
-[node name="ResetButton" type="TouchScreenButton" parent="."]
-z_index = 5
-position = Vector2(6699, 33)
-texture_normal = ExtResource("6_ynf5e")
-action = "ui_accept"
-
 [node name="Timer" type="Timer" parent="."]
 wait_time = 3.0
 autostart = true
-
-[node name="time_countdown" type="Label" parent="."]
-z_index = 2
-offset_left = 2538.0
-offset_top = 1328.0
-offset_right = 4259.0
-offset_bottom = 2010.0
-theme_override_colors/font_color = Color(0.99600416, 0.9688861, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_y = 1
-theme_override_constants/outline_size = 100
-theme_override_font_sizes/font_size = 500
-text = "3"
-horizontal_alignment = 1
-vertical_alignment = 1
-script = ExtResource("7_6bp64")
-
-[node name="level_count" type="Label" parent="."]
-z_index = 2
-offset_left = -560.0
-offset_top = 96.0
-offset_right = -18.0
-offset_bottom = 301.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 50
-theme_override_font_sizes/font_size = 150
-text = "Level: 1"
-script = ExtResource("8_ynf5e")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 texture_repeat = 2
@@ -101,4 +68,45 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
+[node name="InGameUIs" type="CanvasLayer" parent="."]
+
+[node name="ResetButton" type="TouchScreenButton" parent="InGameUIs"]
+z_index = 5
+position = Vector2(2194, 33)
+scale = Vector2(0.3, 0.3)
+texture_normal = ExtResource("6_ynf5e")
+action = "ui_accept"
+
+[node name="power_slot1" type="TouchScreenButton" parent="InGameUIs"]
+position = Vector2(2189, 260)
+scale = Vector2(1.5, 1.5)
+texture_normal = ExtResource("13_fdnlq")
+
+[node name="time_countdown" type="Label" parent="InGameUIs"]
+z_index = 2
+offset_right = 2400.0
+offset_bottom = 1080.0
+theme_override_colors/font_color = Color(0.99600416, 0.9688861, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 25
+theme_override_font_sizes/font_size = 100
+text = "3"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("7_6bp64")
+
+[node name="level_count" type="Label" parent="InGameUIs"]
+z_index = 2
+offset_left = 31.0
+offset_top = 982.0
+offset_right = 573.0
+offset_bottom = 1187.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 25
+theme_override_font_sizes/font_size = 50
+text = "Level: 1"
+script = ExtResource("8_ynf5e")
+
 [connection signal="timeout" from="Timer" to="Player" method="_on_timer_timeout"]
+[connection signal="released" from="InGameUIs/power_slot1" to="Player" method="_on_powerup_button_released"]

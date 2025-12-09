@@ -3,7 +3,6 @@ extends RigidBody2D
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var wing_sprite: AnimatedSprite2D = $wing_sprite
 
-
 @export var tilt_strength: float = 2000.0 
 @export var spin_speed: float = 0.02 # Controls how fast the visual spin is
 
@@ -20,6 +19,9 @@ var shader_material: ShaderMaterial
 
 # Remember where the player should reset position to 
 var current_start_pos = Vector2.ZERO
+
+var stored_powerup: String = "none"
+@onready var powerup_button: TouchScreenButton = $"../InGameUIs/powerup_button"
 
 # Power up activations
 @onready var maze: TileMapLayer = $"../maze"
@@ -140,6 +142,44 @@ func _integrate_forces(state):
 
 func _on_timer_timeout():
 	input_enabled = true
+
+func collect_powerup(powerup_type: String):
+	# If we already have one, decide if we overwrite it or ignore. 
+	# For now, let's overwrite it (strategy: picking up new drops old).
+	stored_powerup = powerup_type
+	
+	print("Picked up: ", powerup_type)
+	
+	# Update UI Button
+	if powerup_button:
+		powerup_button.visible = true
+		
+		# Optional: Change button color/icon based on type
+		if powerup_type == "ghost":
+			powerup_button.modulate = Color(0.5, 0.5, 1, 1) # Blueish for Ghost
+		elif powerup_type == "wing":
+			powerup_button.modulate = Color(1, 1, 0, 1)   # Yellow for Wing
+
+func _on_powerup_button_released():
+	use_stored_powerup()
+
+# --- 2. USE ITEM (Called by the UI Button) ---
+func use_stored_powerup():
+	if stored_powerup == "none":
+		return
+	
+	if stored_powerup == "ghost":
+		activate_ghost(3) # Use your existing function
+	elif stored_powerup == "wing":
+		activate_wing(5.0) # Use your existing function
+		
+	# Clear inventory
+	stored_powerup = "none"
+	
+	# Hide button or dim it
+	if powerup_button:
+		powerup_button.visible = false
+		# powerup_btn.modulate = Color(1,1,1,0.5) # Alternative: make it dim 
 
 func activate_ghost(charges: int):
 	ghost_charges = charges
