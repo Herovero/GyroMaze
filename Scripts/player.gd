@@ -20,8 +20,11 @@ var shader_material: ShaderMaterial
 # Remember where the player should reset position to 
 var current_start_pos = Vector2.ZERO
 
-var stored_powerup: String = "none"
-@onready var powerup_button: TouchScreenButton = $"../InGameUIs/powerup_button"
+var inventory = ["none", "none", "none"]
+@onready var slots = [$"../InGameUIs/powerup_slot1", 
+					  $"../InGameUIs/powerup_slot2", 
+					  $"../InGameUIs/powerup_slot3",
+					 ]
 
 # Power up activations
 @onready var maze: TileMapLayer = $"../maze"
@@ -35,6 +38,8 @@ var is_flying: bool = false
 func _ready():
 	lock_rotation = false
 	shader_material = sprite_2d.material as ShaderMaterial
+	
+	update_inventory_ui()
 
 func set_start_position(pos: Vector2):
 	current_start_pos = pos
@@ -144,42 +149,55 @@ func _on_timer_timeout():
 	input_enabled = true
 
 func collect_powerup(powerup_type: String):
-	# If we already have one, decide if we overwrite it or ignore. 
-	# For now, let's overwrite it (strategy: picking up new drops old).
-	stored_powerup = powerup_type
+	# Logic: Find the first empty slot. If full, replace the last one.
 	
-	print("Picked up: ", powerup_type)
+	var slot_found = -1
 	
-	# Update UI Button
-	if powerup_button:
-		powerup_button.visible = true
-		
-		# Optional: Change button color/icon based on type
-		if powerup_type == "ghost":
-			powerup_button.modulate = Color(0.5, 0.5, 1, 1) # Blueish for Ghost
-		elif powerup_type == "wing":
-			powerup_button.modulate = Color(1, 1, 0, 1)   # Yellow for Wing
+	# Check Slot 0, then 1, then 2
+	for i in range(3):
+		if inventory[i] == "none":
+			slot_found = i
+			break
+	
+	if slot_found != -1:
+		# Found an empty spot! Fill it.
+		inventory[slot_found] = powerup_type
+	else:
+		# No empty spots? Replace the LAST one (Slot 2 / Index 2)
+		print("Inventory full! Replacing last item.")
+		inventory[2] = powerup_type
+	
+	print("Inventory: ", inventory)
+	update_inventory_ui()
 
-func _on_powerup_button_released():
-	use_stored_powerup()
-
-# --- 2. USE ITEM (Called by the UI Button) ---
-func use_stored_powerup():
-	if stored_powerup == "none":
-		return
+func use_item_at_index(index: int):
+	var type = inventory[index]
 	
-	if stored_powerup == "ghost":
-		activate_ghost(3) # Use your existing function
-	elif stored_powerup == "wing":
-		activate_wing(5.0) # Use your existing function
+	if type == "none":
+		return # Empty slot, do nothing
+	
+	# Activate the effect
+	if type == "ghost":
+		activate_ghost(3)
+	elif type == "wing":
+		activate_wing(5.0)
 		
-	# Clear inventory
-	stored_powerup = "none"
+	# Clear JUST this slot
+	inventory[index] = "none"
 	
-	# Hide button or dim it
-	if powerup_button:
-		powerup_button.visible = false
-		# powerup_btn.modulate = Color(1,1,1,0.5) # Alternative: make it dim 
+	# Optional: Shift items? (e.g. Item 2 moves to Item 1?)
+	# For now, let's keep it simple: Just clear the slot.
+	
+	update_inventory_ui()
+
+func update_inventory_ui():
+	for i in range(3):
+		var type = inventory[i]
+		var button_node = slots[i]
+		
+		if button_node.has_method("update_visuals"):
+			print("yes update visual")
+			button_node.update_visuals(type)
 
 func activate_ghost(charges: int):
 	ghost_charges = charges
@@ -242,3 +260,12 @@ func deactivate_wing():
 	force_rotation_lock = false
 	
 	print("Wing Deactivated")
+
+func _on_powerup_slot_1_released():
+	use_item_at_index(0)
+
+func _on_powerup_slot_2_released():
+	use_item_at_index(1)
+
+func _on_powerup_slot_3_released():
+	use_item_at_index(2)

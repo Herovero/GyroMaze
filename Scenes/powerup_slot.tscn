@@ -1,0 +1,141 @@
+[gd_scene load_steps=9 format=3 uid="uid://cy81f3sgiqhtq"]
+
+[ext_resource type="Texture2D" uid="uid://duhvw5fu5hohl" path="res://Assets/item_slot.png" id="1_0gmsy"]
+[ext_resource type="Script" uid="uid://dc1wvh8fx1feb" path="res://Scripts/powerup_slot.gd" id="2_ayo7n"]
+[ext_resource type="Texture2D" uid="uid://ds7tndtrb58hf" path="res://Assets/power-ups/ghost/_a_frm0,2020.png" id="2_m1ae8"]
+[ext_resource type="Texture2D" uid="uid://c0to5aemxs3un" path="res://Assets/power-ups/wing/_a_frm0,2020.png" id="3_ayo7n"]
+
+[sub_resource type="Animation" id="Animation_t2fo7"]
+resource_name = "ghost"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Ghost:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.16666667, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.01, 0.01), Vector2(0.3, 0.3), Vector2(0.25, 0.25)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Ghost:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_5m144"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Ghost:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.01, 0.01)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Ghost:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Wing:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.01, 0.01)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Wing:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_8jqoi"]
+resource_name = "wing"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Wing:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.01, 0.01), Vector2(0.35, 0.35), Vector2(0.3, 0.3)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Wing:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kpe6h"]
+_data = {
+&"RESET": SubResource("Animation_5m144"),
+&"ghost": SubResource("Animation_t2fo7"),
+&"wing": SubResource("Animation_8jqoi")
+}
+
+[node name="powerup_slot" type="TouchScreenButton"]
+texture_normal = ExtResource("1_0gmsy")
+script = ExtResource("2_ayo7n")
+
+[node name="Ghost" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(180, 180)
+scale = Vector2(0.01, 0.01)
+texture = ExtResource("2_m1ae8")
+
+[node name="Wing" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(180, 180)
+scale = Vector2(0.01, 0.01)
+texture = ExtResource("3_ayo7n")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_kpe6h")
+}

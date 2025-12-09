@@ -10,9 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://kwratvx20eml" path="res://Assets/0000.png" id="8_344ge"]
 [ext_resource type="Script" uid="uid://cepi1p1cjfakw" path="res://Scripts/level_count.gd" id="8_ynf5e"]
 [ext_resource type="PackedScene" uid="uid://dbm528w4u35n0" path="res://Scenes/finish_point.tscn" id="10_hptm8"]
+[ext_resource type="PackedScene" uid="uid://cy81f3sgiqhtq" path="res://Scenes/powerup_slot.tscn" id="10_jkdf5"]
 [ext_resource type="PackedScene" uid="uid://ggicmeg7fv1h" path="res://Scenes/powerup_ghost.tscn" id="11_d1ilt"]
 [ext_resource type="PackedScene" uid="uid://bi5snb0ma00j1" path="res://Scenes/powerup_wing.tscn" id="12_6iyac"]
-[ext_resource type="Texture2D" uid="uid://b3tfysm02hjvn" path="res://icon.svg" id="13_fdnlq"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -70,17 +70,24 @@ offset_bottom = 40.0
 
 [node name="InGameUIs" type="CanvasLayer" parent="."]
 
+[node name="powerup_slot1" parent="InGameUIs" instance=ExtResource("10_jkdf5")]
+position = Vector2(2120, 220)
+scale = Vector2(0.8, 0.8)
+
+[node name="powerup_slot2" parent="InGameUIs" instance=ExtResource("10_jkdf5")]
+position = Vector2(2120, 436)
+scale = Vector2(0.8, 0.8)
+
+[node name="powerup_slot3" parent="InGameUIs" instance=ExtResource("10_jkdf5")]
+position = Vector2(2120.0002, 651.9999)
+scale = Vector2(0.8, 0.8)
+
 [node name="ResetButton" type="TouchScreenButton" parent="InGameUIs"]
 z_index = 5
 position = Vector2(2194, 33)
 scale = Vector2(0.3, 0.3)
 texture_normal = ExtResource("6_ynf5e")
 action = "ui_accept"
-
-[node name="power_slot1" type="TouchScreenButton" parent="InGameUIs"]
-position = Vector2(2189, 260)
-scale = Vector2(1.5, 1.5)
-texture_normal = ExtResource("13_fdnlq")
 
 [node name="time_countdown" type="Label" parent="InGameUIs"]
 z_index = 2
@@ -109,4 +116,8 @@ text = "Level: 1"
 script = ExtResource("8_ynf5e")
 
 [connection signal="timeout" from="Timer" to="Player" method="_on_timer_timeout"]
-[connection signal="released" from="InGameUIs/power_slot1" to="Player" method="_on_powerup_button_released"]
+[connection signal="released" from="InGameUIs/powerup_slot1" to="Player" method="_on_powerup_slot_1_released"]
+[connection signal="released" from="InGameUIs/powerup_slot2" to="Player" method="_on_powerup_slot_2_released"]
+[connection signal="released" from="InGameUIs/powerup_slot3" to="Player" method="_on_powerup_slot_3_released"]
+
+[editable path="InGameUIs/powerup_slot1"]
