@@ -204,7 +204,7 @@ func activate_ghost(charges: int):
 	was_inside_wall = false
 	
 	# Disable collision with walls
-	collision_mask = 0 
+	collision_mask = 2
 	
 	# Visual Cue: Make player semi-transparent
 	modulate.a = 0.5
