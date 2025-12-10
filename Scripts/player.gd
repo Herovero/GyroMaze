@@ -206,7 +206,6 @@ func update_inventory_ui():
 		var button_node = slots[i]
 		
 		if button_node.has_method("update_visuals"):
-			print("yes update visual")
 			button_node.update_visuals(type)
 
 func activate_ghost(charges: int):

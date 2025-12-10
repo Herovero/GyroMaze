@@ -14,9 +14,9 @@ func _process(delta):
 	pass
 
 func update_visuals(type: String):
-	if not animation:
-		print("Error: AnimationPlayer not found on ", name)
-		return
+	#if not animation:
+		#print("Error: AnimationPlayer not found on ", name)
+		#return
 		
 	# If the new type is the same as what we already have, DO NOTHING.
 	if type == current_type:

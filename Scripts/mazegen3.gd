@@ -35,6 +35,8 @@ var hole_positions: Array[Vector2i] = []
 @export var ghost_scene: PackedScene
 @export var wing_scene: PackedScene
 
+@export var timer_scene: PackedScene
+
 @export var finish_scene: PackedScene
 var finish_grid_pos = Vector2i.ZERO
 
@@ -98,6 +100,7 @@ func start_new_level():
 	spawn_finish()
 	spawn_holes()
 	spawn_powerups()
+	spawn_timers()
 
 func clear_current_level():
 	# 1. Clear the TileMap
@@ -410,3 +413,53 @@ func spawn_powerups() -> void:
 				get_parent().call_deferred("add_child", new_item)
 				
 				spawned_count += 1
+
+func spawn_timers() -> void:
+	if not timer_scene: return
+	
+	var timers_to_spawn = 2
+	var spawned_count = 0
+	var attempts = 0
+	var timer_positions: Array[Vector2i] = [] # Local tracker to spread them out
+	
+	while spawned_count < timers_to_spawn and attempts < 2000:
+		attempts += 1
+		
+		var rand_x = randi() % map_width
+		var rand_y = randi() % map_height
+		var check_pos = Vector2i(rand_x, rand_y)
+		
+		if Maze.get_cell_atlas_coords(check_pos) == tile_v:
+			# 1. Distance Checks
+			if Vector2(check_pos).distance_to(Vector2(maze_pos)) < 5: continue
+			if Vector2(check_pos).distance_to(Vector2(finish_grid_pos)) < 5: continue
+			
+			# 2. Avoid Holes (Global Array)
+			var too_close_to_hole = false
+			for hole_pos in hole_positions:
+				if Vector2(check_pos).distance_to(Vector2(hole_pos)) < 2:
+					too_close_to_hole = true
+					break
+			if too_close_to_hole: continue
+			
+			# 3. Avoid Other Timers
+			var too_close_to_timer = false
+			for t_pos in timer_positions:
+				if Vector2(check_pos).distance_to(Vector2(t_pos)) < 10:
+					too_close_to_timer = true
+					break
+			if too_close_to_timer: continue
+
+			# --- SPAWN ---
+			var new_timer = timer_scene.instantiate()
+			
+			# IMPORTANT: Tag for cleanup so it deletes on level switch
+			new_timer.add_to_group("LevelTrash")
+			
+			var center_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
+			new_timer.position = (Vector2(check_pos) * effective_tile_size) + center_offset
+			
+			get_parent().call_deferred("add_child", new_timer)
+			
+			timer_positions.append(check_pos)
+			spawned_count += 1
