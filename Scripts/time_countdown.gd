@@ -35,7 +35,6 @@ func _on_level_start():
 	timer.start()
 
 func _on_timer_timeout():
-	print("hi")
 	# When time is up, hide the label
 	visible = false
 	player.input_enabled = true

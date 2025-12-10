@@ -13,5 +13,10 @@ func _process(_delta):
 func _on_body_entered(body):
 	if body.is_in_group("Player"):
 		if body.has_method("collect_powerup"):
-			body.collect_powerup("ghost")
-		queue_free()
+			var was_collected = body.collect_powerup("ghost")
+			# Only destroy the object if the player actually took it
+			if was_collected == true:
+				queue_free()
+			else:
+				# Inventory was full. Do nothing (item stays on ground).
+				pass

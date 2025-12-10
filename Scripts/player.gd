@@ -170,13 +170,15 @@ func collect_powerup(powerup_type: String):
 	if slot_found != -1:
 		# Found an empty spot! Fill it.
 		inventory[slot_found] = powerup_type
+		print("Picked up: ", powerup_type)
+		print("Inventory: ", inventory)
+		update_inventory_ui()
+		
+		return true
 	else:
-		# No empty spots? Replace the LAST one (Slot 2 / Index 2)
-		print("Inventory full! Replacing last item.")
-		inventory[2] = powerup_type
-	
-	print("Inventory: ", inventory)
-	update_inventory_ui()
+		# return false ensures power up stay on ground 
+		print("Inventory full!")
+		return false
 
 func use_item_at_index(index: int):
 	var type = inventory[index]
