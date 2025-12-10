@@ -26,8 +26,10 @@ var inventory = ["none", "none", "none"]
 					  $"../InGameUIs/powerup_slot3",
 					 ]
 
-# Power up activations
 @onready var maze: TileMapLayer = $"../maze"
+@onready var movement_tiles: TileMapLayer = $"../movement_tiles"
+
+# Power up activations
 var ghost_charges = 0
 var was_inside_wall: bool = false
 
@@ -62,7 +64,11 @@ func _physics_process(delta):
 		if input_enabled == true:
 			input_direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") / 4
 
-	var force = input_direction * tilt_strength
+	var force
+	if movement_tiles.get_cell_atlas_coords(movement_tiles.local_to_map(movement_tiles.to_local(global_position))) == Vector2i(0, 1):
+		force = input_direction * tilt_strength * 20
+	else:
+		force = input_direction * tilt_strength
 	apply_central_force(force)
 	
 	# The easy way
@@ -70,6 +76,10 @@ func _physics_process(delta):
 	
 	# The hard way
 	#update_rolling_shader(delta)
+	
+	# movement_tile_logic()
+	#if movement_tiles.get_cell_atlas_coords(movement_tiles.local_to_map(movement_tiles.to_local(global_position))) == Vector2i(0, 1):
+	#	print("hi")
 	
 	if ghost_charges > 0:
 		handle_ghost_logic()
@@ -269,6 +279,19 @@ func deactivate_wing():
 	force_rotation_lock = false
 	
 	print("Wing Deactivated")
+
+func movement_tile_logic():
+	pass
+	# Convert global position to local since maze scale is 9.0
+	# var local_pos = movement_tiles.to_local(global_position)
+	# Get the tile coordinate under the player
+	# var tile_pos = movement_tiles.local_to_map(local_pos)
+	#print(tile_pos)
+
+	# 2. Check what kind of tile is there (Layer 0)
+	#if movement_tiles.get_cell_atlas_coords(tile_pos) == Vector2i(0, 1):
+	#	print("tile_atlas_coords")
+	
 
 func _on_powerup_slot_1_released():
 	use_item_at_index(0)

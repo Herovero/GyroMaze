@@ -216,11 +216,19 @@ func move_player_to_start():
 			player.set_start_position(start_pixel_pos)
 
 func spawn_movement_tiles() -> void:
-		for x in range(map_width):
-			for y in range(map_height):
-				if Maze.get_cell_atlas_coords(Vector2(x, y)) == tile_v:
-					
-					pass #movement_tiles.set_cell(Vector2(x, y), 0, tile_v)
+	var rand_x = randi() % map_width
+	var rand_y = randi() % map_height
+	if Maze.get_cell_atlas_coords(Vector2(rand_x, rand_y)) == tile_v:
+		pass
+	for x in range(map_width):
+		for y in range(map_height):
+			if Maze.get_cell_atlas_coords(Vector2(x, y)) == tile_v:
+				var chance = randi() % 19
+				if chance < 1:
+					movement_tiles.set_cell(Vector2(x, y), 0, tile_v)
+				else:
+					movement_tiles.set_cell(Vector2(x, y), 0, tile_n)
+					#movement_tiles.set_cell(Vector2(x, y), 0, tile_v)
 
 func spawn_finish() -> void:
 	if not finish_scene: return
