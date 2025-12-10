@@ -4,8 +4,8 @@ extends Label
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	level_count.text = "Level: " + str(Global.current_level)
+	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	level_count.text = "Level: " + str(Global.current_level)

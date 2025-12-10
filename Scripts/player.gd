@@ -44,6 +44,11 @@ func _ready():
 func set_start_position(pos: Vector2):
 	current_start_pos = pos
 	
+	should_reset = true 
+	# Kill any existing movement immediately
+	linear_velocity = Vector2.ZERO
+	angular_velocity = 0
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	var input_direction = Vector2.ZERO
@@ -104,12 +109,18 @@ func rotate_marble_visuals(delta):
 
 func _input(event):
 	if event.is_action_pressed("ui_accept"):
-		# Reset player position
-		#reset_position()
+		advance_level()
+
+func advance_level():
+	# 1. Increase Level Counter
+	Global.current_level += 1
+	
+	SignalBus.emit_signal("switch_level")
 		
-		# Reset the maze
-		Global.current_level += 1
-		get_tree().reload_current_scene()
+		# 4. Optional: Reset Player Physics State if needed
+		# (The move_player_to_start function inside mazegen handles position,
+		# but you might want to reset velocity here to be safe)
+		#state_reset_needed = true # Trigger your _integrate_forces reset
 
 # 1. Trigger the flag
 func reset_position():
@@ -144,9 +155,6 @@ func _integrate_forces(state):
 		new_transform.x = Vector2(1, 0) # X axis points Right
 		new_transform.y = Vector2(0, 1) # Y axis points Down
 		state.transform = new_transform
-
-func _on_timer_timeout():
-	input_enabled = true
 
 func collect_powerup(powerup_type: String):
 	# Logic: Find the first empty slot. If full, replace the last one.

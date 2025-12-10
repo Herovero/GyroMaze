@@ -10,6 +10,9 @@ func _process(_delta):
 	
 func _on_body_entered(body):
 	if body.is_in_group("Player"):
-		Global.current_level += 1
-		print("Level Complete! Moving to Level: ", Global.current_level)
-		get_tree().call_deferred("reload_current_scene")
+		if body.has_method("advance_level"):
+			body.advance_level()
+		
+		#Global.current_level += 1
+		#print("Level Complete! Moving to Level: ", Global.current_level)
+		#get_tree().call_deferred("reload_current_scene")

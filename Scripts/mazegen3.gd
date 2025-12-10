@@ -39,6 +39,13 @@ var hole_positions: Array[Vector2i] = []
 var finish_grid_pos = Vector2i.ZERO
 
 func _ready() -> void:
+	start_new_level()
+	
+	SignalBus.connect("switch_level", start_new_level)
+
+func start_new_level():
+	clear_current_level()
+	
 	# --- 1. RANDOMIZE PATH THICKNESS ---
 	# Randomly choose between 1 (Standard), 2 (Wide), or 3 (Very Wide)
 	path_thickness = randi_range(2, 5)
@@ -91,6 +98,18 @@ func _ready() -> void:
 	spawn_finish()
 	spawn_holes()
 	spawn_powerups()
+
+func clear_current_level():
+	# 1. Clear the TileMap
+	Maze.clear()
+	
+	# 2. Delete all spawned items (Holes, Powerups, Finish)
+	# We use a group name "LevelTrash" to identify them
+	get_tree().call_group("LevelTrash", "queue_free")
+	
+	# 3. Clear arrays
+	hole_positions.clear()
+	# Clear powerup_positions if you added that global array too
 
 func fill_map_with_walls() -> void:
 	for x in range(map_width):
@@ -220,6 +239,8 @@ func spawn_finish() -> void:
 				# --- VALID SPOT FOUND ---
 				var new_finish = finish_scene.instantiate()
 				
+				new_finish.add_to_group("LevelTrash")
+				
 				# Position it
 				var center_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
 				new_finish.position = (Vector2(check_pos) * effective_tile_size) + center_offset
@@ -291,6 +312,8 @@ func spawn_holes() -> void:
 			continue
 
 		var new_hole = hole_scene.instantiate()
+		
+		new_hole.add_to_group("LevelTrash")
 
 		# Save position to array so we don't spawn here again
 		hole_positions.append(check_pos)
@@ -381,6 +404,7 @@ func spawn_powerups() -> void:
 			
 			if item_scene:
 				var new_item = item_scene.instantiate()
+				new_item.add_to_group("LevelTrash")
 				var center_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
 				new_item.position = (Vector2(check_pos) * effective_tile_size) + center_offset
 				get_parent().call_deferred("add_child", new_item)
