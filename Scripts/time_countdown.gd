@@ -1,7 +1,6 @@
 extends Label
 
-@onready var timer: Timer = $"../../Timer"
-@onready var time_countdown: Label = $"."
+@onready var timer: Timer = $"../../Time_countdown"
 
 var player
 
@@ -9,7 +8,7 @@ var player
 func _ready():
 	player = get_tree().get_first_node_in_group("Player")
 	
-	time_countdown.text = "0"
+	text = "0"
 	if not SignalBus.is_connected("switch_level", _on_level_start):
 		SignalBus.connect("switch_level", _on_level_start)
 	
@@ -37,4 +36,7 @@ func _on_level_start():
 func _on_timer_timeout():
 	# When time is up, hide the label
 	visible = false
-	player.input_enabled = true
+	if player:
+		player.input_enabled = true
+	
+	SignalBus.emit_signal("game_started")
