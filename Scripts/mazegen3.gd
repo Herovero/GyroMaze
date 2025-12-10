@@ -25,6 +25,7 @@ var directions = [Vector2i.UP, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT]
 signal done
 
 @onready var Maze = $"../maze"
+@onready var movement_tiles = $"../movement_tiles"
 
 var effective_tile_size = 16 * 9.0 
 
@@ -97,6 +98,7 @@ func start_new_level():
 	
 	generate_maze()
 	move_player_to_start()
+	spawn_movement_tiles()
 	spawn_finish()
 	spawn_holes()
 	spawn_powerups()
@@ -212,6 +214,13 @@ func move_player_to_start():
 		
 		if player.has_method("set_start_position"):
 			player.set_start_position(start_pixel_pos)
+
+func spawn_movement_tiles() -> void:
+		for x in range(map_width):
+			for y in range(map_height):
+				if Maze.get_cell_atlas_coords(Vector2(x, y)) == tile_v:
+					
+					pass #movement_tiles.set_cell(Vector2(x, y), 0, tile_v)
 
 func spawn_finish() -> void:
 	if not finish_scene: return
