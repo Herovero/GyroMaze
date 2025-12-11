@@ -5,3 +5,4 @@ Hypercasual marble maze mobile game that applies real life physics and intuitive
 Attributions:
 <a href="https://lordicon.com/">Icons by Lordicon.com</a>
 <a href="https://lordicon.com/">Icons by Lordicon.com</a>
+<a href="https://lordicon.com/">Icons by Lordicon.com</a>
