@@ -107,6 +107,7 @@ func start_new_level():
 func clear_current_level():
 	# 1. Clear the TileMap
 	Maze.clear()
+	movement_tiles.clear()
 	
 	# 2. Delete all spawned items (Holes, Powerups, Finish)
 	# We use a group name "LevelTrash" to identify them
