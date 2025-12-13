@@ -64,11 +64,14 @@ func _physics_process(delta):
 		if input_enabled == true:
 			input_direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") / 4
 
-	var force
 	if movement_tiles.get_cell_atlas_coords(movement_tiles.local_to_map(movement_tiles.to_local(global_position))) == Vector2i(0, 1):
-		force = input_direction * tilt_strength * 20
+		linear_damp = -1.0
+	elif movement_tiles.get_cell_atlas_coords(movement_tiles.local_to_map(movement_tiles.to_local(global_position))) == Vector2i(1, 1):
+		linear_damp = 4.0
 	else:
-		force = input_direction * tilt_strength
+		linear_damp = 1.0
+
+	var force = input_direction * tilt_strength
 	apply_central_force(force)
 	
 	# The easy way

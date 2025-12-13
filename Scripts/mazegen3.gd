@@ -13,9 +13,9 @@ var map_height = 25
 var path_thickness = 2
 
 # --- TILE DEFINITIONS ---
-var tile_n = Vector2i(0, 0) # Wall (Dark Blue)
-var tile_v = Vector2i(0, 1) # Floor (Light Blue)
-var tile_b = Vector2i(1, 0) # Border (Dark Brown)
+var tile_wall = Vector2i(0, 0) # Wall (Dark Blue)
+var tile_path = Vector2i(0, 1) # Floor (Light Blue)
+var tile_border = Vector2i(1, 0) # Border (Dark Brown)
 var tile_s = Vector2i(1, 1) # Solved Path (Optional)
 
 # --- INTERNAL VARIABLES ---
@@ -94,7 +94,7 @@ func start_new_level():
 	maze_pos = Vector2i(random_x, random_y)
 	
 	# Dig Start
-	dig_room(maze_pos, tile_v)
+	dig_room(maze_pos, tile_path)
 	
 	generate_maze()
 	move_player_to_start()
@@ -122,10 +122,10 @@ func fill_map_with_walls() -> void:
 			# Check if we are on the edge
 			if x == 0 or x == map_width - 1 or y == 0 or y == map_height - 1:
 				# Paint Border
-				Maze.set_cell(Vector2i(x, y), 0, tile_b)
+				Maze.set_cell(Vector2i(x, y), 0, tile_border)
 			else:
 				# Paint Inner Wall
-				Maze.set_cell(Vector2i(x, y), 0, tile_n)
+				Maze.set_cell(Vector2i(x, y), 0, tile_wall)
 
 func dig_room(center_pos: Vector2i, tile_type: Vector2i):
 	# We dig a square starting from the top-left of the current "cell"
@@ -148,7 +148,7 @@ func get_neighbors() -> Array:
 			
 		# Check if the target area is a Wall (Unvisited)
 		# We just check the top-left corner of the target room
-		if Maze.get_cell_atlas_coords(next_pos) == tile_n:
+		if Maze.get_cell_atlas_coords(next_pos) == tile_wall:
 			dlist.append(dir)
 	return dlist
 
@@ -191,7 +191,7 @@ func generate_maze() -> void:
 			for x in range(bridge_size.x):
 				for y in range(bridge_size.y):
 					var dig_pos = bridge_start + Vector2i(x, y)
-					Maze.set_cell(dig_pos, 0, tile_v)
+					Maze.set_cell(dig_pos, 0, tile_path)
 
 			# --- End Fix ---
 
@@ -218,17 +218,25 @@ func move_player_to_start():
 func spawn_movement_tiles() -> void:
 	var rand_x = randi() % map_width
 	var rand_y = randi() % map_height
-	if Maze.get_cell_atlas_coords(Vector2(rand_x, rand_y)) == tile_v:
-		pass
 	for x in range(map_width):
 		for y in range(map_height):
-			if Maze.get_cell_atlas_coords(Vector2(x, y)) == tile_v:
+			if Maze.get_cell_atlas_coords(Vector2(x, y)) == tile_path:
 				var chance = randi() % 19
 				if chance < 1:
-					movement_tiles.set_cell(Vector2(x, y), 0, tile_v)
+					movement_tiles.set_cell(Vector2(x, y), 0, tile_path)
+				elif chance > 17:
+					movement_tiles.set_cell(Vector2(x, y), 0, tile_s)
 				else:
-					movement_tiles.set_cell(Vector2(x, y), 0, tile_n)
-					#movement_tiles.set_cell(Vector2(x, y), 0, tile_v)
+					movement_tiles.set_cell(Vector2(x, y), 0, tile_wall)
+					#movement_tiles.set_cell(Vector2(x, y), 0, tile_path)
+			if Maze.get_cell_atlas_coords(Vector2(x, y)) == tile_path:
+				var chance = randi() % 19
+				if chance < 1:
+					movement_tiles.set_cell(Vector2(x, y), 0, tile_path)
+				elif chance > 17:
+					movement_tiles.set_cell(Vector2(x, y), 0, tile_s)
+				else:
+					movement_tiles.set_cell(Vector2(x, y), 0, tile_wall)
 
 func spawn_finish() -> void:
 	if not finish_scene: return
@@ -245,7 +253,7 @@ func spawn_finish() -> void:
 		var check_pos = Vector2i(rand_x, rand_y)
 		
 		# 2. Check if Floor
-		if Maze.get_cell_atlas_coords(check_pos) == tile_v:
+		if Maze.get_cell_atlas_coords(check_pos) == tile_path:
 			
 			# 3. DISTANCE CHECK (The Important Part)
 			# Calculate distance from Player Start (maze_pos)
@@ -311,7 +319,7 @@ func spawn_holes() -> void:
 		var check_pos = Vector2i(tile_x + center_offset, tile_y + center_offset)
 
 		# 4. Check if it's Floor (It should be, but good to verify)
-		if Maze.get_cell_atlas_coords(check_pos) != tile_v:
+		if Maze.get_cell_atlas_coords(check_pos) != tile_path:
 			continue
 			
 		# Avoid spawning too close to player start
@@ -390,7 +398,7 @@ func spawn_powerups() -> void:
 		var rand_y = randi() % map_height
 		var check_pos = Vector2i(rand_x, rand_y)
 		
-		if Maze.get_cell_atlas_coords(check_pos) == tile_v:
+		if Maze.get_cell_atlas_coords(check_pos) == tile_path:
 			# Distance check with player and finish point
 			if Vector2(check_pos).distance_to(Vector2(maze_pos)) < 5: continue
 			if Vector2(check_pos).distance_to(Vector2(finish_grid_pos)) < 5: continue
@@ -446,7 +454,7 @@ func spawn_timers() -> void:
 		var rand_y = randi() % map_height
 		var check_pos = Vector2i(rand_x, rand_y)
 		
-		if Maze.get_cell_atlas_coords(check_pos) == tile_v:
+		if Maze.get_cell_atlas_coords(check_pos) == tile_path:
 			# 1. Distance Checks
 			if Vector2(check_pos).distance_to(Vector2(maze_pos)) < 5: continue
 			if Vector2(check_pos).distance_to(Vector2(finish_grid_pos)) < 5: continue

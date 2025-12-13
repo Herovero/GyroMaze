@@ -2,8 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://bwtlejdt7cws6" path="res://Scenes/maze_test2.tscn" id="1_21xkr"]
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="1_bo1nx"]
-[ext_resource type="Texture2D" uid="uid://dfn3jthowtual" path="res://Assets/maze_tileset.png" id="1_k12tt"]
 [ext_resource type="Script" uid="uid://74qm3demslqu" path="res://Scripts/mazegen3.gd" id="2_6bp64"]
+[ext_resource type="Texture2D" uid="uid://brfgmalflxw5p" path="res://Assets/movement_tileset.png" id="2_h1bgf"]
 [ext_resource type="PackedScene" uid="uid://bgg64hwixo074" path="res://Scenes/pause_button.tscn" id="3_8gbba"]
 [ext_resource type="PackedScene" uid="uid://dfwo610ckgcq5" path="res://Scenes/hole.tscn" id="3_344ge"]
 [ext_resource type="Texture2D" uid="uid://b7ck8twawfxri" path="res://Assets/uis/restart_button.png" id="6_ynf5e"]
@@ -18,12 +18,13 @@
 [ext_resource type="PackedScene" uid="uid://dvrl07d5fk8k7" path="res://Scenes/collectible_timer.tscn" id="15_wsu2k"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h1bgf"]
-texture = ExtResource("1_k12tt")
+texture = ExtResource("2_h1bgf")
 0:0/0 = 0
 1:0/0 = 0
 0:1/0 = 0
 0:1/0/z_index = 2
 1:1/0 = 0
+1:1/0/z_index = 2
 
 [sub_resource type="TileSet" id="TileSet_b3802"]
 sources/0 = SubResource("TileSetAtlasSource_h1bgf")
