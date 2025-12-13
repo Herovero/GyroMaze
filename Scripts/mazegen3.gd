@@ -349,50 +349,69 @@ func spawn_wall_swaps(type: Vector2i, count: int, min_size: int, max_size: int):
 func spawn_finish() -> void:
 	if not finish_scene: return
 	
-	var attempts = 0
-	var spawned = false
+	# 1. Use math to find the absolute furthest tile
+	var best_pos = get_furthest_point(maze_pos)
 	
-	while not spawned and attempts < 2000:
-		attempts += 1
-		
-		# 1. Pick random spot
-		var rand_x = randi() % map_width
-		var rand_y = randi() % map_height
-		var check_pos = Vector2i(rand_x, rand_y)
-		
-		# 2. Check if Floor
-		if Maze.get_cell_atlas_coords(check_pos) == tile_path:
-			
-			# 3. DISTANCE CHECK (The Important Part)
-			# Calculate distance from Player Start (maze_pos)
-			# We want it to be at least 50% across the map
-			var dist = Vector2(check_pos).distance_to(Vector2(maze_pos))
-			
-			# Minimum distance required (e.g., half the map width)
-			var min_dist = map_width / 2
-			
-			if dist > min_dist:
-				# --- VALID SPOT FOUND ---
-				var new_finish = finish_scene.instantiate()
-				new_finish.z_index = 4
-				
-				new_finish.add_to_group("LevelTrash")
-				
-				# Position it
-				var center_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
-				new_finish.position = (Vector2(check_pos) * effective_tile_size) + center_offset
-				
-				# Randomize Size (Optional)
-				# new_finish.scale = Vector2(path_thickness, path_thickness) * 0.8
-				
-				get_parent().call_deferred("add_child", new_finish)
-				
-				# Save position so holes avoid it
-				finish_grid_pos = check_pos
-				spawned = true
+	# 2. Spawn the Finish Line there
+	var new_finish = finish_scene.instantiate()
+	new_finish.z_index = 4
+	new_finish.add_to_group("LevelTrash")
+	
+	# Position it (Center of tile)
+	var center_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
+	new_finish.position = (Vector2(best_pos) * effective_tile_size) + center_offset
+	
+	get_parent().call_deferred("add_child", new_finish)
+	
+	# 3. Save position
+	finish_grid_pos = best_pos
+	
+	# Mark as occupied so holes/items don't spawn on top of it
+	occupied_tiles.append(best_pos)
 
-	if not spawned:
-		print("Warning: Could not find a far enough spot for Finish line!")
+func get_furthest_point(start_pos: Vector2i) -> Vector2i:
+	# Standard Breadth-First Search (BFS)
+	var queue: Array = []
+	var visited = {} # Keeps track of where we have been
+	
+	# Start at the player's position
+	queue.push_back({ "pos": start_pos, "dist": 0 })
+	visited[start_pos] = true
+	
+	var max_dist = -1
+	var furthest_tile = start_pos
+	
+	var neighbors = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
+	
+	while not queue.is_empty():
+		var current = queue.pop_front()
+		var current_pos = current["pos"]
+		var current_dist = current["dist"]
+		
+		# Keep track of the furthest one we've seen so far
+		if current_dist > max_dist:
+			max_dist = current_dist
+			furthest_tile = current_pos
+		
+		# Check all 4 directions
+		for dir in neighbors:
+			var next_pos = current_pos + dir
+			
+			# 1. Check if we already visited this tile
+			if visited.has(next_pos):
+				continue
+			
+			# 2. Check bounds (Optional, but safe)
+			if next_pos.x <= 0 or next_pos.x >= map_width - 1 or next_pos.y <= 0 or next_pos.y >= map_height - 1:
+				continue
+				
+			# 3. CRITICAL: Is it a walkable Floor?
+			if Maze.get_cell_atlas_coords(next_pos) == tile_path:
+				visited[next_pos] = true
+				queue.push_back({ "pos": next_pos, "dist": current_dist + 1 })
+	
+	print("Found furthest point at distance: ", max_dist)
+	return furthest_tile
 
 func spawn_holes() -> void:
 	if not hole_scene:
