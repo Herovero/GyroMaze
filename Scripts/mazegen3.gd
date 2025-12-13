@@ -516,7 +516,7 @@ func spawn_powerups() -> void:
 			var too_close_to_hole = false
 			for hole_pos in hole_positions:
 				# Use a safe distance (e.g. 2 or 3 tiles)
-				if Vector2(check_pos).distance_to(Vector2(hole_pos)) < 1:
+				if Vector2(check_pos).distance_to(Vector2(hole_pos)) < 3:
 					too_close_to_hole = true
 					break
 			
@@ -547,12 +547,15 @@ func spawn_powerups() -> void:
 				new_item.position = (Vector2(check_pos) * effective_tile_size) + center_offset
 				get_parent().call_deferred("add_child", new_item)
 				
+				powerup_positions.append(check_pos)
+				#occupied_tiles.append(check_pos)    # If using the shared list method
+				
 				spawned_count += 1
 
 func spawn_coins() -> void:
 	if not coin_scene: return
 	
-	var coins_to_spawn = randi_range(5, 8) # Spawn between 5 and 8 coins
+	var coins_to_spawn = randi_range(5, 15) # Spawn between 5 and 8 coins
 	var spawned_count = 0
 	var attempts = 0
 	var coin_positions: Array[Vector2i] = [] 
