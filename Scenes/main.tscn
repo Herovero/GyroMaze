@@ -1,10 +1,9 @@
-[gd_scene load_steps=64 format=3 uid="uid://cpv02exs4ywq1"]
+[gd_scene load_steps=65 format=3 uid="uid://cpv02exs4ywq1"]
 
 [ext_resource type="PackedScene" uid="uid://bwtlejdt7cws6" path="res://Scenes/maze_test2.tscn" id="1_21xkr"]
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="1_bo1nx"]
 [ext_resource type="Script" uid="uid://74qm3demslqu" path="res://Scripts/mazegen3.gd" id="2_6bp64"]
 [ext_resource type="Texture2D" uid="uid://brfgmalflxw5p" path="res://Assets/movement_tileset.png" id="2_h1bgf"]
-[ext_resource type="PackedScene" uid="uid://bgg64hwixo074" path="res://Scenes/pause_button.tscn" id="3_8gbba"]
 [ext_resource type="PackedScene" uid="uid://dfwo610ckgcq5" path="res://Scenes/hole.tscn" id="3_344ge"]
 [ext_resource type="Texture2D" uid="uid://b7ck8twawfxri" path="res://Assets/uis/restart_button.png" id="6_ynf5e"]
 [ext_resource type="Script" uid="uid://qdaco07pmcty" path="res://Scripts/time_countdown.gd" id="7_6bp64"]
@@ -16,6 +15,8 @@
 [ext_resource type="PackedScene" uid="uid://bi5snb0ma00j1" path="res://Scenes/powerup_wing.tscn" id="12_6iyac"]
 [ext_resource type="Script" uid="uid://dcaxkqiax2bvs" path="res://Scripts/time_remaining.gd" id="12_jkdf5"]
 [ext_resource type="Texture2D" uid="uid://xkokujeiydnq" path="res://Assets/collectibles/coin/_a_frm0,20.png" id="14_1semv"]
+[ext_resource type="Texture2D" uid="uid://bn1oxggt6psjy" path="res://Assets/uis/zoomout_button.png" id="14_2060n"]
+[ext_resource type="Script" uid="uid://dhrbn6ld6asi0" path="res://Scripts/zoomout_button.gd" id="15_6ml46"]
 [ext_resource type="Texture2D" uid="uid://cvlajfaagomyc" path="res://Assets/collectibles/coin/_a_frm1,30.png" id="15_2060n"]
 [ext_resource type="PackedScene" uid="uid://dvrl07d5fk8k7" path="res://Scenes/collectible_timer.tscn" id="15_wsu2k"]
 [ext_resource type="Texture2D" uid="uid://rya0irr53ih7" path="res://Assets/collectibles/coin/_a_frm2,20.png" id="16_6ml46"]
@@ -235,25 +236,12 @@ finish_scene = ExtResource("10_hptm8")
 z_index = 2
 gravity_scale = 0.0
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="OverviewCam" type="Camera2D" parent="." groups=["OverviewCam"]]
 position = Vector2(-624, 0)
 scale = Vector2(2, 2)
 anchor_mode = 0
+enabled = false
 zoom = Vector2(0.3, 0.3)
-
-[node name="Control" parent="Camera2D" instance=ExtResource("3_8gbba")]
-visible = false
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = -1560.0
-offset_top = -709.5
-offset_right = -1560.0
-offset_bottom = -709.5
-grow_horizontal = 1
-grow_vertical = 1
-metadata/_edit_group_ = true
-metadata/_edit_use_anchors_ = true
 
 [node name="Time_remaining" type="Timer" parent="."]
 wait_time = 180.0
@@ -292,10 +280,16 @@ scale = Vector2(0.8, 0.8)
 
 [node name="ResetButton" type="TouchScreenButton" parent="InGameUIs"]
 z_index = 5
-position = Vector2(2194, 33)
+position = Vector2(2178, 33)
 scale = Vector2(0.3, 0.3)
 texture_normal = ExtResource("6_ynf5e")
 action = "ui_accept"
+
+[node name="ZoomOutButton" type="TouchScreenButton" parent="InGameUIs"]
+position = Vector2(1976, 48.00006)
+scale = Vector2(0.3, 0.3)
+texture_normal = ExtResource("14_2060n")
+script = ExtResource("15_6ml46")
 
 [node name="coin_HUD" type="AnimatedSprite2D" parent="InGameUIs"]
 position = Vector2(73.99999, 894.99994)
@@ -353,5 +347,6 @@ script = ExtResource("59_2060n")
 [connection signal="released" from="InGameUIs/powerup_slot1" to="Player" method="_on_powerup_slot_1_released"]
 [connection signal="released" from="InGameUIs/powerup_slot2" to="Player" method="_on_powerup_slot_2_released"]
 [connection signal="released" from="InGameUIs/powerup_slot3" to="Player" method="_on_powerup_slot_3_released"]
+[connection signal="released" from="InGameUIs/ZoomOutButton" to="InGameUIs/ZoomOutButton" method="_on_released"]
 
 [editable path="InGameUIs/powerup_slot1"]
