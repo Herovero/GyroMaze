@@ -27,7 +27,7 @@ var inventory = ["none", "none", "none"]
 					 ]
 
 @onready var maze: TileMapLayer = $"../maze"
-@onready var movement_tiles: TileMapLayer = $"../movement_tiles"
+@onready var hazard_tiles: TileMapLayer = $"../hazard_tiles"
 
 # Power up activations
 var ghost_charges = 0
@@ -64,9 +64,9 @@ func _physics_process(delta):
 		if input_enabled == true:
 			input_direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") / 4
 
-	if movement_tiles.get_cell_atlas_coords(movement_tiles.local_to_map(movement_tiles.to_local(global_position))) == Vector2i(0, 1):
+	if hazard_tiles.get_cell_atlas_coords(hazard_tiles.local_to_map(hazard_tiles.to_local(global_position))) == Vector2i(0, 1):
 		linear_damp = -1.0
-	elif movement_tiles.get_cell_atlas_coords(movement_tiles.local_to_map(movement_tiles.to_local(global_position))) == Vector2i(1, 1):
+	elif hazard_tiles.get_cell_atlas_coords(hazard_tiles.local_to_map(hazard_tiles.to_local(global_position))) == Vector2i(1, 1):
 		linear_damp = 4.0
 	else:
 		linear_damp = 1.0

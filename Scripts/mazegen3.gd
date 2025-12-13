@@ -25,7 +25,7 @@ var directions = [Vector2i.UP, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT]
 signal done
 
 @onready var Maze = $"../maze"
-@onready var movement_tiles = $"../movement_tiles"
+@onready var hazard_tiles = $"../hazard_tiles"
 
 var effective_tile_size = 16 * 9.0 
 
@@ -98,7 +98,7 @@ func start_new_level():
 	
 	generate_maze()
 	move_player_to_start()
-	spawn_movement_tiles()
+	spawn_hazard_tiles()
 	spawn_finish()
 	spawn_holes()
 	spawn_powerups()
@@ -107,7 +107,7 @@ func start_new_level():
 func clear_current_level():
 	# 1. Clear the TileMap
 	Maze.clear()
-	movement_tiles.clear()
+	hazard_tiles.clear()
 	
 	# 2. Delete all spawned items (Holes, Powerups, Finish)
 	# We use a group name "LevelTrash" to identify them
@@ -216,7 +216,7 @@ func move_player_to_start():
 		if player.has_method("set_start_position"):
 			player.set_start_position(start_pixel_pos)
 
-func spawn_movement_tiles() -> void:
+"""func spawn_hazard_tiles() -> void:
 	var rand_x = randi() % map_width
 	var rand_y = randi() % map_height
 	for x in range(map_width):
@@ -224,20 +224,85 @@ func spawn_movement_tiles() -> void:
 			if Maze.get_cell_atlas_coords(Vector2(x, y)) == tile_path:
 				var chance = randi() % 19
 				if chance < 1:
-					movement_tiles.set_cell(Vector2(x, y), 0, tile_path)
+					hazard_tiles.set_cell(Vector2(x, y), 0, tile_path)
 				elif chance > 17:
-					movement_tiles.set_cell(Vector2(x, y), 0, tile_s)
+					hazard_tiles.set_cell(Vector2(x, y), 0, tile_s)
 				else:
-					movement_tiles.set_cell(Vector2(x, y), 0, tile_wall)
-					#movement_tiles.set_cell(Vector2(x, y), 0, tile_path)
+					hazard_tiles.set_cell(Vector2(x, y), 0, tile_wall)
+					#hazard_tiles.set_cell(Vector2(x, y), 0, tile_path)
 			if Maze.get_cell_atlas_coords(Vector2(x, y)) == tile_path:
 				var chance = randi() % 19
 				if chance < 1:
-					movement_tiles.set_cell(Vector2(x, y), 0, tile_path)
+					hazard_tiles.set_cell(Vector2(x, y), 0, tile_path)
 				elif chance > 17:
-					movement_tiles.set_cell(Vector2(x, y), 0, tile_s)
+					hazard_tiles.set_cell(Vector2(x, y), 0, tile_s)
 				else:
-					movement_tiles.set_cell(Vector2(x, y), 0, tile_wall)
+					hazard_tiles.set_cell(Vector2(x, y), 0, tile_wall)"""
+
+func spawn_hazard_tiles() -> void:
+	hazard_tiles.clear()
+	
+	# 1. Spawn ICY Patches (Fast) - tile_path (0,1)
+	# We spawn 6 patches, each between 5 and 12 tiles big
+	spawn_patch(tile_path, 6, 5, 12)
+	
+	# 2. Spawn STICKY Patches (Slow) - tile_s (1,1)
+	# We spawn 4 patches, slightly smaller
+	spawn_patch(tile_s, 4, 3, 8)
+	
+	# Note: Any tile we don't paint remains "Empty" (-1, -1).
+	# Your player.gd correctly treats "Empty" as Normal Floor (Damp 1.0),
+	# so we don't need to manually paint Normal tiles anymore!
+
+# --- NEW HELPER FUNCTION ---
+func spawn_patch(type: Vector2i, count: int, min_size: int, max_size: int):
+	var spawned = 0
+	var attempts = 0
+	
+	while spawned < count and attempts < 2000:
+		attempts += 1
+		
+		# 1. Pick a random seed location
+		var rand_x = randi() % map_width
+		var rand_y = randi() % map_height
+		var start_pos = Vector2i(rand_x, rand_y)
+		
+		# 2. Validate: Must be a Floor in the MAIN maze
+		if Maze.get_cell_atlas_coords(start_pos) != tile_path:
+			continue
+		
+		# 3. Validate: Don't overwrite existing modifiers (avoid stacking Ice on Sticky)
+		if hazard_tiles.get_cell_source_id(start_pos) != -1:
+			continue
+			
+		# --- START GROWING THE PATCH ---
+		var patch_size = randi_range(min_size, max_size)
+		var current_patch = [start_pos] # List of tiles in this group
+		
+		# Paint the first one
+		hazard_tiles.set_cell(start_pos, 0, type)
+		
+		var growth_attempts = 0
+		while current_patch.size() < patch_size and growth_attempts < 50:
+			growth_attempts += 1
+			
+			# Pick a random tile from our current patch to grow from
+			# (This creates organic, blob-like shapes)
+			var grow_from = current_patch.pick_random()
+			
+			# Try a random direction
+			var neighbors = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
+			var dir = neighbors.pick_random()
+			var next_pos = grow_from + dir
+			
+			# Check if valid floor and not already painted
+			if Maze.get_cell_atlas_coords(next_pos) == tile_path:
+				if hazard_tiles.get_cell_source_id(next_pos) == -1:
+					# Paint it!
+					hazard_tiles.set_cell(next_pos, 0, type)
+					current_patch.append(next_pos)
+		
+		spawned += 1
 
 func spawn_finish() -> void:
 	if not finish_scene: return
@@ -359,7 +424,7 @@ func spawn_holes() -> void:
 		
 		# Randomize size (keep it slightly smaller than path_thickness to avoid clipping)
 		var max_safe_scale = path_thickness * 0.8 # 80% of the path width
-		var random_scale = randf_range(0.5, max_safe_scale)
+		var random_scale = randf_range(0.7, max_safe_scale)
 		new_hole.scale = Vector2(random_scale, random_scale)
 		
 		# --- 3. Calculate "Wiggle Room" ---

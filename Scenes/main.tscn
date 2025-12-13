@@ -14,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://cy81f3sgiqhtq" path="res://Scenes/powerup_slot.tscn" id="10_jkdf5"]
 [ext_resource type="PackedScene" uid="uid://ggicmeg7fv1h" path="res://Scenes/powerup_ghost.tscn" id="11_d1ilt"]
 [ext_resource type="PackedScene" uid="uid://bi5snb0ma00j1" path="res://Scenes/powerup_wing.tscn" id="12_6iyac"]
-[ext_resource type="Script" path="res://Scripts/time_remaining.gd" id="12_jkdf5"]
+[ext_resource type="Script" uid="uid://dcaxkqiax2bvs" path="res://Scripts/time_remaining.gd" id="12_jkdf5"]
 [ext_resource type="PackedScene" uid="uid://dvrl07d5fk8k7" path="res://Scenes/collectible_timer.tscn" id="15_wsu2k"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h1bgf"]
@@ -31,7 +31,7 @@ sources/0 = SubResource("TileSetAtlasSource_h1bgf")
 
 [node name="Node2D" type="Node2D"]
 
-[node name="movement_tiles" type="TileMapLayer" parent="."]
+[node name="hazard_tiles" type="TileMapLayer" parent="."]
 scale = Vector2(9, 9)
 tile_set = SubResource("TileSet_b3802")
 
@@ -47,7 +47,7 @@ timer_scene = ExtResource("15_wsu2k")
 finish_scene = ExtResource("10_hptm8")
 
 [node name="Player" parent="." instance=ExtResource("1_bo1nx")]
-z_index = 1
+z_index = 2
 gravity_scale = 0.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
