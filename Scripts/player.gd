@@ -32,9 +32,11 @@ var inventory = ["none", "none", "none"]
 # Power up activations
 var ghost_charges = 0
 var was_inside_wall: bool = false
-
 var wing_timer = 0.0
 var is_flying: bool = false
+
+# hazard
+var hazard_fiery = Vector2i(1, 0)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -168,6 +170,35 @@ func _integrate_forces(state):
 		new_transform.x = Vector2(1, 0) # X axis points Right
 		new_transform.y = Vector2(0, 1) # Y axis points Down
 		state.transform = new_transform
+	
+	# iterate through all current contacts using the 'state' object
+	for i in range(state.get_contact_count()):
+		# Get the object we hit
+		var body = state.get_contact_collider_object(i)
+		
+		# Check if we hit the Hazard TileMapLayer
+		if body == hazard_tiles:
+			print("hit hazard?")
+			# Get the collision normal (direction of the wall face)
+			var normal = state.get_contact_local_normal(i)
+			# Get the collision point
+			var contact_pos = state.get_contact_local_position(i)
+			
+			# Nudge the point slightly "into" the wall to grab the correct tile coordinate
+			# We subtract the normal to go 'in'
+			var check_pos = contact_pos - (normal * 5.0)
+			
+			# Convert global/local pixel pos to Grid Coordinates
+			var local_check_pos = hazard_tiles.to_local(check_pos)
+			var map_pos = hazard_tiles.local_to_map(local_check_pos)
+			
+			# Check if the tile is Fire
+			if hazard_tiles.get_cell_atlas_coords(map_pos) == hazard_fiery:
+				# We can't call 'die()' directly inside integrate_forces safely sometimes,
+				# so we defer it or set a flag. Since reset_position() just sets a flag, it is safe!
+				print("Burned!")
+				reset_position()
+				break # Stop checking other contacts if we are dead
 
 func collect_powerup(powerup_type: String):
 	# Logic: Find the first empty slot. If full, replace the last one.

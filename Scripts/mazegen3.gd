@@ -40,6 +40,7 @@ var hole_positions: Array[Vector2i] = []
 @export var wing_scene: PackedScene
 
 @export var timer_scene: PackedScene
+@export var coin_scene: PackedScene
 
 @export var finish_scene: PackedScene
 var finish_grid_pos = Vector2i.ZERO
@@ -105,6 +106,7 @@ func start_new_level():
 	spawn_holes()
 	spawn_hazard_tiles()
 	spawn_hazard_walls()
+	spawn_coins()
 	spawn_powerups()
 	spawn_timers()
 
@@ -546,6 +548,58 @@ func spawn_powerups() -> void:
 				get_parent().call_deferred("add_child", new_item)
 				
 				spawned_count += 1
+
+func spawn_coins() -> void:
+	if not coin_scene: return
+	
+	var coins_to_spawn = randi_range(5, 8) # Spawn between 5 and 8 coins
+	var spawned_count = 0
+	var attempts = 0
+	var coin_positions: Array[Vector2i] = [] 
+	
+	while spawned_count < coins_to_spawn and attempts < 2000:
+		attempts += 1
+		
+		var rand_x = randi() % map_width
+		var rand_y = randi() % map_height
+		var check_pos = Vector2i(rand_x, rand_y)
+		
+		# 1. Must be Floor
+		if Maze.get_cell_atlas_coords(check_pos) == tile_path:
+			
+			# 2. Avoid Start & Finish
+			if Vector2(check_pos).distance_to(Vector2(maze_pos)) < 3: continue
+			if Vector2(check_pos).distance_to(Vector2(finish_grid_pos)) < 3: continue
+			
+			# 3. Avoid Holes
+			var safe = true
+			for hole in hole_positions:
+				if Vector2(check_pos).distance_to(Vector2(hole)) < 2:
+					safe = false
+					break
+			if not safe: continue
+			
+			# 4. Avoid stacking on other Coins
+			for c_pos in coin_positions:
+				if c_pos == check_pos:
+					safe = false
+					break
+			if not safe: continue
+
+			# --- SPAWN ---
+			var new_coin = coin_scene.instantiate()
+			new_coin.z_index = 2 # Draw above floor, below player
+			
+			# IMPORTANT: Tag for cleanup!
+			new_coin.add_to_group("LevelTrash")
+			
+			var center_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
+			new_coin.position = (Vector2(check_pos) * effective_tile_size) + center_offset
+			
+			get_parent().call_deferred("add_child", new_coin)
+			
+			coin_positions.append(check_pos)
+			spawned_count += 1
 
 func spawn_timers() -> void:
 	if not timer_scene: return

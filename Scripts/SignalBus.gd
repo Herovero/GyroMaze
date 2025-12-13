@@ -9,3 +9,7 @@ signal game_started
 # Timer signals
 @warning_ignore("unused_signal")
 signal add_time(amount)
+
+# Coin signals
+@warning_ignore("unused_signal")
+signal collect_coin

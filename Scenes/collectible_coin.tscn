@@ -1,0 +1,191 @@
+[gd_scene load_steps=45 format=3 uid="uid://nomhjmxskkv0"]
+
+[ext_resource type="Texture2D" uid="uid://xkokujeiydnq" path="res://Assets/collectibles/coin/_a_frm0,20.png" id="1_q0sck"]
+[ext_resource type="Script" uid="uid://6e246glq4l3d" path="res://Scripts/collectible_coin.gd" id="1_ugn34"]
+[ext_resource type="Texture2D" uid="uid://cvlajfaagomyc" path="res://Assets/collectibles/coin/_a_frm1,30.png" id="2_ugn34"]
+[ext_resource type="Texture2D" uid="uid://rya0irr53ih7" path="res://Assets/collectibles/coin/_a_frm2,20.png" id="3_6qq8u"]
+[ext_resource type="Texture2D" uid="uid://dsdd388fnyq31" path="res://Assets/collectibles/coin/_a_frm3,30.png" id="4_wfhba"]
+[ext_resource type="Texture2D" uid="uid://bepty23sr6hle" path="res://Assets/collectibles/coin/_a_frm4,20.png" id="5_umbjp"]
+[ext_resource type="Texture2D" uid="uid://vmxdgg0icm5r" path="res://Assets/collectibles/coin/_a_frm5,30.png" id="6_27n4f"]
+[ext_resource type="Texture2D" uid="uid://bc2qisomgv1be" path="res://Assets/collectibles/coin/_a_frm6,20.png" id="7_ckwwv"]
+[ext_resource type="Texture2D" uid="uid://ddeyl4q0ruo4p" path="res://Assets/collectibles/coin/_a_frm7,30.png" id="8_lthc5"]
+[ext_resource type="Texture2D" uid="uid://7onutkxr64uq" path="res://Assets/collectibles/coin/_a_frm8,20.png" id="9_jchph"]
+[ext_resource type="Texture2D" uid="uid://dya22nxpcro6u" path="res://Assets/collectibles/coin/_a_frm9,30.png" id="10_2862b"]
+[ext_resource type="Texture2D" uid="uid://d53rrr78tbc0" path="res://Assets/collectibles/coin/_a_frm10,20.png" id="11_mnnkb"]
+[ext_resource type="Texture2D" uid="uid://l6pliu8tr6xe" path="res://Assets/collectibles/coin/_a_frm11,30.png" id="12_x80sm"]
+[ext_resource type="Texture2D" uid="uid://d3agjatng87k1" path="res://Assets/collectibles/coin/_a_frm12,20.png" id="13_hjanx"]
+[ext_resource type="Texture2D" uid="uid://0dpve0m3owqi" path="res://Assets/collectibles/coin/_a_frm13,30.png" id="14_u7h1i"]
+[ext_resource type="Texture2D" uid="uid://602en0ojyowt" path="res://Assets/collectibles/coin/_a_frm14,20.png" id="15_5u65j"]
+[ext_resource type="Texture2D" uid="uid://p62bx3i1c1xf" path="res://Assets/collectibles/coin/_a_frm15,30.png" id="16_bn21w"]
+[ext_resource type="Texture2D" uid="uid://bi4j638oemnml" path="res://Assets/collectibles/coin/_a_frm16,20.png" id="17_rnng1"]
+[ext_resource type="Texture2D" uid="uid://ckpr1t2m5vr8h" path="res://Assets/collectibles/coin/_a_frm17,30.png" id="18_cgu3e"]
+[ext_resource type="Texture2D" uid="uid://bpqiifkyh0vsh" path="res://Assets/collectibles/coin/_a_frm18,20.png" id="19_gcpb0"]
+[ext_resource type="Texture2D" uid="uid://ptslvcr3maqd" path="res://Assets/collectibles/coin/_a_frm19,30.png" id="20_sjgp5"]
+[ext_resource type="Texture2D" uid="uid://dyv4ppa40vf1s" path="res://Assets/collectibles/coin/_a_frm20,20.png" id="21_mvncb"]
+[ext_resource type="Texture2D" uid="uid://cxjgyashj3i1x" path="res://Assets/collectibles/coin/_a_frm21,30.png" id="22_tf1jr"]
+[ext_resource type="Texture2D" uid="uid://byr7pfbi0ew20" path="res://Assets/collectibles/coin/_a_frm22,20.png" id="23_51hie"]
+[ext_resource type="Texture2D" uid="uid://bhltkujkpkwhw" path="res://Assets/collectibles/coin/_a_frm23,30.png" id="24_xtw7v"]
+[ext_resource type="Texture2D" uid="uid://b64fgeeepw08a" path="res://Assets/collectibles/coin/_a_frm24,20.png" id="25_he5qp"]
+[ext_resource type="Texture2D" uid="uid://camkmc350vjue" path="res://Assets/collectibles/coin/_a_frm25,30.png" id="26_4k1wo"]
+[ext_resource type="Texture2D" uid="uid://o2yw6uanqmm4" path="res://Assets/collectibles/coin/_a_frm26,20.png" id="27_4pt2o"]
+[ext_resource type="Texture2D" uid="uid://c2chiyo3fqdm7" path="res://Assets/collectibles/coin/_a_frm27,30.png" id="28_stisc"]
+[ext_resource type="Texture2D" uid="uid://ccjp1yqdoyqxu" path="res://Assets/collectibles/coin/_a_frm28,20.png" id="29_arl6b"]
+[ext_resource type="Texture2D" uid="uid://b8f4ex1r32luo" path="res://Assets/collectibles/coin/_a_frm29,30.png" id="30_sld4w"]
+[ext_resource type="Texture2D" uid="uid://cq3w2n643fhbx" path="res://Assets/collectibles/coin/_a_frm30,20.png" id="31_b1wwb"]
+[ext_resource type="Texture2D" uid="uid://dyh31hyu4qp2p" path="res://Assets/collectibles/coin/_a_frm31,30.png" id="32_13kj4"]
+[ext_resource type="Texture2D" uid="uid://dvugm5ttg2r1f" path="res://Assets/collectibles/coin/_a_frm32,20.png" id="33_r4d4c"]
+[ext_resource type="Texture2D" uid="uid://bhmsfbmes6gn4" path="res://Assets/collectibles/coin/_a_frm33,30.png" id="34_upcjp"]
+[ext_resource type="Texture2D" uid="uid://cd14485lpw05a" path="res://Assets/collectibles/coin/_a_frm34,20.png" id="35_v2hlr"]
+[ext_resource type="Texture2D" uid="uid://csay1otsg83lx" path="res://Assets/collectibles/coin/_a_frm35,30.png" id="36_56uwo"]
+[ext_resource type="Texture2D" uid="uid://b80a3nbd3rdtp" path="res://Assets/collectibles/coin/_a_frm36,20.png" id="37_glyao"]
+[ext_resource type="Texture2D" uid="uid://c2rvacpkxkmtx" path="res://Assets/collectibles/coin/_a_frm37,30.png" id="38_s5py6"]
+[ext_resource type="Texture2D" uid="uid://crhjk5qng30q7" path="res://Assets/collectibles/coin/_a_frm38,20.png" id="39_85424"]
+[ext_resource type="Texture2D" uid="uid://dufiq0q5egkco" path="res://Assets/collectibles/coin/_a_frm39,30.png" id="40_f24xp"]
+[ext_resource type="Texture2D" uid="uid://cigbjqfv5vbfa" path="res://Assets/collectibles/coin/_a_frm40,20.png" id="41_vjldi"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qika4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_q0sck")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_ugn34")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_6qq8u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_wfhba")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_umbjp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_27n4f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ckwwv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_lthc5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_jchph")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_2862b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_mnnkb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_x80sm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_hjanx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_u7h1i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_5u65j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_bn21w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_rnng1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_cgu3e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_gcpb0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_sjgp5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_mvncb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_tf1jr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_51hie")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_xtw7v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_he5qp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_4k1wo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_4pt2o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_stisc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_arl6b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_sld4w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_b1wwb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_13kj4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_r4d4c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_upcjp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_v2hlr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_56uwo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_glyao")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_s5py6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_85424")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_f24xp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_vjldi")
+}],
+"loop": true,
+"name": &"default",
+"speed": 40.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lfugp"]
+radius = 32.0
+
+[node name="collectible_coin" type="Area2D"]
+script = ExtResource("1_ugn34")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+sprite_frames = SubResource("SpriteFrames_qika4")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_lfugp")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
