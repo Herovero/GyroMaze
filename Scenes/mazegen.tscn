@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=4 uid="uid://mmk2abrdacp4"]
 
-[ext_resource type="Script" uid="uid://b765pdxo1vuux" path="res://Scripts/mazegen.gd" id="1_865ao"]
+[ext_resource type="Script" uid="uid://b765pdxo1vuux" path="res://Scripts/mazegenold.gd" id="1_865ao"]
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="1_va5te"]
 [ext_resource type="Texture2D" uid="uid://dfn3jthowtual" path="res://Assets/maze_tileset.png" id="3_xhkjr"]
-[ext_resource type="Script" uid="uid://5gqokti5wb5o" path="res://Scripts/mazegen2.gd" id="4_xhkjr"]
+[ext_resource type="Script" uid="uid://5gqokti5wb5o" path="res://Scripts/mazegen2old.gd" id="4_xhkjr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_iapd4"]
 texture = ExtResource("3_xhkjr")

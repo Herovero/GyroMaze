@@ -266,6 +266,7 @@ func spawn_finish() -> void:
 			if dist > min_dist:
 				# --- VALID SPOT FOUND ---
 				var new_finish = finish_scene.instantiate()
+				new_finish.z_index = 4
 				
 				new_finish.add_to_group("LevelTrash")
 				
@@ -340,6 +341,7 @@ func spawn_holes() -> void:
 			continue
 
 		var new_hole = hole_scene.instantiate()
+		new_hole.z_index = 2
 		
 		new_hole.add_to_group("LevelTrash")
 
@@ -432,6 +434,7 @@ func spawn_powerups() -> void:
 			
 			if item_scene:
 				var new_item = item_scene.instantiate()
+				new_item.z_index = 3
 				new_item.add_to_group("LevelTrash")
 				var center_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
 				new_item.position = (Vector2(check_pos) * effective_tile_size) + center_offset
@@ -477,6 +480,7 @@ func spawn_timers() -> void:
 
 			# --- SPAWN ---
 			var new_timer = timer_scene.instantiate()
+			new_timer.z_index = 3
 			
 			# IMPORTANT: Tag for cleanup so it deletes on level switch
 			new_timer.add_to_group("LevelTrash")
