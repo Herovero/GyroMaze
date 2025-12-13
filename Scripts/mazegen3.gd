@@ -35,6 +35,7 @@ var effective_tile_size = 16 * 9.0
 @export var hole_scene: PackedScene  # Drag your Hole.tscn here in Inspector
 @export var hole_count: int = 10     # How many holes do you want?
 var hole_positions: Array[Vector2i] = []
+var occupied_tiles: Array[Vector2i] = [] # master list for everything
 
 @export var ghost_scene: PackedScene
 @export var wing_scene: PackedScene
@@ -121,7 +122,7 @@ func clear_current_level():
 	
 	# 3. Clear arrays
 	hole_positions.clear()
-	# Clear powerup_positions if you added that global array too
+	occupied_tiles.clear()
 
 func fill_map_with_walls() -> void:
 	for x in range(map_width):
@@ -454,6 +455,8 @@ func spawn_holes() -> void:
 
 		# Save position to array so we don't spawn here again
 		hole_positions.append(check_pos)
+		
+		occupied_tiles.append(check_pos)
 
 		# Calculate pixel position for the hole
 		# We use the specific check_pos which is now CENTERED in the path
@@ -511,6 +514,8 @@ func spawn_powerups() -> void:
 			# Distance check with player and finish point
 			if Vector2(check_pos).distance_to(Vector2(maze_pos)) < 5: continue
 			if Vector2(check_pos).distance_to(Vector2(finish_grid_pos)) < 5: continue
+			# Check if this spot is already taken by a Hole, Coin, or Timer
+			if check_pos in occupied_tiles: continue
 			
 			# Distance check with holes
 			var too_close_to_hole = false
@@ -548,7 +553,7 @@ func spawn_powerups() -> void:
 				get_parent().call_deferred("add_child", new_item)
 				
 				powerup_positions.append(check_pos)
-				#occupied_tiles.append(check_pos)    # If using the shared list method
+				occupied_tiles.append(check_pos)    # If using the shared list method
 				
 				spawned_count += 1
 
@@ -602,6 +607,8 @@ func spawn_coins() -> void:
 			get_parent().call_deferred("add_child", new_coin)
 			
 			coin_positions.append(check_pos)
+			occupied_tiles.append(check_pos)
+			
 			spawned_count += 1
 
 func spawn_timers() -> void:
@@ -653,4 +660,6 @@ func spawn_timers() -> void:
 			get_parent().call_deferred("add_child", new_timer)
 			
 			timer_positions.append(check_pos)
+			occupied_tiles.append(check_pos)
+			
 			spawned_count += 1
