@@ -18,6 +18,9 @@ var tile_path = Vector2i(0, 1) # Floor (Light Blue)
 var tile_border = Vector2i(1, 0) # Border (Dark Brown)
 var tile_s = Vector2i(1, 1) # Solved Path (Optional)
 
+var hazard_bouncy = Vector2i(0, 0)
+var hazard_fiery = Vector2i(1, 0)
+
 # --- INTERNAL VARIABLES ---
 var maze_pos = Vector2i(0, 0)
 var dir_history = []
@@ -98,9 +101,10 @@ func start_new_level():
 	
 	generate_maze()
 	move_player_to_start()
-	spawn_hazard_tiles()
 	spawn_finish()
 	spawn_holes()
+	spawn_hazard_tiles()
+	spawn_hazard_walls()
 	spawn_powerups()
 	spawn_timers()
 
@@ -216,29 +220,6 @@ func move_player_to_start():
 		if player.has_method("set_start_position"):
 			player.set_start_position(start_pixel_pos)
 
-"""func spawn_hazard_tiles() -> void:
-	var rand_x = randi() % map_width
-	var rand_y = randi() % map_height
-	for x in range(map_width):
-		for y in range(map_height):
-			if Maze.get_cell_atlas_coords(Vector2(x, y)) == tile_path:
-				var chance = randi() % 19
-				if chance < 1:
-					hazard_tiles.set_cell(Vector2(x, y), 0, tile_path)
-				elif chance > 17:
-					hazard_tiles.set_cell(Vector2(x, y), 0, tile_s)
-				else:
-					hazard_tiles.set_cell(Vector2(x, y), 0, tile_wall)
-					#hazard_tiles.set_cell(Vector2(x, y), 0, tile_path)
-			if Maze.get_cell_atlas_coords(Vector2(x, y)) == tile_path:
-				var chance = randi() % 19
-				if chance < 1:
-					hazard_tiles.set_cell(Vector2(x, y), 0, tile_path)
-				elif chance > 17:
-					hazard_tiles.set_cell(Vector2(x, y), 0, tile_s)
-				else:
-					hazard_tiles.set_cell(Vector2(x, y), 0, tile_wall)"""
-
 func spawn_hazard_tiles() -> void:
 	hazard_tiles.clear()
 	
@@ -301,6 +282,64 @@ func spawn_patch(type: Vector2i, count: int, min_size: int, max_size: int):
 					# Paint it!
 					hazard_tiles.set_cell(next_pos, 0, type)
 					current_patch.append(next_pos)
+		
+		spawned += 1
+
+func spawn_hazard_walls() -> void:
+	# 1. Spawn Bouncy Wall Patches
+	spawn_wall_swaps(hazard_bouncy, 5, 2, 5)
+	
+	# 2. Spawn Fiery Wall Patches
+	spawn_wall_swaps(hazard_fiery, 4, 2, 4)
+
+func spawn_wall_swaps(type: Vector2i, count: int, min_size: int, max_size: int):
+	var spawned = 0
+	var attempts = 0
+	
+	while spawned < count and attempts < 2000:
+		attempts += 1
+		
+		# 1. Pick random spot
+		var rand_x = randi() % map_width
+		var rand_y = randi() % map_height
+		var start_pos = Vector2i(rand_x, rand_y)
+		
+		# 2. VALIDATION: Must be a Normal Wall in the MAIN MAZE
+		if Maze.get_cell_atlas_coords(start_pos) != tile_wall:
+			continue
+			
+		# 3. SAFETY: Don't destroy borders!
+		if start_pos.x == 0 or start_pos.x == map_width - 1 or start_pos.y == 0 or start_pos.y == map_height - 1:
+			continue
+
+		# --- SWAP THE TILES ---
+		var current_patch = [start_pos]
+		
+		# A. Remove from Maze
+		Maze.set_cell(start_pos, -1) 
+		# B. Add to Hazard Layer
+		hazard_tiles.set_cell(start_pos, 0, type)
+		
+		var growth_attempts = 0
+		var patch_size = randi_range(min_size, max_size)
+		
+		while current_patch.size() < patch_size and growth_attempts < 50:
+			growth_attempts += 1
+			var grow_from = current_patch.pick_random()
+			var neighbors = [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
+			var dir = neighbors.pick_random()
+			var next_pos = grow_from + dir
+			
+			# Check neighbor in MAZE layer
+			if Maze.get_cell_atlas_coords(next_pos) == tile_wall:
+				# Safety: borders
+				if next_pos.x == 0 or next_pos.x == map_width - 1 or next_pos.y == 0 or next_pos.y == map_height - 1:
+					continue
+				
+				# Swap
+				Maze.set_cell(next_pos, -1)
+				hazard_tiles.set_cell(next_pos, 0, type)
+				current_patch.append(next_pos)
 		
 		spawned += 1
 
