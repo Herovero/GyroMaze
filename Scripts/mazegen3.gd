@@ -55,13 +55,32 @@ func _ready() -> void:
 func start_new_level():
 	clear_current_level()
 	
+	var level = Global.current_level
+	
 	# --- 1. RANDOMIZE PATH THICKNESS ---
-	# Randomly choose between 1 (Standard), 2 (Wide), or 3 (Very Wide)
-	path_thickness = randi_range(2, 5)
+	if level <= 10:
+		path_thickness = randi_range(3, 5) # Wide paths
+	elif level <= 20:
+		path_thickness = randi_range(3, 4) # Narrow paths
+	else:
+		path_thickness = randi_range(2, 4)
+	
+	# Absolute max maze size
+	var absolute_max_w = 45
+	var absolute_max_h = 25
 	
 	# Define constraints
-	var max_w_limit = 45
-	var max_h_limit = 25
+	# At Level 1: Reduction is 20. Width = 45 - 20 = 25.
+	# At Level 10: Reduction is 0. Width = 45 - 0 = 45.
+	var reduction = max(0, 20 - (level * 2))
+	var max_w_limit = absolute_max_w - reduction
+	var max_h_limit = absolute_max_h - int(reduction / 1.5) # Height shrinks a bit less to keep ratio
+	var min_w_limit = max(15, max_w_limit - 10)
+	var min_h_limit = max(15, max_h_limit - 8)
+	
+	# Clamp to ensure it never gets too small to generate
+	max_w_limit = max(max_w_limit, 20)
+	max_h_limit = max(max_h_limit, 15)
 	
 	# --- 2. CALCULATE MAX ROOMS THAT FIT ---
 	# Step size = Path + 1 Wall
@@ -72,10 +91,18 @@ func start_new_level():
 	var max_rooms_x = (max_w_limit - 1) / step_size
 	var max_rooms_y = (max_h_limit - 1) / step_size
 	
+	var min_rooms_x = max(2, (min_w_limit - 1) / step_size)
+	var min_rooms_y = max(2, (min_h_limit - 1) / step_size)
+	# Ensure Min doesn't accidentally exceed Max (safety check)
+	if min_rooms_x > max_rooms_x: 
+		min_rooms_x = max_rooms_x
+	if min_rooms_y > max_rooms_y: 
+		min_rooms_y = max_rooms_y
+	
 	# --- 3. PICK RANDOM ROOM COUNT (WITHIN LIMITS) ---
 	# We ensure we have at least 2 rooms, and no more than the max that fits.
-	var rooms_x = randi_range(2, max_rooms_x)
-	var rooms_y = randi_range(2, max_rooms_y)
+	var rooms_x = randi_range(min_rooms_x, max_rooms_x)
+	var rooms_y = randi_range(min_rooms_y, max_rooms_y)
 	
 	# --- 4. RECALCULATE EXACT MAP SIZE ---
 	# This ensures the map is exactly the right size for the grid.
@@ -84,8 +111,10 @@ func start_new_level():
 	map_height = (rooms_y * step_size) + 1
 	
 	# --- DEBUG PRINTS ---
-	print("Path Thickness: ", path_thickness)
-	print("Map Size: ", map_width, "x", map_height)
+	print("Level: ", level)
+	print("Window W: ", min_w_limit, "-", max_w_limit, " | H: ", min_h_limit, "-", max_h_limit)
+	print("Final Map: ", map_width, "x", map_height)
+	print("Path thickness: ", path_thickness)
 	
 	# --- CONTINUE GENERATION ---
 	fill_map_with_walls()
