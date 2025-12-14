@@ -136,14 +136,17 @@ func start_new_level():
 	generate_maze()
 	move_player_to_start()
 	spawn_finish()
-	spawn_holes()
+	if Global.current_level >= 2:
+		spawn_holes()
 	if Global.current_level > 10:
 		spawn_hazard_tiles() # Icy and Sticky Floors
 		spawn_hazard_walls() # Bouncy and Fiery Walls
-	spawn_coins()
 	if Global.current_level >= 3:
+		spawn_coins()
+	if Global.current_level >= 5:
 		spawn_powerups()
-	spawn_timers()
+	if Global.current_level >= 3:
+		spawn_timers()
 
 func clear_current_level():
 	# 1. Clear the TileMap
@@ -554,8 +557,9 @@ func spawn_powerups() -> void:
 	var fail_hole_dist = 0
 	var fail_spread_dist = 0
 	
-	# We will try to spawn a few powerups total (e.g. 2 or 3)
-	var powerups_to_spawn = 2
+	var area = map_width * map_height
+	var calculated_count = int(area / 350.0)
+	var powerups_to_spawn = clamp(calculated_count, 1, 4)
 	var spawned_count = 0
 	var attempts = 0
 	
@@ -646,7 +650,13 @@ func spawn_powerups() -> void:
 func spawn_coins() -> void:
 	if not coin_scene: return
 	
-	var coins_to_spawn = randi_range(5, 15) # Spawn between 5 and 8 coins
+	var area = map_width * map_height
+	# Approx 1 coin every 100 tiles.
+	# Example: Small Map (375 tiles) = 3 coins. Large Map (1125 tiles) = 11 coins.
+	var calculated_count = int(area / 50.0)
+	var coins_to_spawn = clamp(calculated_count, 3, 20)
+	#var coins_to_spawn = randi_range(5, 15) 
+	
 	var spawned_count = 0
 	var attempts = 0
 	var coin_positions: Array[Vector2i] = [] 
@@ -702,7 +712,10 @@ func spawn_coins() -> void:
 func spawn_timers() -> void:
 	if not timer_scene: return
 	
-	var timers_to_spawn = 2
+	var area = map_width * map_height
+	# Small Map = 1 Timer. Large Map = 2-3 Timers.
+	var calculated_count = int(area / 100.0)
+	var timers_to_spawn = clamp(calculated_count, 2, 15)
 	var spawned_count = 0
 	var attempts = 0
 	var timer_positions: Array[Vector2i] = [] # Local tracker to spread them out

@@ -1,6 +1,6 @@
 extends Area2D
 
-@export var time_bonus: float = 30.0
+@export var time_bonus: float = 15.0
 
 var player
 

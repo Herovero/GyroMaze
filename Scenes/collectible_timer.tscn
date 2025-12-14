@@ -335,13 +335,13 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a2df2"]
-radius = 95.02105
+radius = 63.126858
 
 [node name="timer" type="Area2D"]
 script = ExtResource("1_26t6q")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.3, 0.3)
+scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_7es44")
 autoplay = "default"
 frame_progress = 0.24568936
