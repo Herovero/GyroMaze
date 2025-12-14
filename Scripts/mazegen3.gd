@@ -39,6 +39,7 @@ var occupied_tiles: Array[Vector2i] = [] # master list for everything
 
 @export var ghost_scene: PackedScene
 @export var wing_scene: PackedScene
+@export var magnet_scene: PackedScene
 
 @export var timer_scene: PackedScene
 @export var coin_scene: PackedScene
@@ -558,10 +559,13 @@ func spawn_powerups() -> void:
 			
 			# Pick Random Powerup Type
 			var item_scene
-			if randf() > 0.5:
-				item_scene = ghost_scene # Ghost
+			var roll = randf()
+			if roll <= 0.33:
+				item_scene = ghost_scene
+			elif roll <= 0.66:
+				item_scene = wing_scene
 			else:
-				item_scene = wing_scene    # Wing (Make sure you assigned it!)
+				item_scene = magnet_scene
 			
 			if item_scene:
 				var new_item = item_scene.instantiate()

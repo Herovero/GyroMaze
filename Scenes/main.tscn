@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=3 uid="uid://cpv02exs4ywq1"]
+[gd_scene load_steps=67 format=3 uid="uid://cpv02exs4ywq1"]
 
 [ext_resource type="PackedScene" uid="uid://bwtlejdt7cws6" path="res://Scenes/maze_test2.tscn" id="1_21xkr"]
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="1_bo1nx"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dfwo610ckgcq5" path="res://Scenes/hole.tscn" id="3_344ge"]
 [ext_resource type="Texture2D" uid="uid://b7ck8twawfxri" path="res://Assets/uis/restart_button.png" id="6_ynf5e"]
 [ext_resource type="Script" uid="uid://qdaco07pmcty" path="res://Scripts/time_countdown.gd" id="7_6bp64"]
+[ext_resource type="PackedScene" uid="uid://cmf02qqfdbdwv" path="res://Scenes/powerup_magnet.tscn" id="7_qax2n"]
 [ext_resource type="Texture2D" uid="uid://kwratvx20eml" path="res://Assets/0000.png" id="8_344ge"]
 [ext_resource type="Script" uid="uid://cepi1p1cjfakw" path="res://Scripts/level_count.gd" id="8_ynf5e"]
 [ext_resource type="PackedScene" uid="uid://dbm528w4u35n0" path="res://Scenes/finish_point.tscn" id="10_hptm8"]
@@ -82,6 +83,15 @@ texture = ExtResource("2_h1bgf")
 physics_layer_0/collision_layer = 1
 physics_layer_0/physics_material = SubResource("PhysicsMaterial_k12tt")
 sources/0 = SubResource("TileSetAtlasSource_h1bgf")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ml46"]
+bg_color = Color(0.60018015, 0.9002686, 0.99999994, 1)
+border_width_left = 7
+border_width_top = 7
+border_width_right = 7
+border_width_bottom = 7
+border_color = Color(0, 0, 0, 1)
+border_blend = true
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_h1bgf"]
 animations = [{
@@ -228,6 +238,7 @@ hole_scene = ExtResource("3_344ge")
 hole_count = 20
 ghost_scene = ExtResource("11_d1ilt")
 wing_scene = ExtResource("12_6iyac")
+magnet_scene = ExtResource("7_qax2n")
 timer_scene = ExtResource("15_wsu2k")
 coin_scene = ExtResource("17_h1bgf")
 finish_scene = ExtResource("10_hptm8")
@@ -266,6 +277,20 @@ offset_bottom = 40.0
 
 [node name="InGameUIs" type="CanvasLayer" parent="."]
 
+[node name="HUD_Background" type="ColorRect" parent="InGameUIs"]
+visible = false
+modulate = Color(1, 1, 1, 0.627451)
+offset_top = 818.0
+offset_right = 255.0
+offset_bottom = 1080.0
+
+[node name="Panel" type="Panel" parent="InGameUIs"]
+modulate = Color(1, 1, 1, 0.47058824)
+offset_top = 820.0
+offset_right = 292.0
+offset_bottom = 1080.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6ml46")
+
 [node name="powerup_slot1" parent="InGameUIs" instance=ExtResource("10_jkdf5")]
 position = Vector2(2120, 220)
 scale = Vector2(0.8, 0.8)
@@ -292,7 +317,7 @@ texture_normal = ExtResource("14_2060n")
 script = ExtResource("15_6ml46")
 
 [node name="coin_HUD" type="AnimatedSprite2D" parent="InGameUIs"]
-position = Vector2(73.99999, 894.99994)
+position = Vector2(73.99999, 910.99994)
 scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_h1bgf")
 autoplay = "default"
@@ -300,12 +325,22 @@ frame = 29
 frame_progress = 0.28274602
 
 [node name="time_remaining" type="Label" parent="InGameUIs"]
-offset_left = 16.0
-offset_right = 56.0
-offset_bottom = 69.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -498.5
+offset_right = 20.0
+offset_bottom = -429.5
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/outline_size = 20
 theme_override_font_sizes/font_size = 50
 text = "3"
+horizontal_alignment = 1
+vertical_alignment = 1
 script = ExtResource("12_jkdf5")
 
 [node name="time_countdown" type="Label" parent="InGameUIs"]
@@ -336,9 +371,9 @@ script = ExtResource("8_ynf5e")
 
 [node name="coin_count" type="Label" parent="InGameUIs"]
 offset_left = 160.0
-offset_top = 834.9999
+offset_top = 850.9999
 offset_right = 217.0
-offset_bottom = 950.9999
+offset_bottom = 966.9999
 theme_override_constants/outline_size = 25
 theme_override_font_sizes/font_size = 80
 text = "0"

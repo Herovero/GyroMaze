@@ -177,7 +177,7 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_lfugp"]
 radius = 32.0
 
-[node name="collectible_coin" type="Area2D"]
+[node name="collectible_coin" type="Area2D" groups=["Coins"]]
 script = ExtResource("1_ugn34")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
