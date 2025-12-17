@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://cpv02exs4ywq1"]
+[gd_scene load_steps=70 format=3 uid="uid://cpv02exs4ywq1"]
 
 [ext_resource type="PackedScene" uid="uid://bwtlejdt7cws6" path="res://Scenes/maze_test2.tscn" id="1_21xkr"]
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="1_bo1nx"]
@@ -17,10 +17,13 @@
 [ext_resource type="Script" uid="uid://dcaxkqiax2bvs" path="res://Scripts/time_remaining.gd" id="12_jkdf5"]
 [ext_resource type="Texture2D" uid="uid://xkokujeiydnq" path="res://Assets/collectibles/coin/_a_frm0,20.png" id="14_1semv"]
 [ext_resource type="Texture2D" uid="uid://bn1oxggt6psjy" path="res://Assets/uis/zoomout_button.png" id="14_2060n"]
+[ext_resource type="Texture2D" uid="uid://dr742mq2h5nv7" path="res://Assets/uis/pause_button.png" id="14_my4ki"]
 [ext_resource type="Script" uid="uid://dhrbn6ld6asi0" path="res://Scripts/zoomout_button.gd" id="15_6ml46"]
 [ext_resource type="Texture2D" uid="uid://cvlajfaagomyc" path="res://Assets/collectibles/coin/_a_frm1,30.png" id="15_2060n"]
+[ext_resource type="Texture2D" uid="uid://bun4oxiuyssdr" path="res://Assets/uis/pause_button_pressed.png" id="15_lx3vj"]
 [ext_resource type="PackedScene" uid="uid://dvrl07d5fk8k7" path="res://Scenes/collectible_timer.tscn" id="15_wsu2k"]
 [ext_resource type="Texture2D" uid="uid://rya0irr53ih7" path="res://Assets/collectibles/coin/_a_frm2,20.png" id="16_6ml46"]
+[ext_resource type="Script" uid="uid://mlwproieth75" path="res://Scripts/pause_button.gd" id="16_lx3vj"]
 [ext_resource type="PackedScene" uid="uid://nomhjmxskkv0" path="res://Scenes/collectible_coin.tscn" id="17_h1bgf"]
 [ext_resource type="Texture2D" uid="uid://dsdd388fnyq31" path="res://Assets/collectibles/coin/_a_frm3,30.png" id="17_qax2n"]
 [ext_resource type="Texture2D" uid="uid://bepty23sr6hle" path="res://Assets/collectibles/coin/_a_frm4,20.png" id="18_y86h7"]
@@ -303,6 +306,14 @@ scale = Vector2(0.8, 0.8)
 position = Vector2(2120.0002, 651.9999)
 scale = Vector2(0.8, 0.8)
 
+[node name="PauseButton" type="TouchScreenButton" parent="InGameUIs"]
+scale = Vector2(0.3, 0.3)
+texture_normal = ExtResource("14_my4ki")
+texture_pressed = ExtResource("15_lx3vj")
+script = ExtResource("16_lx3vj")
+
+[node name="ResumeButton" type="TouchScreenButton" parent="InGameUIs"]
+
 [node name="ResetButton" type="TouchScreenButton" parent="InGameUIs"]
 z_index = 5
 position = Vector2(2178, 33)
@@ -310,19 +321,40 @@ scale = Vector2(0.3, 0.3)
 texture_normal = ExtResource("6_ynf5e")
 action = "ui_accept"
 
+[node name="TouchScreenButton" type="TouchScreenButton" parent="InGameUIs"]
+
 [node name="ZoomOutButton" type="TouchScreenButton" parent="InGameUIs"]
 position = Vector2(1976, 48.00006)
 scale = Vector2(0.3, 0.3)
 texture_normal = ExtResource("14_2060n")
 script = ExtResource("15_6ml46")
 
-[node name="coin_HUD" type="AnimatedSprite2D" parent="InGameUIs"]
+[node name="coin_HUD" type="AnimatedSprite2D" parent="InGameUIs" groups=["CoinHUD"]]
 position = Vector2(73.99999, 910.99994)
 scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_h1bgf")
 autoplay = "default"
 frame = 29
 frame_progress = 0.28274602
+
+[node name="PAUSED_label" type="Label" parent="InGameUIs"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -386.0
+offset_top = -136.5
+offset_right = 386.0
+offset_bottom = 136.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 40
+theme_override_font_sizes/font_size = 150
+text = "PAUSED"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="time_remaining" type="Label" parent="InGameUIs"]
 anchors_preset = 8
@@ -382,6 +414,7 @@ script = ExtResource("59_2060n")
 [connection signal="released" from="InGameUIs/powerup_slot1" to="Player" method="_on_powerup_slot_1_released"]
 [connection signal="released" from="InGameUIs/powerup_slot2" to="Player" method="_on_powerup_slot_2_released"]
 [connection signal="released" from="InGameUIs/powerup_slot3" to="Player" method="_on_powerup_slot_3_released"]
+[connection signal="released" from="InGameUIs/PauseButton" to="InGameUIs/PauseButton" method="_on_released"]
 [connection signal="released" from="InGameUIs/ZoomOutButton" to="InGameUIs/ZoomOutButton" method="_on_released"]
 
 [editable path="InGameUIs/powerup_slot1"]

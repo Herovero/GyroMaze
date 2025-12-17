@@ -1,6 +1,8 @@
 extends Area2D
 
-@export var time_bonus: float = 15.0
+@export var time_bonus: float = 10.0
+
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 var player
 
@@ -15,4 +17,6 @@ func _process(delta):
 func _on_body_entered(body):
 	if body.is_in_group("Player"):
 		SignalBus.emit_signal("add_time", time_bonus)
+		animation_player.play("increase")
+		await animation_player.animation_finished
 		queue_free()

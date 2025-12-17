@@ -188,4 +188,9 @@ autoplay = "default"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_lfugp")
 
+[node name="fake_visual_coin" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_q0sck")
+
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
