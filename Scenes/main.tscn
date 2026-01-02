@@ -1,4 +1,4 @@
-[gd_scene load_steps=70 format=3 uid="uid://cpv02exs4ywq1"]
+[gd_scene load_steps=151 format=3 uid="uid://cpv02exs4ywq1"]
 
 [ext_resource type="PackedScene" uid="uid://bwtlejdt7cws6" path="res://Scenes/maze_test2.tscn" id="1_21xkr"]
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="1_bo1nx"]
@@ -64,6 +64,83 @@
 [ext_resource type="Texture2D" uid="uid://dufiq0q5egkco" path="res://Assets/collectibles/coin/_a_frm39,30.png" id="53_j2g22"]
 [ext_resource type="Texture2D" uid="uid://cigbjqfv5vbfa" path="res://Assets/collectibles/coin/_a_frm40,20.png" id="54_phube"]
 [ext_resource type="Script" uid="uid://0cwbaka348di" path="res://Scripts/coin_count.gd" id="59_2060n"]
+[ext_resource type="Texture2D" uid="uid://3qn3h6ecpc4l" path="res://Assets/bedside clock.png" id="61_hfu3o"]
+[ext_resource type="FontFile" uid="uid://cp0elas21ho0b" path="res://Fonts/digital-7.ttf" id="61_ynmfv"]
+[ext_resource type="Texture2D" uid="uid://bjdcabtwknlm7" path="res://Assets/alarm clock/_a_frm26,40.png" id="67_hfu3o"]
+[ext_resource type="Texture2D" uid="uid://co0tkcmedq1ls" path="res://Assets/alarm clock/_a_frm27,40.png" id="68_adgm5"]
+[ext_resource type="Texture2D" uid="uid://bs314hrdkiqka" path="res://Assets/alarm clock/_a_frm28,40.png" id="69_qxkn4"]
+[ext_resource type="Texture2D" uid="uid://brog7ytu0c4np" path="res://Assets/alarm clock/_a_frm29,40.png" id="70_130ps"]
+[ext_resource type="Texture2D" uid="uid://w5gqw4pttrhx" path="res://Assets/alarm clock/_a_frm30,40.png" id="71_odn5n"]
+[ext_resource type="Texture2D" uid="uid://dlw1hkgpmqhbn" path="res://Assets/alarm clock/_a_frm31,40.png" id="72_b12iu"]
+[ext_resource type="Texture2D" uid="uid://cxgjggud6v8ir" path="res://Assets/alarm clock/_a_frm32,40.png" id="73_gf7g1"]
+[ext_resource type="Texture2D" uid="uid://de3ur3y0squf5" path="res://Assets/alarm clock/_a_frm33,40.png" id="74_102yd"]
+[ext_resource type="Texture2D" uid="uid://jyfsg1u2fgqc" path="res://Assets/alarm clock/_a_frm34,40.png" id="75_rtmaq"]
+[ext_resource type="Texture2D" uid="uid://bn5jqqdk6ea6j" path="res://Assets/alarm clock/_a_frm35,40.png" id="76_eqnci"]
+[ext_resource type="Texture2D" uid="uid://b0da73apemajh" path="res://Assets/alarm clock/_a_frm36,40.png" id="77_ojylq"]
+[ext_resource type="Texture2D" uid="uid://t1iror8tves4" path="res://Assets/alarm clock/_a_frm37,40.png" id="78_fle1e"]
+[ext_resource type="Texture2D" uid="uid://bg1ai6yoknixa" path="res://Assets/alarm clock/_a_frm38,40.png" id="79_r1tr8"]
+[ext_resource type="Texture2D" uid="uid://dl3s3xc4nbkte" path="res://Assets/alarm clock/_a_frm39,40.png" id="80_vlivj"]
+[ext_resource type="Texture2D" uid="uid://21h1dt84ga32" path="res://Assets/alarm clock/_a_frm40,40.png" id="81_wt5iu"]
+[ext_resource type="Texture2D" uid="uid://bvcw256qs8m4f" path="res://Assets/alarm clock/_a_frm41,40.png" id="82_pmnrr"]
+[ext_resource type="Texture2D" uid="uid://bdag68vn7qdvk" path="res://Assets/alarm clock/_a_frm42,40.png" id="83_s8cid"]
+[ext_resource type="Texture2D" uid="uid://cw704sb66hhku" path="res://Assets/alarm clock/_a_frm43,40.png" id="84_0w4wg"]
+[ext_resource type="Texture2D" uid="uid://0bp0lcdryotp" path="res://Assets/alarm clock/_a_frm44,40.png" id="85_dllok"]
+[ext_resource type="Texture2D" uid="uid://gi6iwqmy2x56" path="res://Assets/alarm clock/_a_frm45,40.png" id="86_0t4jf"]
+[ext_resource type="Texture2D" uid="uid://ca3y2w2qgvqt1" path="res://Assets/alarm clock/_a_frm46,40.png" id="87_daoo8"]
+[ext_resource type="Texture2D" uid="uid://elf22j0lny60" path="res://Assets/alarm clock/_a_frm47,40.png" id="88_fnc5k"]
+[ext_resource type="Texture2D" uid="uid://bswivdiq2lsss" path="res://Assets/alarm clock/_a_frm48,40.png" id="89_658pa"]
+[ext_resource type="Texture2D" uid="uid://dbb6tsavrevv0" path="res://Assets/alarm clock/_a_frm49,40.png" id="90_gax0l"]
+[ext_resource type="Texture2D" uid="uid://b5y3cwif0xoa4" path="res://Assets/alarm clock/_a_frm50,40.png" id="91_11vbv"]
+[ext_resource type="Texture2D" uid="uid://ca4opfqn42m3a" path="res://Assets/alarm clock/_a_frm51,40.png" id="92_m6w5j"]
+[ext_resource type="Texture2D" uid="uid://cm6uvvgdxwfl1" path="res://Assets/alarm clock/_a_frm52,40.png" id="93_hprjy"]
+[ext_resource type="Texture2D" uid="uid://c2etl12640jqi" path="res://Assets/alarm clock/_a_frm53,40.png" id="94_qhhnr"]
+[ext_resource type="Texture2D" uid="uid://b6fytd72ogb7v" path="res://Assets/alarm clock/_a_frm54,40.png" id="95_32yv2"]
+[ext_resource type="Texture2D" uid="uid://bphrn2kdeeccl" path="res://Assets/alarm clock/_a_frm55,40.png" id="96_85qtq"]
+[ext_resource type="Texture2D" uid="uid://bl4r4uj48nt4l" path="res://Assets/alarm clock/_a_frm56,40.png" id="97_8d8ul"]
+[ext_resource type="Texture2D" uid="uid://bm2xpu1813ypu" path="res://Assets/alarm clock/_a_frm57,40.png" id="98_tctli"]
+[ext_resource type="Texture2D" uid="uid://d31q60hc4h6oc" path="res://Assets/alarm clock/_a_frm58,40.png" id="99_3qdko"]
+[ext_resource type="Texture2D" uid="uid://movsnqau2j7y" path="res://Assets/alarm clock/_a_frm59,40.png" id="100_4fylk"]
+[ext_resource type="Texture2D" uid="uid://6qqp7w6pmvjk" path="res://Assets/alarm clock/_a_frm60,40.png" id="101_fmflf"]
+[ext_resource type="Texture2D" uid="uid://dnlx32j80fxvq" path="res://Assets/alarm clock/_a_frm61,40.png" id="102_6lvi0"]
+[ext_resource type="Texture2D" uid="uid://ci6h67rrxum7g" path="res://Assets/alarm clock/_a_frm62,40.png" id="103_2rlip"]
+[ext_resource type="Texture2D" uid="uid://cc6s20ytccq17" path="res://Assets/alarm clock/_a_frm63,40.png" id="104_peks8"]
+[ext_resource type="Texture2D" uid="uid://qdixig8dhj4n" path="res://Assets/alarm clock/_a_frm64,40.png" id="105_ve7nm"]
+[ext_resource type="Texture2D" uid="uid://bgd27oybtn8wb" path="res://Assets/alarm clock/_a_frm65,40.png" id="106_sbvnb"]
+[ext_resource type="Texture2D" uid="uid://d1gm3xg1feyr8" path="res://Assets/alarm clock/_a_frm66,40.png" id="107_pkhog"]
+[ext_resource type="Texture2D" uid="uid://g6dw47y368nk" path="res://Assets/alarm clock/_a_frm67,40.png" id="108_b4mg0"]
+[ext_resource type="Texture2D" uid="uid://djdbxrafll30p" path="res://Assets/alarm clock/_a_frm68,40.png" id="109_g52ui"]
+[ext_resource type="Texture2D" uid="uid://dv0kdb5qu2626" path="res://Assets/alarm clock/_a_frm69,40.png" id="110_144ni"]
+[ext_resource type="Texture2D" uid="uid://ci736s3dyohgj" path="res://Assets/alarm clock/_a_frm70,40.png" id="111_vm2ri"]
+[ext_resource type="Texture2D" uid="uid://c0sclr6q3mtfp" path="res://Assets/alarm clock/_a_frm71,40.png" id="112_reygs"]
+[ext_resource type="Texture2D" uid="uid://583ejap3id1x" path="res://Assets/alarm clock/_a_frm72,40.png" id="113_tlp2u"]
+[ext_resource type="Texture2D" uid="uid://3rwvqux8rrtd" path="res://Assets/alarm clock/_a_frm73,40.png" id="114_wx2j7"]
+[ext_resource type="Texture2D" uid="uid://bahvgs11jfleb" path="res://Assets/alarm clock/_a_frm74,40.png" id="115_0jame"]
+[ext_resource type="Texture2D" uid="uid://b2obe4lao0y3h" path="res://Assets/alarm clock/_a_frm75,40.png" id="116_obsuk"]
+[ext_resource type="Texture2D" uid="uid://43ekficpxt0o" path="res://Assets/alarm clock/_a_frm76,40.png" id="117_74dxy"]
+[ext_resource type="Texture2D" uid="uid://14eemm776g1r" path="res://Assets/alarm clock/_a_frm77,40.png" id="118_6ben7"]
+[ext_resource type="Texture2D" uid="uid://dmgp0ni4m6x5i" path="res://Assets/alarm clock/_a_frm78,40.png" id="119_pxch7"]
+[ext_resource type="Texture2D" uid="uid://cgo8oya4nyh8a" path="res://Assets/alarm clock/_a_frm79,40.png" id="120_51a0c"]
+[ext_resource type="Texture2D" uid="uid://ck1hucmq5tqdi" path="res://Assets/alarm clock/_a_frm80,40.png" id="121_cqvvm"]
+[ext_resource type="Texture2D" uid="uid://jiv5555iimrm" path="res://Assets/alarm clock/_a_frm81,40.png" id="122_w7d74"]
+[ext_resource type="Texture2D" uid="uid://dtwf6yrnnes2u" path="res://Assets/alarm clock/_a_frm82,40.png" id="123_y3nyc"]
+[ext_resource type="Texture2D" uid="uid://dpf8t44l4wurp" path="res://Assets/alarm clock/_a_frm83,40.png" id="124_vwqqh"]
+[ext_resource type="Texture2D" uid="uid://csm6gjo80ghmx" path="res://Assets/alarm clock/_a_frm84,40.png" id="125_svh2a"]
+[ext_resource type="Texture2D" uid="uid://w0k6iktmc61w" path="res://Assets/alarm clock/_a_frm85,40.png" id="126_ov07c"]
+[ext_resource type="Texture2D" uid="uid://bekdywvna56jf" path="res://Assets/alarm clock/_a_frm86,40.png" id="127_p3tun"]
+[ext_resource type="Texture2D" uid="uid://c1u1kykuw4nt3" path="res://Assets/alarm clock/_a_frm87,40.png" id="128_ytyeu"]
+[ext_resource type="Texture2D" uid="uid://bsx2g71rg8pe2" path="res://Assets/alarm clock/_a_frm88,40.png" id="129_suxc6"]
+[ext_resource type="Texture2D" uid="uid://d042hdpooo1vh" path="res://Assets/alarm clock/_a_frm89,40.png" id="130_n3keg"]
+[ext_resource type="Texture2D" uid="uid://tkuycp4s4sjh" path="res://Assets/alarm clock/_a_frm90,40.png" id="131_fbhnc"]
+[ext_resource type="Texture2D" uid="uid://cy2iuabon1ujt" path="res://Assets/alarm clock/_a_frm91,40.png" id="132_ersyc"]
+[ext_resource type="Texture2D" uid="uid://cu7rrenmwdj0n" path="res://Assets/alarm clock/_a_frm92,40.png" id="133_c3mi8"]
+[ext_resource type="Texture2D" uid="uid://dek6b88byksqn" path="res://Assets/alarm clock/_a_frm93,40.png" id="134_3mvvd"]
+[ext_resource type="Texture2D" uid="uid://dq53mpv0v7uhb" path="res://Assets/alarm clock/_a_frm94,40.png" id="135_jdldr"]
+[ext_resource type="Texture2D" uid="uid://dicv6xewvsc1f" path="res://Assets/alarm clock/_a_frm95,40.png" id="136_ycl58"]
+[ext_resource type="Texture2D" uid="uid://cyu1kta7aemjv" path="res://Assets/alarm clock/_a_frm96,40.png" id="137_w32ys"]
+[ext_resource type="Texture2D" uid="uid://b45qcadfq0bri" path="res://Assets/alarm clock/_a_frm97,40.png" id="138_g2ehk"]
+[ext_resource type="Texture2D" uid="uid://1l7gqyd1cf4p" path="res://Assets/alarm clock/_a_frm98,40.png" id="139_b7esa"]
+[ext_resource type="Texture2D" uid="uid://dcu65rgfdo3to" path="res://Assets/alarm clock/_a_frm99,40.png" id="140_uo3nc"]
+[ext_resource type="Script" uid="uid://ble6hprlg3lfr" path="res://Scenes/alarm_clock.gd" id="141_adgm5"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_k12tt"]
 friction = 0.0
@@ -227,6 +304,297 @@ animations = [{
 "speed": 40.0
 }]
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_xtnwn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("67_hfu3o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("68_adgm5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("69_qxkn4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("70_130ps")
+}, {
+"duration": 1.0,
+"texture": ExtResource("71_odn5n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("72_b12iu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("73_gf7g1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("74_102yd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("75_rtmaq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("76_eqnci")
+}, {
+"duration": 1.0,
+"texture": ExtResource("77_ojylq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("78_fle1e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("79_r1tr8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("80_vlivj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("81_wt5iu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("82_pmnrr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("83_s8cid")
+}, {
+"duration": 1.0,
+"texture": ExtResource("84_0w4wg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("85_dllok")
+}, {
+"duration": 1.0,
+"texture": ExtResource("86_0t4jf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("87_daoo8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("88_fnc5k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("89_658pa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("90_gax0l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("91_11vbv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("92_m6w5j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("93_hprjy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("94_qhhnr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("95_32yv2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("96_85qtq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("97_8d8ul")
+}, {
+"duration": 1.0,
+"texture": ExtResource("98_tctli")
+}, {
+"duration": 1.0,
+"texture": ExtResource("99_3qdko")
+}, {
+"duration": 1.0,
+"texture": ExtResource("100_4fylk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("101_fmflf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("102_6lvi0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("103_2rlip")
+}, {
+"duration": 1.0,
+"texture": ExtResource("104_peks8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("105_ve7nm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("106_sbvnb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("107_pkhog")
+}, {
+"duration": 1.0,
+"texture": ExtResource("108_b4mg0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("109_g52ui")
+}, {
+"duration": 1.0,
+"texture": ExtResource("110_144ni")
+}, {
+"duration": 1.0,
+"texture": ExtResource("111_vm2ri")
+}, {
+"duration": 1.0,
+"texture": ExtResource("112_reygs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("113_tlp2u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("114_wx2j7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("115_0jame")
+}, {
+"duration": 1.0,
+"texture": ExtResource("116_obsuk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("117_74dxy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("118_6ben7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("119_pxch7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("120_51a0c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("121_cqvvm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("122_w7d74")
+}, {
+"duration": 1.0,
+"texture": ExtResource("123_y3nyc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("124_vwqqh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("125_svh2a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("126_ov07c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("127_p3tun")
+}, {
+"duration": 1.0,
+"texture": ExtResource("128_ytyeu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("129_suxc6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("130_n3keg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("131_fbhnc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("132_ersyc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("133_c3mi8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("134_3mvvd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("135_jdldr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("136_ycl58")
+}, {
+"duration": 1.0,
+"texture": ExtResource("137_w32ys")
+}, {
+"duration": 1.0,
+"texture": ExtResource("138_g2ehk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("139_b7esa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("140_uo3nc")
+}],
+"loop": false,
+"name": &"default",
+"speed": 30.0
+}]
+
+[sub_resource type="Animation" id="Animation_adgm5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InGameUIs/time_remaining_hud:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1047, -186)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("InGameUIs/time_remaining:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1100, -160)]
+}
+
+[sub_resource type="Animation" id="Animation_cblf0"]
+resource_name = "display_time_remaining"
+length = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InGameUIs/time_remaining_hud:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1047, -186), Vector2(1046.9999, 14.000005)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("InGameUIs/time_remaining:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1075, -160), Vector2(1075, 40)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nay3j"]
+_data = {
+&"RESET": SubResource("Animation_adgm5"),
+&"display_time_remaining": SubResource("Animation_cblf0")
+}
+
 [node name="Node2D" type="Node2D"]
 
 [node name="hazard_tiles" type="TileMapLayer" parent="."]
@@ -307,6 +675,7 @@ position = Vector2(2120.0002, 651.9999)
 scale = Vector2(0.8, 0.8)
 
 [node name="PauseButton" type="TouchScreenButton" parent="InGameUIs"]
+process_mode = 3
 scale = Vector2(0.3, 0.3)
 texture_normal = ExtResource("14_my4ki")
 texture_pressed = ExtResource("15_lx3vj")
@@ -356,20 +725,26 @@ text = "PAUSED"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="time_remaining_hud" type="TextureRect" parent="InGameUIs"]
+offset_left = 1047.0
+offset_top = -186.0
+offset_right = 3603.0
+offset_bottom = 1054.0
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("61_hfu3o")
+
 [node name="time_remaining" type="Label" parent="InGameUIs"]
-anchors_preset = 8
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -498.5
-offset_right = 20.0
-offset_bottom = -429.5
+offset_left = -100.0
+offset_top = -160.0
+offset_right = -9.5
+offset_bottom = -72.0
 grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/outline_size = 20
-theme_override_font_sizes/font_size = 50
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("61_ynmfv")
+theme_override_font_sizes/font_size = 120
 text = "3"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -411,10 +786,23 @@ theme_override_font_sizes/font_size = 80
 text = "0"
 script = ExtResource("59_2060n")
 
+[node name="alarm_clock" type="AnimatedSprite2D" parent="InGameUIs"]
+position = Vector2(1201, 548)
+sprite_frames = SubResource("SpriteFrames_xtnwn")
+frame = 73
+frame_progress = 1.0
+script = ExtResource("141_adgm5")
+
+[node name="HUD_transition" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_nay3j")
+}
+
 [connection signal="released" from="InGameUIs/powerup_slot1" to="Player" method="_on_powerup_slot_1_released"]
 [connection signal="released" from="InGameUIs/powerup_slot2" to="Player" method="_on_powerup_slot_2_released"]
 [connection signal="released" from="InGameUIs/powerup_slot3" to="Player" method="_on_powerup_slot_3_released"]
 [connection signal="released" from="InGameUIs/PauseButton" to="InGameUIs/PauseButton" method="_on_released"]
 [connection signal="released" from="InGameUIs/ZoomOutButton" to="InGameUIs/ZoomOutButton" method="_on_released"]
 
+[editable path="Player"]
 [editable path="InGameUIs/powerup_slot1"]

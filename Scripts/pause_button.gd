@@ -13,5 +13,11 @@ func _process(delta):
 	pass
 
 func _on_released():
-	get_tree().paused = true
-	paused_label.show()
+	if not game_paused:
+		get_tree().paused = true
+		game_paused = true
+		paused_label.show()
+	else: 
+		get_tree().paused = false
+		game_paused = false
+		paused_label.hide()

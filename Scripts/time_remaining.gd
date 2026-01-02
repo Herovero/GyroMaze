@@ -1,6 +1,8 @@
 extends Label
 
 @onready var timer: Timer = $"../../Time_remaining"
+@onready var hud = $"../time_remaining_hud"
+@onready var hud_transition = $"../../HUD_transition"
 
 @export var max_time_limit: float = 180.0
 
@@ -13,7 +15,8 @@ var amount: float
 func _ready():
 	player = get_tree().get_first_node_in_group("Player")
 	
-	visible = false
+	visible = true
+	hud.visible = false
 	
 	# Initialize our saved time to the full default time for first level
 	saved_time = timer.wait_time
@@ -36,6 +39,12 @@ func update_display(time_in_seconds):
 	# Format string with padding
 	# "%02d" means "make sure this number has at least 2 digits" (e.g., 5 becomes 05)
 	text = "%d : %02d" % [minutes, seconds]
+	
+	if time_in_seconds <= 30:
+		modulate = Color.RED
+	else:
+		# Reset to White (Normal)
+		modulate = Color.WHITE
 
 func _on_switch_level():
 	has_game_started = false
@@ -52,7 +61,9 @@ func _on_game_started():
 		return
 		
 	visible = true
+	hud.visible = true
 	has_game_started = true
+	hud_transition.play("display_time_remaining")
 	timer.start(saved_time)
 
 func _on_add_time(amount):
