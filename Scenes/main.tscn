@@ -1,4 +1,4 @@
-[gd_scene load_steps=151 format=3 uid="uid://cpv02exs4ywq1"]
+[gd_scene load_steps=154 format=3 uid="uid://cpv02exs4ywq1"]
 
 [ext_resource type="PackedScene" uid="uid://bwtlejdt7cws6" path="res://Scenes/maze_test2.tscn" id="1_21xkr"]
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="1_bo1nx"]
@@ -141,6 +141,8 @@
 [ext_resource type="Texture2D" uid="uid://1l7gqyd1cf4p" path="res://Assets/alarm clock/_a_frm98,40.png" id="139_b7esa"]
 [ext_resource type="Texture2D" uid="uid://dcu65rgfdo3to" path="res://Assets/alarm clock/_a_frm99,40.png" id="140_uo3nc"]
 [ext_resource type="Script" uid="uid://ble6hprlg3lfr" path="res://Scenes/alarm_clock.gd" id="141_adgm5"]
+[ext_resource type="AudioStream" uid="uid://ckoxlgaqh6jlx" path="res://SFX/5 second remaining.MP3" id="142_qxkn4"]
+[ext_resource type="AudioStream" uid="uid://5brd41x6goxq" path="res://SFX/times up.MP3" id="143_130ps"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_k12tt"]
 friction = 0.0
@@ -531,7 +533,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"default",
-"speed": 30.0
+"speed": 45.0
 }]
 
 [sub_resource type="Animation" id="Animation_adgm5"]
@@ -589,10 +591,14 @@ tracks/1/keys = {
 "values": [Vector2(1075, -160), Vector2(1075, 40)]
 }
 
+[sub_resource type="Animation" id="Animation_qxkn4"]
+resource_name = "times_up"
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nay3j"]
 _data = {
 &"RESET": SubResource("Animation_adgm5"),
-&"display_time_remaining": SubResource("Animation_cblf0")
+&"display_time_remaining": SubResource("Animation_cblf0"),
+&"times_up": SubResource("Animation_qxkn4")
 }
 
 [node name="Node2D" type="Node2D"]
@@ -626,7 +632,8 @@ enabled = false
 zoom = Vector2(0.3, 0.3)
 
 [node name="Time_remaining" type="Timer" parent="."]
-wait_time = 180.0
+wait_time = 10.0
+one_shot = true
 
 [node name="Time_countdown" type="Timer" parent="."]
 wait_time = 3.0
@@ -787,6 +794,7 @@ text = "0"
 script = ExtResource("59_2060n")
 
 [node name="alarm_clock" type="AnimatedSprite2D" parent="InGameUIs"]
+process_mode = 2
 position = Vector2(1201, 548)
 sprite_frames = SubResource("SpriteFrames_xtnwn")
 frame = 73
@@ -797,6 +805,15 @@ script = ExtResource("141_adgm5")
 libraries = {
 &"": SubResource("AnimationLibrary_nay3j")
 }
+
+[node name="SFX" type="Node2D" parent="."]
+
+[node name="five_second_remaining" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("142_qxkn4")
+
+[node name="times_up" type="AudioStreamPlayer" parent="SFX"]
+process_mode = 2
+stream = ExtResource("143_130ps")
 
 [connection signal="released" from="InGameUIs/powerup_slot1" to="Player" method="_on_powerup_slot_1_released"]
 [connection signal="released" from="InGameUIs/powerup_slot2" to="Player" method="_on_powerup_slot_2_released"]
