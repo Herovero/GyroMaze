@@ -19,7 +19,7 @@ var alarm_has_started: bool = false
 func _ready():
 	player = get_tree().get_first_node_in_group("Player")
 	
-	visible = true
+	visible = false
 	hud.visible = false
 	
 	# Initialize our saved time to the full default time for first level
@@ -66,6 +66,8 @@ func update_display(time_in_seconds):
 
 func _on_switch_level():
 	has_game_started = false
+	visible = false
+	hud.visible = false
 	
 	# Capture exactly how much time was left when the player hit the flag.
 	if not timer.is_stopped():

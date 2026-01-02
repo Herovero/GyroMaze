@@ -632,7 +632,7 @@ enabled = false
 zoom = Vector2(0.3, 0.3)
 
 [node name="Time_remaining" type="Timer" parent="."]
-wait_time = 10.0
+wait_time = 20.0
 one_shot = true
 
 [node name="Time_countdown" type="Timer" parent="."]
@@ -696,8 +696,6 @@ position = Vector2(2178, 33)
 scale = Vector2(0.3, 0.3)
 texture_normal = ExtResource("6_ynf5e")
 action = "ui_accept"
-
-[node name="TouchScreenButton" type="TouchScreenButton" parent="InGameUIs"]
 
 [node name="ZoomOutButton" type="TouchScreenButton" parent="InGameUIs"]
 position = Vector2(1976, 48.00006)
@@ -794,7 +792,6 @@ text = "0"
 script = ExtResource("59_2060n")
 
 [node name="alarm_clock" type="AnimatedSprite2D" parent="InGameUIs"]
-process_mode = 2
 position = Vector2(1201, 548)
 sprite_frames = SubResource("SpriteFrames_xtnwn")
 frame = 73
@@ -812,7 +809,6 @@ libraries = {
 stream = ExtResource("142_qxkn4")
 
 [node name="times_up" type="AudioStreamPlayer" parent="SFX"]
-process_mode = 2
 stream = ExtResource("143_130ps")
 
 [connection signal="released" from="InGameUIs/powerup_slot1" to="Player" method="_on_powerup_slot_1_released"]
