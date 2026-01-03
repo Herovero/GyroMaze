@@ -13,7 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://cy81f3sgiqhtq" path="res://Scenes/powerup_slot.tscn" id="10_jkdf5"]
 [ext_resource type="PackedScene" uid="uid://ggicmeg7fv1h" path="res://Scenes/powerup_ghost.tscn" id="11_d1ilt"]
 [ext_resource type="PackedScene" uid="uid://bi5snb0ma00j1" path="res://Scenes/powerup_wing.tscn" id="12_6iyac"]
-[ext_resource type="Script" uid="uid://dcaxkqiax2bvs" path="res://Scripts/time_remaining.gd" id="12_jkdf5"]
+[ext_resource type="Script" path="res://Scripts/time_remaining.gd" id="12_jkdf5"]
 [ext_resource type="Texture2D" uid="uid://xkokujeiydnq" path="res://Assets/collectibles/coin/_a_frm0,20.png" id="14_1semv"]
 [ext_resource type="Texture2D" uid="uid://bn1oxggt6psjy" path="res://Assets/uis/zoomout_button.png" id="14_2060n"]
 [ext_resource type="Script" uid="uid://dhrbn6ld6asi0" path="res://Scripts/zoomout_button.gd" id="15_6ml46"]
