@@ -4,6 +4,7 @@ extends Area2D
 @onready var sprite = $Sprite2D
 @onready var hand = $Hand
 @onready var hold_timer: Timer = $Timer
+@onready var setting = $Settings
 var rpm := 1.0
 var rotating = false
 var tween: Tween
@@ -12,9 +13,11 @@ var tween: Tween
 func _ready():
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
-	hold_timer.timeout.connect(_on_hold_timeout)
 	if name == ("Play"):
+		hold_timer.timeout.connect(_on_hold_timeout)
 		sprite.rotation = deg_to_rad(-45)
+	else:
+		setting.visible = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -24,8 +27,8 @@ func _process(_delta):
 
 func _on_body_entered(body):
 	if body.is_in_group("Player"):
-		if name == ("Settings"):
-			#print("Settings")
+		if name == ("SettingsBackground"):
+			print("Settings")
 			if tween:
 				tween.kill()
 			
@@ -33,6 +36,8 @@ func _on_body_entered(body):
 			tween.set_ease(Tween.EASE_OUT)
 			tween.set_trans(Tween.TRANS_QUART)
 			tween.tween_property(hand, "rotation", deg_to_rad(-20), 2.0)
+			
+			setting.visible = true
 			
 		if name == ("Play"):
 			rotating = true
@@ -43,13 +48,17 @@ func _on_hold_timeout():
 			
 func _on_body_exited(body):
 	if body.is_in_group("Player"):
-			if name == ("Settings"):
+			if name == ("SettingsBackground"):
 				if tween:
 					tween.kill()
 				tween = create_tween()
 				tween.set_ease(Tween.EASE_OUT)
 				tween.set_trans(Tween.TRANS_QUART)
 				tween.tween_property(hand, "rotation", 0.0, 2.0)
+				
+				setting.visible = false
+				
 			if name == ("Play"):
 				rotating = false
 				hold_timer.stop()
+				

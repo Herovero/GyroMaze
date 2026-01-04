@@ -3,7 +3,7 @@ extends RigidBody2D
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var wing_sprite: AnimatedSprite2D = $wing_sprite
 
-@export var tilt_strength: float = 3000.0 
+@export var tilt_strength: float = 3000.0
 @export var spin_speed: float = 0.02 # Controls how fast the visual spin is
 
 # @onready var base_scale = sprite_2d.scale * 10
@@ -66,7 +66,7 @@ func _physics_process(delta):
 			input_direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") / 4
 		linear_damp = 1.0
 
-	var force = input_direction * tilt_strength
+	var force = input_direction * tilt_strength * Global.input_sensitivity
 	apply_central_force(force)
 	
 	rotate_marble_visuals(delta)

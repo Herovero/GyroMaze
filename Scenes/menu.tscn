@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=4 uid="uid://dop0o8p8aubhb"]
+[gd_scene load_steps=30 format=4 uid="uid://dop0o8p8aubhb"]
 
 [ext_resource type="Script" uid="uid://bvqyshguk4ni0" path="res://Scripts/menu_music.gd" id="1_kmwmt"]
 [ext_resource type="Texture2D" uid="uid://brfgmalflxw5p" path="res://Assets/movement_tileset.png" id="1_m8nev"]
@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://cmffj0vo5gtq8" path="res://Assets/vinyl_play.png" id="10_g8i7c"]
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="10_u4tgj"]
 [ext_resource type="Texture2D" uid="uid://kwratvx20eml" path="res://Assets/0000.png" id="11_4opq8"]
-[ext_resource type="Script" uid="uid://g18eqt4cf3ib" path="res://Scenes/menubuttons.gd" id="11_g8i7c"]
+[ext_resource type="Script" uid="uid://g18eqt4cf3ib" path="res://Scripts/menu_buttons.gd" id="11_g8i7c"]
 [ext_resource type="Texture2D" uid="uid://bn5db481x6w25" path="res://Assets/notebook-8066538_1280.png" id="11_rfqti"]
 [ext_resource type="PackedScene" uid="uid://cy81f3sgiqhtq" path="res://Scenes/powerup_slot.tscn" id="12_c4jr8"]
 [ext_resource type="Texture2D" uid="uid://jees67ud5s1d" path="res://Assets/logo.png" id="12_g8i7c"]
@@ -17,6 +17,8 @@
 [ext_resource type="Texture2D" uid="uid://djsr3def2h6yn" path="res://Assets/tonearm.png" id="14_5ti5v"]
 [ext_resource type="Texture2D" uid="uid://rnrva06tai0d" path="res://Assets/tonearmhead.png" id="15_5ti5v"]
 [ext_resource type="Texture2D" uid="uid://ckqon0u4m5c8r" path="res://Assets/pencil.png" id="16_1by5w"]
+[ext_resource type="FontFile" uid="uid://bj78sglhgmtv7" path="res://Fonts/Courier_Prime/CourierPrime-Italic.ttf" id="17_dldpb"]
+[ext_resource type="Script" uid="uid://cbx3hccfd46u8" path="res://Scripts/input_slider.gd" id="18_d77ms"]
 [ext_resource type="AudioStream" uid="uid://dqbxc3qan0avt" path="res://SFX/menubgm.mp3" id="18_rc6uw"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_k12tt"]
@@ -47,6 +49,17 @@ sources/0 = SubResource("TileSetAtlasSource_h1bgf")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8i7c"]
 size = Vector2(78.92989, 106.47638)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_dldpb"]
+thickness = 36
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_d77ms"]
+color = Color(0.15607989, 0.5694222, 0.9834097, 1)
+thickness = 36
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_3p34a"]
+color = Color(0.15686275, 0.5686275, 0.9843137, 1)
+thickness = 36
 
 [node name="Node2D" type="Node2D"]
 
@@ -81,6 +94,10 @@ scale = Vector2(1.75, 1.75)
 [node name="PlayerCamera" parent="Player" index="3"]
 visible = false
 enabled = false
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="Player"]
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="TextureRect" type="TextureRect" parent="."]
 z_index = -5
@@ -128,7 +145,7 @@ scale = Vector2(0.8, 0.8)
 
 [node name="InfoButton" type="TouchScreenButton" parent="InGameUIs"]
 z_index = 5
-position = Vector2(2140, 2)
+position = Vector2(2134, 15)
 scale = Vector2(0.25, 0.25)
 texture_normal = ExtResource("8_rc6uw")
 
@@ -154,9 +171,15 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="InGameUIs/InfoPopup/PopupPanel"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-text = "HELLO"
+offset_right = 600.0
+offset_bottom = 67.0
+theme_override_font_sizes/font_size = 32
+text = "Move by tilting your phone, avoid
+avoid hazards and try to complete
+as many levels as possible before
+the time runs out!
+
+Move to the play button to start playing!"
 metadata/_edit_use_anchors_ = true
 
 [node name="CloseButton" type="Button" parent="InGameUIs/InfoPopup/PopupPanel"]
@@ -170,40 +193,40 @@ grow_horizontal = 0
 text = "X"
 metadata/_edit_use_anchors_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="InGameUIs"]
-position = Vector2(1200, 200)
+[node name="GameLogo" type="Sprite2D" parent="InGameUIs"]
+position = Vector2(1200, 138)
 texture = ExtResource("12_g8i7c")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="PlayBackground" type="StaticBody2D" parent="."]
 position = Vector2(2930.0002, 1179.9999)
 rotation = 0.36651918
 scale = Vector2(3.2, 3.2)
 
-[node name="GramophoneBox" type="Sprite2D" parent="StaticBody2D"]
+[node name="GramophoneBox" type="Sprite2D" parent="PlayBackground"]
 z_index = -1
 position = Vector2(-392.81683, 417.23557)
 rotation = -0.43633237
 scale = Vector2(1.2499999, 1.2499999)
 texture = ExtResource("13_8ph6h")
 
-[node name="tonearmbase" type="Sprite2D" parent="StaticBody2D"]
+[node name="tonearmbase" type="Sprite2D" parent="PlayBackground"]
 z_index = 1
 texture = ExtResource("14_5ti5v")
 centered = false
 offset = Vector2(-248, -150)
 
-[node name="tonearmhead" type="Sprite2D" parent="StaticBody2D"]
+[node name="tonearmhead" type="Sprite2D" parent="PlayBackground"]
 z_index = 3
 texture = ExtResource("15_5ti5v")
 centered = false
 offset = Vector2(-248, -150)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayBackground"]
 scale = Vector2(7.2, 7.2)
 shape = SubResource("CircleShape2D_5ti5v")
 
 [node name="Play" type="Area2D" parent="."]
-position = Vector2(800, 1879)
+position = Vector2(785.00006, 1879.0001)
 scale = Vector2(3, 3)
 script = ExtResource("11_g8i7c")
 
@@ -217,27 +240,132 @@ texture = ExtResource("10_g8i7c")
 
 [node name="Timer" type="Timer" parent="Play"]
 
-[node name="Settings" type="Area2D" parent="."]
-position = Vector2(6004, 1884)
+[node name="SettingsBackground" type="Area2D" parent="."]
+position = Vector2(6041, 1884.0002)
 rotation = 0.3351032
 script = ExtResource("11_g8i7c")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Settings"]
-position = Vector2(29.02832, 1.4240723)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SettingsBackground"]
+position = Vector2(139.53613, 1.2348633)
 scale = Vector2(30, 30)
 shape = SubResource("RectangleShape2D_g8i7c")
 
-[node name="Paper" type="Sprite2D" parent="Settings"]
+[node name="Paper" type="Sprite2D" parent="SettingsBackground"]
+position = Vector2(110.507935, -0.18908691)
 scale = Vector2(2.5, 2.5)
 texture = ExtResource("11_rfqti")
 
-[node name="Timer" type="Timer" parent="Settings"]
+[node name="Timer" type="Timer" parent="SettingsBackground"]
 
-[node name="Hand" type="Sprite2D" parent="Settings"]
-position = Vector2(2452.306, -611.4951)
+[node name="Hand" type="Sprite2D" parent="SettingsBackground"]
+z_index = 3
+z_as_relative = false
+position = Vector2(2533.4756, -880.13184)
 scale = Vector2(7, 7)
 texture = ExtResource("16_1by5w")
 offset = Vector2(-280, -130)
+
+[node name="SettingsTitle" type="RichTextLabel" parent="SettingsBackground"]
+offset_left = -720.85
+offset_top = -1215.55
+offset_right = 447.338
+offset_bottom = -513.73193
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_constants/underline_alpha = 100
+theme_override_fonts/normal_font = ExtResource("17_dldpb")
+theme_override_font_sizes/normal_font_size = 200
+bbcode_enabled = true
+text = "[u]Settings[/u]"
+
+[node name="Settings" type="Control" parent="SettingsBackground"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SettingsLabels" type="RichTextLabel" parent="SettingsBackground/Settings"]
+z_as_relative = false
+custom_minimum_size = Vector2(2050, 0)
+layout_mode = 0
+offset_left = -754.8203
+offset_top = -680.6236
+offset_right = 1295.1797
+offset_bottom = 432.8847
+mouse_filter = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_constants/underline_alpha = 100
+theme_override_fonts/normal_font = ExtResource("17_dldpb")
+theme_override_font_sizes/normal_font_size = 92
+bbcode_enabled = true
+text = "Sound Effects Volume
+
+
+
+Background Music Volume
+
+
+
+Input Sensitivity"
+
+[node name="SFXVolumeSlider" type="HSlider" parent="SettingsBackground/Settings"]
+layout_mode = 0
+offset_left = -740.1082
+offset_top = -763.0468
+offset_right = 1179.8918
+offset_bottom = -263.0468
+theme_override_styles/slider = SubResource("StyleBoxLine_dldpb")
+theme_override_styles/grabber_area = SubResource("StyleBoxLine_d77ms")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxLine_3p34a")
+max_value = 1.5
+step = 0.05
+value = 0.75
+
+[node name="BGMVolumeSlider" type="HSlider" parent="SettingsBackground/Settings"]
+layout_mode = 0
+offset_left = -739.6633
+offset_top = -445.53174
+offset_right = 1180.3367
+offset_bottom = 254.46826
+theme_override_styles/slider = SubResource("StyleBoxLine_dldpb")
+theme_override_styles/grabber_area = SubResource("StyleBoxLine_d77ms")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxLine_3p34a")
+max_value = 1.5
+step = 0.05
+value = 0.75
+
+[node name="InputSlider" type="HSlider" parent="SettingsBackground/Settings"]
+layout_mode = 0
+offset_left = -739.7982
+offset_top = -29.337109
+offset_right = 1180.2018
+offset_bottom = 670.6629
+theme_override_styles/slider = SubResource("StyleBoxLine_dldpb")
+theme_override_styles/grabber_area = SubResource("StyleBoxLine_d77ms")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxLine_3p34a")
+min_value = 0.05
+max_value = 2.0
+step = 0.05
+value = 1.0
+script = ExtResource("18_d77ms")
+
+[node name="CreditsLabel" type="RichTextLabel" parent="SettingsBackground"]
+custom_minimum_size = Vector2(2050, 0)
+offset_left = -755.1897
+offset_top = 665.3667
+offset_right = 1294.8103
+offset_bottom = 1466.093
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_constants/underline_alpha = 100
+theme_override_fonts/normal_font = ExtResource("17_dldpb")
+theme_override_font_sizes/normal_font_size = 92
+bbcode_enabled = true
+text = "CGD6344 Game Productions
+TT1L (Mr. Irfan Hadi)
+
+
+Made with love by:
+Veron Siaw (1221305531)
+Jordan Lim (1221103819)"
 
 [node name="Node2D" type="Node2D" parent="."]
 script = ExtResource("1_kmwmt")

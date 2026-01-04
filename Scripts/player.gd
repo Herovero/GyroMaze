@@ -3,7 +3,7 @@ extends RigidBody2D
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var wing_sprite: AnimatedSprite2D = $wing_sprite
 
-@export var tilt_strength: float = 2000.0 
+@export var tilt_strength: float = 2000.0 * Global.input_sensitivity
 @export var spin_speed: float = 0.02 # Controls how fast the visual spin is
 
 @onready var base_scale = sprite_2d.scale
