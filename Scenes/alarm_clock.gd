@@ -15,6 +15,7 @@ extends AnimatedSprite2D
 @onready var time_remaining = $"../time_remaining"
 @onready var level_count = $"../level_count"
 @onready var coin_count = $"../coin_count"
+@onready var result_screen_hud = $"../result_screen_hud"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
