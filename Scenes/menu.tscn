@@ -44,6 +44,7 @@ sources/0 = SubResource("TileSetAtlasSource_h1bgf")
 [sub_resource type="CircleShape2D" id="CircleShape2D_7qvly"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g8i7c"]
+size = Vector2(78.92989, 106.47638)
 
 [node name="Node2D" type="Node2D"]
 
@@ -220,6 +221,7 @@ rotation = 0.3351032
 script = ExtResource("11_g8i7c")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Settings"]
+position = Vector2(29.02832, 1.4240723)
 scale = Vector2(30, 30)
 shape = SubResource("RectangleShape2D_g8i7c")
 
@@ -230,10 +232,10 @@ texture = ExtResource("11_rfqti")
 [node name="Timer" type="Timer" parent="Settings"]
 
 [node name="Hand" type="Sprite2D" parent="Settings"]
-position = Vector2(446.1814, 137.93835)
-rotation = -0.3351032
+position = Vector2(2452.306, -611.4951)
 scale = Vector2(7, 7)
 texture = ExtResource("16_1by5w")
+offset = Vector2(-280, -130)
 
 [connection signal="released" from="InGameUIs/powerup_slot1" to="Player" method="_on_powerup_slot_1_released"]
 [connection signal="released" from="InGameUIs/powerup_slot2" to="Player" method="_on_powerup_slot_2_released"]

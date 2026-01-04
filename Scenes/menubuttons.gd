@@ -21,16 +21,21 @@ func _process(_delta):
 	rpm = 6.5 if rotating else 1.0 # play button
 	if name == ("Play"):
 		sprite.rotation += (2.0 * PI * rpm) / 60.0 * _delta
-	if name == ("Settings"):
-		hand.rotation = deg_to_rad(30)
 
 func _on_body_entered(body):
 	if body.is_in_group("Player"):
 		if name == ("Settings"):
-			print("Settings")
+			#print("Settings")
+			if tween:
+				tween.kill()
+			
+			tween = create_tween()
+			tween.set_ease(Tween.EASE_OUT)
+			tween.set_trans(Tween.TRANS_QUART)
+			tween.tween_property(hand, "rotation", deg_to_rad(-20), 2.0)
+			
 		if name == ("Play"):
 			rotating = true
-			print("Play")
 			hold_timer.start(3.0)
 
 func _on_hold_timeout():
@@ -38,5 +43,13 @@ func _on_hold_timeout():
 			
 func _on_body_exited(body):
 	if body.is_in_group("Player"):
-		rotating = false
-	hold_timer.stop()
+			if name == ("Settings"):
+				if tween:
+					tween.kill()
+				tween = create_tween()
+				tween.set_ease(Tween.EASE_OUT)
+				tween.set_trans(Tween.TRANS_QUART)
+				tween.tween_property(hand, "rotation", 0.0, 2.0)
+			if name == ("Play"):
+				rotating = false
+				hold_timer.stop()
