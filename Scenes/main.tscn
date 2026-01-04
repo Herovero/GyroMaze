@@ -946,11 +946,11 @@ text = "0"
 
 [node name="stamp_hud" type="TextureRect" parent="InGameUIs/result_screen_hud"]
 layout_mode = 0
-offset_left = 961.24963
-offset_top = 720.0
-offset_right = 1461.2496
-offset_bottom = 1220.0
-scale = Vector2(0.7, 0.7)
+offset_left = 991.24963
+offset_top = 749.99994
+offset_right = 1491.2496
+offset_bottom = 1250.0
+scale = Vector2(0.8, 0.8)
 script = ExtResource("144_wt5iu")
 tex_plot_armor = ExtResource("145_pmnrr")
 tex_maidenless = ExtResource("146_s8cid")

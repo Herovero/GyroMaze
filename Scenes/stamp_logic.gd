@@ -79,6 +79,6 @@ func animate_slam():
 	tween.set_ease(Tween.EASE_OUT)
 	
 	# Slam down to normal size
-	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.4)
+	tween.tween_property(self, "scale", Vector2(0.8, 0.8), 0.4)
 	# Fade in instantly
 	tween.tween_property(self, "modulate:a", 1.0, 0.1)

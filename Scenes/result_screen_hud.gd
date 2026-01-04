@@ -40,11 +40,11 @@ func _on_times_up():
 	
 	# Change these numbers manually to test different stamps!
 	var test_stats = {
-		"deaths": 232,
-		"level": 19,
+		"deaths": 6,
+		"level": 36,
 		"coins": 48,
 		"powerups": 9,     # Add this key
-		"time_str": "5.00" # Add this key (formatted string)
+		"time_str": "15.00" # Add this key (formatted string)
 	}
 	
 	# 2. Create the Animation
@@ -98,7 +98,7 @@ func pop_in_label(label: Label, text_value: String):
 	var tween = create_tween()
 	tween.set_trans(Tween.TRANS_BACK) # Makes it "pop" out slightly
 	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(label, "scale", Vector2(0.7, 0.7), 0.4)
+	tween.tween_property(label, "scale", Vector2(1.0, 1.0), 0.4)
 	
 	# Optional: Add a small "pop" sound here if you have one!
 	# pop_sfx.play()
