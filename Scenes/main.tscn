@@ -1,4 +1,4 @@
-[gd_scene load_steps=157 format=3 uid="uid://cpv02exs4ywq1"]
+[gd_scene load_steps=167 format=3 uid="uid://cpv02exs4ywq1"]
 
 [ext_resource type="PackedScene" uid="uid://bwtlejdt7cws6" path="res://Scenes/maze_test2.tscn" id="1_21xkr"]
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="1_bo1nx"]
@@ -141,11 +141,21 @@
 [ext_resource type="Texture2D" uid="uid://1l7gqyd1cf4p" path="res://Assets/alarm clock/_a_frm98,40.png" id="139_b7esa"]
 [ext_resource type="Texture2D" uid="uid://dcu65rgfdo3to" path="res://Assets/alarm clock/_a_frm99,40.png" id="140_uo3nc"]
 [ext_resource type="Script" uid="uid://ble6hprlg3lfr" path="res://Scenes/alarm_clock.gd" id="141_adgm5"]
-[ext_resource type="Texture2D" uid="uid://bt6uyef61ub0i" path="res://Assets/uis/BackgroundSaveMenu.png" id="142_b12iu"]
 [ext_resource type="AudioStream" uid="uid://ckoxlgaqh6jlx" path="res://SFX/5 second remaining.MP3" id="142_qxkn4"]
+[ext_resource type="Texture2D" uid="uid://c11td3pqubd7v" path="res://Assets/BackgroundSaveMenu.png" id="142_vlivj"]
 [ext_resource type="AudioStream" uid="uid://5brd41x6goxq" path="res://SFX/times up.MP3" id="143_130ps"]
 [ext_resource type="Script" uid="uid://ch0k6ciqb1g8a" path="res://Scenes/result_screen_hud.gd" id="143_gf7g1"]
+[ext_resource type="FontFile" uid="uid://cafoe8dbdcadk" path="res://Fonts/Courier_Prime/CourierPrime-Regular.ttf" id="144_pmnrr"]
+[ext_resource type="Script" uid="uid://bpsyq3b365phu" path="res://Scenes/stamp_logic.gd" id="144_wt5iu"]
 [ext_resource type="AudioStream" uid="uid://o11nlb4lp5j" path="res://SFX/paper flip.MP3" id="145_gf7g1"]
+[ext_resource type="Texture2D" uid="uid://d0kbjhpywptxt" path="res://Assets/stamps/stamp_plotarmor.png" id="145_pmnrr"]
+[ext_resource type="Texture2D" uid="uid://1ffa2piaqjri" path="res://Assets/stamps/stamp_maidenless.png" id="146_s8cid"]
+[ext_resource type="Texture2D" uid="uid://eyfkdm7mfb4v" path="res://Assets/stamps/stamp_bankrupt.png" id="147_0w4wg"]
+[ext_resource type="Texture2D" uid="uid://cyr1kxwrqnmbi" path="res://Assets/stamps/stamp_stonks.png" id="148_dllok"]
+[ext_resource type="Texture2D" uid="uid://byqj1gs5xnqyc" path="res://Assets/stamps/stamp_gitgud.png" id="149_0t4jf"]
+[ext_resource type="Texture2D" uid="uid://bfpyn8n4uj5tp" path="res://Assets/stamps/stamp_gotouchgrass.png" id="150_daoo8"]
+[ext_resource type="Texture2D" uid="uid://c4p3dt53glqun" path="res://Assets/stamps/stamp_twitter.png" id="152_s8cid"]
+[ext_resource type="AudioStream" uid="uid://bx17xkhrmq83y" path="res://SFX/stamp_sfx.MP3" id="154_wt5iu"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_k12tt"]
 friction = 0.0
@@ -635,7 +645,7 @@ enabled = false
 zoom = Vector2(0.3, 0.3)
 
 [node name="Time_remaining" type="Timer" parent="."]
-wait_time = 20.0
+wait_time = 5.0
 one_shot = true
 
 [node name="Time_countdown" type="Timer" parent="."]
@@ -816,8 +826,139 @@ grow_vertical = 2
 scale = Vector2(0.8, 0.8)
 pivot_offset = Vector2(760, 597.5)
 size_flags_horizontal = 4
-texture = ExtResource("142_b12iu")
+texture = ExtResource("142_vlivj")
 script = ExtResource("143_gf7g1")
+
+[node name="StatContainer" type="GridContainer" parent="InGameUIs/result_screen_hud"]
+layout_mode = 0
+offset_left = 117.5
+offset_top = 278.75
+offset_right = 657.5
+offset_bottom = 742.75
+scale = Vector2(1.2, 1.2)
+
+[node name="coins_earned" type="Label" parent="InGameUIs/result_screen_hud/StatContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("144_pmnrr")
+theme_override_font_sizes/font_size = 60
+text = "Coins Earned:"
+horizontal_alignment = 2
+
+[node name="empty" type="Label" parent="InGameUIs/result_screen_hud/StatContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="InGameUIs/result_screen_hud/StatContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("144_pmnrr")
+theme_override_font_sizes/font_size = 60
+text = "Levels Passed:"
+horizontal_alignment = 2
+
+[node name="empty2" type="Label" parent="InGameUIs/result_screen_hud/StatContainer"]
+layout_mode = 2
+
+[node name="power-ups_used" type="Label" parent="InGameUIs/result_screen_hud/StatContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("144_pmnrr")
+theme_override_font_sizes/font_size = 60
+text = "Power-Ups Used:"
+horizontal_alignment = 2
+
+[node name="empty3" type="Label" parent="InGameUIs/result_screen_hud/StatContainer"]
+layout_mode = 2
+
+[node name="deaths" type="Label" parent="InGameUIs/result_screen_hud/StatContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("144_pmnrr")
+theme_override_font_sizes/font_size = 60
+text = "Deaths:"
+horizontal_alignment = 2
+
+[node name="empty4" type="Label" parent="InGameUIs/result_screen_hud/StatContainer"]
+layout_mode = 2
+
+[node name="time_spent" type="Label" parent="InGameUIs/result_screen_hud/StatContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("144_pmnrr")
+theme_override_font_sizes/font_size = 60
+text = "Time Spent:"
+horizontal_alignment = 2
+
+[node name="ValueContainer" type="GridContainer" parent="InGameUIs/result_screen_hud"]
+layout_mode = 0
+offset_left = 790.0
+offset_top = 278.75
+offset_right = 830.0
+offset_bottom = 742.75
+scale = Vector2(1.2, 1.2)
+
+[node name="coins_value" type="Label" parent="InGameUIs/result_screen_hud/ValueContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("144_pmnrr")
+theme_override_font_sizes/font_size = 60
+text = "0"
+
+[node name="empty" type="Label" parent="InGameUIs/result_screen_hud/ValueContainer"]
+layout_mode = 2
+
+[node name="levels_value" type="Label" parent="InGameUIs/result_screen_hud/ValueContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("144_pmnrr")
+theme_override_font_sizes/font_size = 60
+text = "0"
+
+[node name="empty2" type="Label" parent="InGameUIs/result_screen_hud/ValueContainer"]
+layout_mode = 2
+
+[node name="powerups_value" type="Label" parent="InGameUIs/result_screen_hud/ValueContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("144_pmnrr")
+theme_override_font_sizes/font_size = 60
+text = "0"
+
+[node name="empty3" type="Label" parent="InGameUIs/result_screen_hud/ValueContainer"]
+layout_mode = 2
+
+[node name="deaths_value" type="Label" parent="InGameUIs/result_screen_hud/ValueContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("144_pmnrr")
+theme_override_font_sizes/font_size = 60
+text = "0"
+
+[node name="empty4" type="Label" parent="InGameUIs/result_screen_hud/ValueContainer"]
+layout_mode = 2
+
+[node name="time_value" type="Label" parent="InGameUIs/result_screen_hud/ValueContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("144_pmnrr")
+theme_override_font_sizes/font_size = 60
+text = "0"
+
+[node name="stamp_hud" type="TextureRect" parent="InGameUIs/result_screen_hud"]
+layout_mode = 0
+offset_left = 961.24963
+offset_top = 720.0
+offset_right = 1461.2496
+offset_bottom = 1220.0
+scale = Vector2(0.7, 0.7)
+script = ExtResource("144_wt5iu")
+tex_plot_armor = ExtResource("145_pmnrr")
+tex_maidenless = ExtResource("146_s8cid")
+tex_bankrupt = ExtResource("147_0w4wg")
+tex_stonks = ExtResource("148_dllok")
+tex_git_gud = ExtResource("149_0t4jf")
+tex_touch_grass = ExtResource("150_daoo8")
+tex_mid = ExtResource("152_s8cid")
 
 [node name="HUD_transition" type="AnimationPlayer" parent="."]
 libraries = {
@@ -834,6 +975,10 @@ stream = ExtResource("143_130ps")
 
 [node name="paper_flip" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("145_gf7g1")
+volume_db = -4.052
+
+[node name="stamp" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("154_wt5iu")
 
 [connection signal="released" from="InGameUIs/powerup_slot1" to="Player" method="_on_powerup_slot_1_released"]
 [connection signal="released" from="InGameUIs/powerup_slot2" to="Player" method="_on_powerup_slot_2_released"]
