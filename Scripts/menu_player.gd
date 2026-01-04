@@ -30,7 +30,6 @@ var inventory = ["none", "none", "none"]
 @onready var hazard_tiles: TileMapLayer = $"../hazard_tiles"
 
 # Power up activations
-var ghost_charges = 0
 var was_inside_wall: bool = false
 var wing_timer = 0.0
 var is_flying: bool = false
@@ -48,7 +47,7 @@ func _ready():
 func set_start_position(pos: Vector2):
 	current_start_pos = pos
 	
-	should_reset = true 
+	should_reset = true
 	# Kill any existing movement immediately
 	linear_velocity = Vector2.ZERO
 	angular_velocity = 0
@@ -65,29 +64,12 @@ func _physics_process(delta):
 	else:
 		if input_enabled == true:
 			input_direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down") / 4
-
-	if hazard_tiles.get_cell_atlas_coords(hazard_tiles.local_to_map(hazard_tiles.to_local(global_position))) == Vector2i(0, 1):
-		linear_damp = -1.0
-	elif hazard_tiles.get_cell_atlas_coords(hazard_tiles.local_to_map(hazard_tiles.to_local(global_position))) == Vector2i(1, 1):
-		linear_damp = 4.0
-	else:
 		linear_damp = 1.0
 
 	var force = input_direction * tilt_strength
 	apply_central_force(force)
 	
-	# The easy way
 	rotate_marble_visuals(delta)
-	
-	# The hard way
-	#update_rolling_shader(delta)
-	
-	# movement_tile_logic()
-	#if movement_tiles.get_cell_atlas_coords(movement_tiles.local_to_map(movement_tiles.to_local(global_position))) == Vector2i(0, 1):
-	#	print("hi")
-	
-	if ghost_charges > 0:
-		handle_ghost_logic()
 	
 	if is_flying:
 		wing_timer -= delta
@@ -123,82 +105,7 @@ func rotate_marble_visuals(delta):
 	sprite_2d.rotation += total_spin
 
 func _input(event):
-	if event.is_action_pressed("ui_accept"):
-		advance_level()
-
-func advance_level():
-	# 1. Increase Level Counter
-	Global.current_level += 1
-	
-	SignalBus.emit_signal("switch_level")
-		
-		# 4. Optional: Reset Player Physics State if needed
-		# (The move_player_to_start function inside mazegen handles position,
-		# but you might want to reset velocity here to be safe)
-		#state_reset_needed = true # Trigger your _integrate_forces reset
-
-# 1. Trigger the flag
-func reset_position():
-	if is_flying:
-		return
-		
-	should_reset = true
-
-# 2. Handle the actual movement safely inside the physics loop
-func _integrate_forces(state):
-	if should_reset:
-		# Teleport the body
-		state.transform.origin = current_start_pos
-		
-		# Kill all momentum (stop it from flying)
-		state.linear_velocity = Vector2.ZERO
-		state.angular_velocity = 0
-		
-		# Reset the visual rolling counter
-		rolled_accumulator = Vector2.ZERO
-		
-		# Turn the flag off so we don't get stuck at (0,0)
-		should_reset = false
-	
-	if force_rotation_lock:
-		# 1. Kill any spinning momentum instantly
-		state.angular_velocity = 0
-		
-		# 2. Force the rotation angle to 0 (Upright)
-		# This overrides any collision that tried to tilt you this frame
-		var new_transform = state.transform
-		new_transform.x = Vector2(1, 0) # X axis points Right
-		new_transform.y = Vector2(0, 1) # Y axis points Down
-		state.transform = new_transform
-	
-	# iterate through all current contacts using the 'state' object
-	for i in range(state.get_contact_count()):
-		# Get the object we hit
-		var body = state.get_contact_collider_object(i)
-		
-		# Check if we hit the Hazard TileMapLayer
-		if body == hazard_tiles:
-			print("hit hazard?")
-			# Get the collision normal (direction of the wall face)
-			var normal = state.get_contact_local_normal(i)
-			# Get the collision point
-			var contact_pos = state.get_contact_local_position(i)
-			
-			# Nudge the point slightly "into" the wall to grab the correct tile coordinate
-			# We subtract the normal to go 'in'
-			var check_pos = contact_pos - (normal * 5.0)
-			
-			# Convert global/local pixel pos to Grid Coordinates
-			var local_check_pos = hazard_tiles.to_local(check_pos)
-			var map_pos = hazard_tiles.local_to_map(local_check_pos)
-			
-			# Check if the tile is Fire
-			if hazard_tiles.get_cell_atlas_coords(map_pos) == hazard_fiery:
-				# We can't call 'die()' directly inside integrate_forces safely sometimes,
-				# so we defer it or set a flag. Since reset_position() just sets a flag, it is safe!
-				print("Burned!")
-				reset_position()
-				break # Stop checking other contacts if we are dead
+	pass
 
 func collect_powerup(powerup_type: String):
 	# Logic: Find the first empty slot. If full, replace the last one.
@@ -253,79 +160,13 @@ func update_inventory_ui():
 			button_node.update_visuals(type)
 
 func activate_ghost(charges: int):
-	ghost_charges = charges
-	was_inside_wall = false
-	
-	# Disable collision with walls
-	collision_mask = 2
-	
-	# Visual Cue: Make player semi-transparent
-	modulate.a = 0.5
-	print("Ghost Mode Activated! Charges: ", ghost_charges)
-
-func handle_ghost_logic():
-	# Convert global position to local since maze scale is 9.0
-	var local_pos = maze.to_local(global_position)
-	
-	# Get the tile coordinate under the player
-	var tile_pos = maze.local_to_map(local_pos)
-	#print(tile_pos)
-	
-	# 2. Check what kind of tile is there (Layer 0)
-	var tile_atlas_coords = maze.get_cell_atlas_coords(tile_pos)
-	#print(tile_atlas_coords)
-	
-	# Based on your mazegen script: Wall is (0,0), Floor is (0,1)
-	var is_wall = (tile_atlas_coords == Vector2i(0, 0))
-	
-	if is_wall:
-		# We are currently inside a wall
-		was_inside_wall = true
-	else:
-		# We are currently on the floor
-		if was_inside_wall:
-			# We JUST exited a wall! Consumed 1 charge.
-			ghost_charges -= 1
-			was_inside_wall = false
-			print("Passed through wall! Charges left: ", ghost_charges)
-			
-			# If we ran out of charges, turn solid again
-			if ghost_charges <= 0:
-				ghost_charges = 0
-				collision_mask = 1 # Reset to default (Collide with Walls/Layer 1)
-				modulate.a = 1.0 # Fully opaque
-				print("Ghost Mode Deactivated")
+	pass
 
 func activate_wing(duration):
-	is_flying = true
-	wing_timer = duration
-	wing_sprite.show()
-	
-	force_rotation_lock = true
-	sprite_2d.rotation = 0
-	
-	print("Wing Activated! Flying for ", duration, "s")
+	pass
 
 func deactivate_wing():
-	is_flying = false
-	wing_sprite.hide()
-	
-	force_rotation_lock = false
-	
-	print("Wing Deactivated")
-
-func movement_tile_logic():
 	pass
-	# Convert global position to local since maze scale is 9.0
-	# var local_pos = movement_tiles.to_local(global_position)
-	# Get the tile coordinate under the player
-	# var tile_pos = movement_tiles.local_to_map(local_pos)
-	#print(tile_pos)
-
-	# 2. Check what kind of tile is there (Layer 0)
-	#if movement_tiles.get_cell_atlas_coords(tile_pos) == Vector2i(0, 1):
-	#	print("tile_atlas_coords")
-	
 
 func _on_powerup_slot_1_released():
 	use_item_at_index(0)

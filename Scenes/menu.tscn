@@ -1,9 +1,11 @@
-[gd_scene load_steps=23 format=4 uid="uid://dop0o8p8aubhb"]
+[gd_scene load_steps=25 format=4 uid="uid://dop0o8p8aubhb"]
 
+[ext_resource type="Script" uid="uid://bvqyshguk4ni0" path="res://Scripts/menu_music.gd" id="1_kmwmt"]
 [ext_resource type="Texture2D" uid="uid://brfgmalflxw5p" path="res://Assets/movement_tileset.png" id="1_m8nev"]
 [ext_resource type="PackedScene" uid="uid://bwtlejdt7cws6" path="res://Scenes/maze_test2.tscn" id="2_fwrfa"]
 [ext_resource type="Script" uid="uid://6n5g0nrkduwr" path="res://Scripts/menu_player.gd" id="4_6swd7"]
 [ext_resource type="Script" uid="uid://bxrmatpjxrve4" path="res://Scripts/menu_main.gd" id="6_q3rjx"]
+[ext_resource type="Texture2D" uid="uid://c51y6w3isblyh" path="res://Assets/uis/help.png" id="8_rc6uw"]
 [ext_resource type="Texture2D" uid="uid://cmffj0vo5gtq8" path="res://Assets/vinyl_play.png" id="10_g8i7c"]
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="10_u4tgj"]
 [ext_resource type="Texture2D" uid="uid://kwratvx20eml" path="res://Assets/0000.png" id="11_4opq8"]
@@ -12,10 +14,10 @@
 [ext_resource type="PackedScene" uid="uid://cy81f3sgiqhtq" path="res://Scenes/powerup_slot.tscn" id="12_c4jr8"]
 [ext_resource type="Texture2D" uid="uid://jees67ud5s1d" path="res://Assets/logo.png" id="12_g8i7c"]
 [ext_resource type="Texture2D" uid="uid://cm8i7ssp3s6ui" path="res://Assets/gramophone.png" id="13_8ph6h"]
-[ext_resource type="Texture2D" uid="uid://b7ck8twawfxri" path="res://Assets/uis/restart_button.png" id="13_sdcr8"]
 [ext_resource type="Texture2D" uid="uid://djsr3def2h6yn" path="res://Assets/tonearm.png" id="14_5ti5v"]
 [ext_resource type="Texture2D" uid="uid://rnrva06tai0d" path="res://Assets/tonearmhead.png" id="15_5ti5v"]
 [ext_resource type="Texture2D" uid="uid://ckqon0u4m5c8r" path="res://Assets/pencil.png" id="16_1by5w"]
+[ext_resource type="AudioStream" uid="uid://dqbxc3qan0avt" path="res://SFX/menubgm.mp3" id="18_rc6uw"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_k12tt"]
 friction = 0.0
@@ -126,9 +128,9 @@ scale = Vector2(0.8, 0.8)
 
 [node name="InfoButton" type="TouchScreenButton" parent="InGameUIs"]
 z_index = 5
-position = Vector2(2178, 33)
-scale = Vector2(0.3, 0.3)
-texture_normal = ExtResource("13_sdcr8")
+position = Vector2(2140, 2)
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("8_rc6uw")
 
 [node name="InfoPopup" type="Control" parent="InGameUIs"]
 layout_mode = 3
@@ -236,6 +238,15 @@ position = Vector2(2452.306, -611.4951)
 scale = Vector2(7, 7)
 texture = ExtResource("16_1by5w")
 offset = Vector2(-280, -130)
+
+[node name="Node2D" type="Node2D" parent="."]
+script = ExtResource("1_kmwmt")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node2D"]
+stream = ExtResource("18_rc6uw")
+volume_db = -7.703
+pitch_scale = 0.95
+parameters/looping = true
 
 [connection signal="released" from="InGameUIs/powerup_slot1" to="Player" method="_on_powerup_slot_1_released"]
 [connection signal="released" from="InGameUIs/powerup_slot2" to="Player" method="_on_powerup_slot_2_released"]
