@@ -39,6 +39,7 @@ var occupied_tiles: Array[Vector2i] = [] # master list for everything
 
 @export var ghost_scene: PackedScene
 @export var wing_scene: PackedScene
+@export var magnet_scene: PackedScene
 
 @export var timer_scene: PackedScene
 @export var coin_scene: PackedScene
@@ -54,13 +55,34 @@ func _ready() -> void:
 func start_new_level():
 	clear_current_level()
 	
+	var level = Global.current_level
+	
+	hole_count = clamp(1 + level, 2, 15)
+	
 	# --- 1. RANDOMIZE PATH THICKNESS ---
-	# Randomly choose between 1 (Standard), 2 (Wide), or 3 (Very Wide)
-	path_thickness = randi_range(2, 5)
+	if level <= 10:
+		path_thickness = randi_range(3, 5) # Wide paths
+	elif level <= 20:
+		path_thickness = randi_range(3, 4) # Narrow paths
+	else:
+		path_thickness = randi_range(2, 4)
+	
+	# Absolute max maze size
+	var absolute_max_w = 45
+	var absolute_max_h = 25
 	
 	# Define constraints
-	var max_w_limit = 45
-	var max_h_limit = 25
+	# At Level 1: Reduction is 20. Width = 45 - 20 = 25.
+	# At Level 10: Reduction is 0. Width = 45 - 0 = 45.
+	var reduction = max(0, 20 - (level * 2))
+	var max_w_limit = absolute_max_w - reduction
+	var max_h_limit = absolute_max_h - int(reduction / 1.5) # Height shrinks a bit less to keep ratio
+	var min_w_limit = max(15, max_w_limit - 10)
+	var min_h_limit = max(15, max_h_limit - 8)
+	
+	# Clamp to ensure it never gets too small to generate
+	max_w_limit = max(max_w_limit, 20)
+	max_h_limit = max(max_h_limit, 15)
 	
 	# --- 2. CALCULATE MAX ROOMS THAT FIT ---
 	# Step size = Path + 1 Wall
@@ -71,10 +93,18 @@ func start_new_level():
 	var max_rooms_x = (max_w_limit - 1) / step_size
 	var max_rooms_y = (max_h_limit - 1) / step_size
 	
+	var min_rooms_x = max(2, (min_w_limit - 1) / step_size)
+	var min_rooms_y = max(2, (min_h_limit - 1) / step_size)
+	# Ensure Min doesn't accidentally exceed Max (safety check)
+	if min_rooms_x > max_rooms_x: 
+		min_rooms_x = max_rooms_x
+	if min_rooms_y > max_rooms_y: 
+		min_rooms_y = max_rooms_y
+	
 	# --- 3. PICK RANDOM ROOM COUNT (WITHIN LIMITS) ---
 	# We ensure we have at least 2 rooms, and no more than the max that fits.
-	var rooms_x = randi_range(2, max_rooms_x)
-	var rooms_y = randi_range(2, max_rooms_y)
+	var rooms_x = randi_range(min_rooms_x, max_rooms_x)
+	var rooms_y = randi_range(min_rooms_y, max_rooms_y)
 	
 	# --- 4. RECALCULATE EXACT MAP SIZE ---
 	# This ensures the map is exactly the right size for the grid.
@@ -83,8 +113,10 @@ func start_new_level():
 	map_height = (rooms_y * step_size) + 1
 	
 	# --- DEBUG PRINTS ---
-	print("Path Thickness: ", path_thickness)
-	print("Map Size: ", map_width, "x", map_height)
+	print("Level: ", level)
+	print("Window W: ", min_w_limit, "-", max_w_limit, " | H: ", min_h_limit, "-", max_h_limit)
+	print("Final Map: ", map_width, "x", map_height)
+	print("Path thickness: ", path_thickness)
 	
 	# --- CONTINUE GENERATION ---
 	fill_map_with_walls()
@@ -104,12 +136,17 @@ func start_new_level():
 	generate_maze()
 	move_player_to_start()
 	spawn_finish()
-	spawn_holes()
-	spawn_hazard_tiles()
-	spawn_hazard_walls()
-	spawn_coins()
-	spawn_powerups()
-	spawn_timers()
+	if Global.current_level >= 2:
+		spawn_holes()
+	if Global.current_level > 10:
+		spawn_hazard_tiles() # Icy and Sticky Floors
+		spawn_hazard_walls() # Bouncy and Fiery Walls
+	if Global.current_level >= 3:
+		spawn_coins()
+	if Global.current_level >= 5:
+		spawn_powerups()
+	if Global.current_level >= 3:
+		spawn_timers()
 
 func clear_current_level():
 	# 1. Clear the TileMap
@@ -510,12 +547,19 @@ func spawn_holes() -> void:
 		get_parent().call_deferred("add_child", new_hole)
 		holes_spawned += 1
 			
-	if attempts >= 2000:
-		print("Warning: Could not fit all holes! Spawned ", holes_spawned, " of ", hole_count)
+	print("Spawned ", holes_spawned, " of ", hole_count, " holes")
 
 func spawn_powerups() -> void:
-	# We will try to spawn a few powerups total (e.g. 2 or 3)
-	var powerups_to_spawn = 2
+	# Debugs counter
+	var fail_wall = 0
+	var fail_player_dist = 0
+	var fail_occupied = 0
+	var fail_hole_dist = 0
+	var fail_spread_dist = 0
+	
+	var area = map_width * map_height
+	var calculated_count = int(area / 350.0)
+	var powerups_to_spawn = clamp(calculated_count, 1, 4)
 	var spawned_count = 0
 	var attempts = 0
 	
@@ -529,22 +573,32 @@ func spawn_powerups() -> void:
 		var rand_y = randi() % map_height
 		var check_pos = Vector2i(rand_x, rand_y)
 		
+		if Maze.get_cell_atlas_coords(check_pos) != tile_path:
+			fail_wall += 1
+			continue
+			
 		if Maze.get_cell_atlas_coords(check_pos) == tile_path:
 			# Distance check with player and finish point
-			if Vector2(check_pos).distance_to(Vector2(maze_pos)) < 5: continue
-			if Vector2(check_pos).distance_to(Vector2(finish_grid_pos)) < 5: continue
+			if Vector2(check_pos).distance_to(Vector2(maze_pos)) < 5: 
+				fail_player_dist += 1
+				continue
+			if Vector2(check_pos).distance_to(Vector2(finish_grid_pos)) < 5: 
+				continue
 			# Check if this spot is already taken by a Hole, Coin, or Timer
-			if check_pos in occupied_tiles: continue
+			if check_pos in occupied_tiles: 
+				fail_occupied += 1
+				continue
 			
 			# Distance check with holes
 			var too_close_to_hole = false
 			for hole_pos in hole_positions:
 				# Use a safe distance (e.g. 2 or 3 tiles)
-				if Vector2(check_pos).distance_to(Vector2(hole_pos)) < 3:
+				if Vector2(check_pos).distance_to(Vector2(hole_pos)) < 2:
 					too_close_to_hole = true
 					break
 			
 			if too_close_to_hole:
+				fail_hole_dist += 1
 				continue
 			
 			# Distance check with other power ups
@@ -554,14 +608,19 @@ func spawn_powerups() -> void:
 				if Vector2(check_pos).distance_to(Vector2(existing_pos)) < 10:
 					too_close_to_powerup = true
 					break
-			if too_close_to_powerup: continue
+			if too_close_to_powerup: 
+				fail_spread_dist += 1
+				continue
 			
 			# Pick Random Powerup Type
 			var item_scene
-			if randf() > 0.5:
-				item_scene = ghost_scene # Ghost
+			var roll = randf()
+			if roll <= 0.33:
+				item_scene = ghost_scene
+			elif roll <= 0.66:
+				item_scene = wing_scene
 			else:
-				item_scene = wing_scene    # Wing (Make sure you assigned it!)
+				item_scene = magnet_scene
 			
 			if item_scene:
 				var new_item = item_scene.instantiate()
@@ -575,11 +634,29 @@ func spawn_powerups() -> void:
 				occupied_tiles.append(check_pos)    # If using the shared list method
 				
 				spawned_count += 1
+	
+	print("Powerups Spawned: ", spawned_count, "/", powerups_to_spawn)
+	print("--- Powerup Spawn Report ---")
+	print("Success: ", spawned_count, "/", powerups_to_spawn)
+	if spawned_count < powerups_to_spawn:
+		print("FAIL REASONS (Total Attempts: ", attempts, "):")
+		print("  - Hit Wall/Void: ", fail_wall)
+		print("  - Too Close to Start/End: ", fail_player_dist)
+		print("  - Spot Taken (Occupied): ", fail_occupied)
+		print("  - Too Close to Holes: ", fail_hole_dist)
+		print("  - Too Close to Other Powerup: ", fail_spread_dist)
+	print("----------------------------")
 
 func spawn_coins() -> void:
 	if not coin_scene: return
 	
-	var coins_to_spawn = randi_range(5, 15) # Spawn between 5 and 8 coins
+	var area = map_width * map_height
+	# Approx 1 coin every 100 tiles.
+	# Example: Small Map (375 tiles) = 3 coins. Large Map (1125 tiles) = 11 coins.
+	var calculated_count = int(area / 50.0)
+	var coins_to_spawn = clamp(calculated_count, 3, 20)
+	#var coins_to_spawn = randi_range(5, 15) 
+	
 	var spawned_count = 0
 	var attempts = 0
 	var coin_positions: Array[Vector2i] = [] 
@@ -629,11 +706,16 @@ func spawn_coins() -> void:
 			occupied_tiles.append(check_pos)
 			
 			spawned_count += 1
+			
+	print("Coins Spawned: ", spawned_count, "/", coins_to_spawn)
 
 func spawn_timers() -> void:
 	if not timer_scene: return
 	
-	var timers_to_spawn = 2
+	var area = map_width * map_height
+	# Small Map = 1 Timer. Large Map = 2-3 Timers.
+	var calculated_count = int(area / 100.0)
+	var timers_to_spawn = clamp(calculated_count, 2, 15)
 	var spawned_count = 0
 	var attempts = 0
 	var timer_positions: Array[Vector2i] = [] # Local tracker to spread them out
@@ -649,6 +731,10 @@ func spawn_timers() -> void:
 			# 1. Distance Checks
 			if Vector2(check_pos).distance_to(Vector2(maze_pos)) < 5: continue
 			if Vector2(check_pos).distance_to(Vector2(finish_grid_pos)) < 5: continue
+			
+			# This prevents spawning on Powerups or Coins
+			if check_pos in occupied_tiles: 
+				continue
 			
 			# 2. Avoid Holes (Global Array)
 			var too_close_to_hole = false
@@ -682,3 +768,5 @@ func spawn_timers() -> void:
 			occupied_tiles.append(check_pos)
 			
 			spawned_count += 1
+	
+	print("Timers Spawned: ", spawned_count, "/", timers_to_spawn)

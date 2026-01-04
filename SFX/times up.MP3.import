@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://5brd41x6goxq"
+path="res://.godot/imported/times up.MP3-a0ff148172356dce25755dd77f6f6937.mp3str"
+
+[deps]
+
+source_file="res://SFX/times up.MP3"
+dest_files=["res://.godot/imported/times up.MP3-a0ff148172356dce25755dd77f6f6937.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

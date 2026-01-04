@@ -26,9 +26,9 @@ func update_visuals(type: String):
 	
 	if type == "none":
 		animation.play("RESET")
-		
 	elif type == "ghost":
 		animation.play("ghost")
-		
 	elif type == "wing":
 		animation.play("wing")
+	elif type == "magnet":
+		animation.play("magnet")

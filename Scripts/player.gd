@@ -29,11 +29,15 @@ var inventory = ["none", "none", "none"]
 @onready var maze: TileMapLayer = $"../maze"
 @onready var hazard_tiles: TileMapLayer = $"../hazard_tiles"
 
-# Power up activations
+# Power up variables
 var ghost_charges = 0
 var was_inside_wall: bool = false
 var wing_timer = 0.0
 var is_flying: bool = false
+var is_magnet_active: bool = false
+var magnet_timer: float = 0.0
+var magnet_radius: float = 800.0  # How far the magnet reaches (in pixels)
+var magnet_strength: float = 1000.0 # How fast coins fly to you
 
 # hazard
 var hazard_fiery = Vector2i(1, 0)
@@ -93,6 +97,12 @@ func _physics_process(delta):
 		wing_timer -= delta
 		if wing_timer <= 0:
 			deactivate_wing()
+	
+	if is_magnet_active:
+		handle_magnet_logic(delta)
+		magnet_timer -= delta
+		if magnet_timer <= 0:
+			deactivate_magnet()
 
 func update_rolling_shader(delta):
 	# 1. Add the distance moved this frame to our total counter.
@@ -234,7 +244,9 @@ func use_item_at_index(index: int):
 	if type == "ghost":
 		activate_ghost(3)
 	elif type == "wing":
-		activate_wing(5.0)
+		activate_wing(8.0)
+	elif type == "magnet":
+		activate_magnet(15.0)
 		
 	# Clear JUST this slot
 	inventory[index] = "none"
@@ -313,6 +325,27 @@ func deactivate_wing():
 	force_rotation_lock = false
 	
 	print("Wing Deactivated")
+
+func activate_magnet(duration):
+	is_magnet_active = true
+	magnet_timer = duration
+	print("Magnet Activated! Range: ", magnet_radius)
+
+func handle_magnet_logic(delta):
+	# 1. Find all coins in the level
+	var all_coins = get_tree().get_nodes_in_group("Coins")
+	
+	for coin in all_coins:
+		# 2. Check distance
+		var dist = global_position.distance_to(coin.global_position)
+		if dist < magnet_radius:
+			# 3. Move the coin towards the player
+			# move_toward calculates the new position for us
+			coin.global_position = coin.global_position.move_toward(global_position, magnet_strength * delta)
+
+func deactivate_magnet():
+	is_magnet_active = false
+	print("Magnet Deactivated")
 
 func movement_tile_logic():
 	pass

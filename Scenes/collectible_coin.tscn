@@ -177,7 +177,7 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_lfugp"]
 radius = 32.0
 
-[node name="collectible_coin" type="Area2D"]
+[node name="collectible_coin" type="Area2D" groups=["Coins"]]
 script = ExtResource("1_ugn34")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -187,5 +187,10 @@ autoplay = "default"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_lfugp")
+
+[node name="fake_visual_coin" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_q0sck")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

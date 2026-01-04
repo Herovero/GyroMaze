@@ -36,6 +36,8 @@ Holes=""
 Player=""
 PlayerCam=""
 OverviewCam=""
+Coins=""
+CoinHUD=""
 
 [input]
 

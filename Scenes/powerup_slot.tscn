@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://cy81f3sgiqhtq"]
+[gd_scene load_steps=11 format=3 uid="uid://cy81f3sgiqhtq"]
 
 [ext_resource type="Texture2D" uid="uid://duhvw5fu5hohl" path="res://Assets/item_slot.png" id="1_0gmsy"]
 [ext_resource type="Script" uid="uid://dc1wvh8fx1feb" path="res://Scripts/powerup_slot.gd" id="2_ayo7n"]
 [ext_resource type="Texture2D" uid="uid://ds7tndtrb58hf" path="res://Assets/power-ups/ghost/_a_frm0,2020.png" id="2_m1ae8"]
 [ext_resource type="Texture2D" uid="uid://c0to5aemxs3un" path="res://Assets/power-ups/wing/_a_frm0,2020.png" id="3_ayo7n"]
+[ext_resource type="Texture2D" uid="uid://bwm8blciibcuh" path="res://Assets/power-ups/magnet/_a_frm0,20.png" id="5_ayo7n"]
 
 [sub_resource type="Animation" id="Animation_5m144"]
 length = 0.001
@@ -55,6 +56,30 @@ tracks/3/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Magnet:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.35, 0.35)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Magnet:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_t2fo7"]
 resource_name = "ghost"
@@ -66,7 +91,7 @@ tracks/0/path = NodePath("Ghost:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.16666667, 0.3),
+"times": PackedFloat32Array(0, 0.15, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector2(0.01, 0.01), Vector2(0.3, 0.3), Vector2(0.25, 0.25)]
@@ -112,10 +137,39 @@ tracks/1/keys = {
 "values": [true]
 }
 
+[sub_resource type="Animation" id="Animation_kpe6h"]
+resource_name = "magnet"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Magnet:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.01, 0.01), Vector2(0.4, 0.4), Vector2(0.35, 0.35)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Magnet:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_kpe6h"]
 _data = {
 &"RESET": SubResource("Animation_5m144"),
 &"ghost": SubResource("Animation_t2fo7"),
+&"magnet": SubResource("Animation_kpe6h"),
 &"wing": SubResource("Animation_8jqoi")
 }
 
@@ -134,6 +188,12 @@ visible = false
 position = Vector2(180, 180)
 scale = Vector2(0.01, 0.01)
 texture = ExtResource("3_ayo7n")
+
+[node name="Magnet" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(180, 182)
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("5_ayo7n")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
