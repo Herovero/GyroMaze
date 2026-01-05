@@ -13,6 +13,7 @@ config_version=5
 config/name="TiltMaze"
 run/main_scene="uid://dop0o8p8aubhb"
 config/features=PackedStringArray("4.5", "Mobile")
+boot_splash/show_image=false
 config/icon="res://icon.svg"
 
 [autoload]
@@ -38,6 +39,7 @@ PlayerCam=""
 OverviewCam=""
 Coins=""
 CoinHUD=""
+GameUICanvasLayer=""
 
 [input]
 
