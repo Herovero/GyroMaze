@@ -3,7 +3,7 @@ extends Label
 @onready var timer: Timer = $"../../Time_remaining"
 @onready var hud = $"../time_remaining_hud"
 @onready var hud_transition = $"../../HUD_transition"
-@onready var five_second_remaining = $"../../SFX/five_second_remaining"
+@onready var five_second_remaining = $"../../SFX & BGM/five_second_remaining"
 
 @export var max_time_limit: float = 180.0
 
@@ -105,6 +105,7 @@ func _on_timer_timeout():
 	# Emit the signal
 	print_debug("Time is up!")
 	SignalBus.emit_signal("times_up")
+	Global.is_game_active = false
 	
 	# Ensure sound doesn't keep looping if you have Loop enabled on the mp3
 	if alarm_has_started:

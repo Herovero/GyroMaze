@@ -1,6 +1,6 @@
 extends AnimatedSprite2D
 
-@onready var times_up = $"../../SFX/times_up"
+@onready var times_up = $"../../SFX & BGM/times_up"
 @onready var player = $"../../Player"
 @onready var panel = $"../Panel"
 @onready var powerup_slot_1 = $"../powerup_slot1"

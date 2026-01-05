@@ -1,13 +1,12 @@
 extends TextureRect
 
-@onready var paper_flip_sfx = $"../../SFX/paper_flip"
 @onready var stamp_hud = $stamp_hud
-
 @onready var coins_value = $ValueContainer/coins_value
 @onready var levels_value = $ValueContainer/levels_value
 @onready var powerups_value = $ValueContainer/powerups_value
 @onready var deaths_value = $ValueContainer/deaths_value
 @onready var time_value = $ValueContainer/time_value
+@onready var paper_flip_sfx = $"../../SFX & BGM/paper_flip"
 
 # We need to remember where the paper is supposed to sit when finished
 var target_pos: Vector2
@@ -39,12 +38,20 @@ func _on_times_up():
 	paper_flip_sfx.play()
 	
 	# Change these numbers manually to test different stamps!
-	var test_stats = {
+	"""var test_stats = {
 		"deaths": 6,
 		"level": 36,
 		"coins": 48,
 		"powerups": 9,     # Add this key
 		"time_str": "15.00" # Add this key (formatted string)
+	}"""
+	
+	var stats = {
+	"deaths": Global.deaths,
+	"level": Global.levels_passed,
+	"coins": Global.coins_collected,
+	"powerups": Global.powerups_used,
+	"time_str": Global.get_time_formatted()
 	}
 	
 	# 2. Create the Animation
@@ -60,11 +67,11 @@ func _on_times_up():
 	
 	# Wait for slide to finish, then fill in the text
 	tween.tween_interval(0.5)
-	tween.tween_callback(func(): show_value(test_stats))
+	tween.tween_callback(func(): show_value(stats))
 	
 	# Wait for slide to finish, then slam the stamp
 	tween.tween_interval(3.0)
-	tween.tween_callback(func(): stamp_hud.apply_stamp(test_stats))
+	tween.tween_callback(func(): stamp_hud.apply_stamp(stats))
 
 func show_value(stats: Dictionary):
 	await get_tree().create_timer(0.4).timeout

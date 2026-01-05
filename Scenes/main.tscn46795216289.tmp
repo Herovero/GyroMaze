@@ -1028,7 +1028,6 @@ stream = ExtResource("159_0t4jf")
 
 [node name="main_bgm" type="AudioStreamPlayer" parent="SFX & BGM"]
 stream = ExtResource("164_11vbv")
-volume_db = -15.0
 autoplay = true
 
 [connection signal="released" from="InGameUIs/powerup_slot1" to="Player" method="_on_powerup_slot_1_released"]

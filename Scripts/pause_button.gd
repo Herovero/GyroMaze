@@ -1,6 +1,8 @@
 extends TouchScreenButton
 
 @onready var paused_label: Label = $"../PAUSED_label"
+@onready var pause_sfx = $"../../SFX & BGM/pause_sfx"
+@onready var unpause_sfx = $"../../SFX & BGM/unpause_sfx"
 
 var game_paused: bool = false
 
@@ -17,7 +19,9 @@ func _on_released():
 		get_tree().paused = true
 		game_paused = true
 		paused_label.show()
+		pause_sfx.play()
 	else: 
 		get_tree().paused = false
 		game_paused = false
 		paused_label.hide()
+		unpause_sfx.play()

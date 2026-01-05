@@ -4,7 +4,7 @@ extends RigidBody2D
 @onready var wing_sprite: AnimatedSprite2D = $wing_sprite
 
 @export var tilt_strength: float = 2000.0 * Global.input_sensitivity
-@export var spin_speed: float = 0.02 # Controls how fast the visual spin is
+@export var spin_speed: float = 0.03 # Controls how fast the visual spin is
 
 @onready var base_scale = sprite_2d.scale
 
@@ -21,10 +21,10 @@ var shader_material: ShaderMaterial
 var current_start_pos = Vector2.ZERO
 
 var inventory = ["none", "none", "none"]
-@onready var slots = [$"../InGameUIs/powerup_slot1", 
-					  $"../InGameUIs/powerup_slot2", 
-					  $"../InGameUIs/powerup_slot3",
-					 ]
+@onready var slots = [$"../InGameUIs/powerup_slot1",
+	$"../InGameUIs/powerup_slot2",
+	$"../InGameUIs/powerup_slot3",
+]
 
 @onready var maze: TileMapLayer = $"../maze"
 @onready var hazard_tiles: TileMapLayer = $"../hazard_tiles"
@@ -42,6 +42,20 @@ var magnet_strength: float = 1000.0 # How fast coins fly to you
 # hazard
 var hazard_fiery = Vector2i(1, 0)
 
+# sfx
+@onready var roll_sfx = $SFX/roll_sfx
+@onready var collect_powerup_sfx = $SFX/collect_powerup_sfx
+@onready var ghost_sfx = $SFX/ghost_sfx
+@onready var wing_sfx = $SFX/wing_sfx
+@onready var magnet_sfx = $SFX/magnet_sfx
+
+# Tweak these numbers to fit your game's speed
+var max_speed = 300.0
+var min_pitch = 0.8
+var max_pitch = 1.5
+var min_db = -80.0 # Silent
+var max_db = 0.0   # Full volume
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	lock_rotation = false
@@ -52,7 +66,7 @@ func _ready():
 func set_start_position(pos: Vector2):
 	current_start_pos = pos
 	
-	should_reset = true 
+	should_reset = true
 	# Kill any existing movement immediately
 	linear_velocity = Vector2.ZERO
 	angular_velocity = 0
@@ -103,6 +117,49 @@ func _physics_process(delta):
 		magnet_timer -= delta
 		if magnet_timer <= 0:
 			deactivate_magnet()
+	
+	# Get the current speed of the player
+	var current_speed = linear_velocity.length()
+	
+	# Calculate the "Visual Spin Force" (The same math used in rotate_marble_visuals)
+	# x_spin is linear_velocity.x
+	# y_spin is -linear_velocity.y
+	# So effective spin is: (velocity.x - velocity.y)
+	var visual_spin_force = abs(linear_velocity.x - linear_velocity.y)
+	
+	# CONDITION: Must be moving AND actually rotating visually
+	# We use > 10.0 as a buffer so it doesn't flicker when barely spinning
+	if current_speed > 1.0 and visual_spin_force > 10.0:
+		if not roll_sfx.playing:
+			roll_sfx.play()
+		
+		# 1. VOLUME 
+		var target_vol = lerp(-30.0, -10.0, current_speed / 50.0)
+		roll_sfx.volume_db = clamp(target_vol, -80.0, -10.0)
+		
+		# 2. PITCH 
+		# We calculate RPM based on the visual spin force now, for accuracy
+		var visual_rpm = visual_spin_force * spin_speed
+		var target_pitch = lerp(0.8, 1.2, visual_rpm / 1.5)
+		
+		roll_sfx.pitch_scale = lerp(roll_sfx.pitch_scale, target_pitch, delta * 5.0)
+	else:
+		# 1. Fade volume fast (was 50, now 400 for instant stop)
+		if roll_sfx.volume_db > -80:
+			roll_sfx.volume_db -= 400 * delta
+		
+		# 2. Also drop the pitch down to 0.1 so it sounds like it's grinding to a halt
+		# We use 'move_toward' to smoothly slide the pitch down
+		roll_sfx.pitch_scale = move_toward(roll_sfx.pitch_scale, 0.1, 2.0 * delta)
+		
+		# 3. Optional: Stop the sound completely if it's silent to save CPU
+		if roll_sfx.volume_db <= -79:
+			roll_sfx.stop()
+		
+	# 2. HANDLE PITCH (Faster = Higher Pitch)
+	# Map speed to pitch: Slow = 0.8x, Fast = 1.5x
+	var new_pitch = lerp(min_pitch, max_pitch, current_speed / max_speed)
+	roll_sfx.pitch_scale = new_pitch
 
 func update_rolling_shader(delta):
 	# 1. Add the distance moved this frame to our total counter.
@@ -227,6 +284,7 @@ func collect_powerup(powerup_type: String):
 		print("Picked up: ", powerup_type)
 		print("Inventory: ", inventory)
 		update_inventory_ui()
+		collect_powerup_sfx.play()
 		
 		return true
 	else:
@@ -265,6 +323,8 @@ func update_inventory_ui():
 			button_node.update_visuals(type)
 
 func activate_ghost(charges: int):
+	Global.powerups_used += 1
+	ghost_sfx.play()
 	ghost_charges = charges
 	was_inside_wall = false
 	
@@ -309,6 +369,8 @@ func handle_ghost_logic():
 				print("Ghost Mode Deactivated")
 
 func activate_wing(duration):
+	Global.powerups_used += 1
+	wing_sfx.play()
 	is_flying = true
 	wing_timer = duration
 	wing_sprite.show()
@@ -327,6 +389,8 @@ func deactivate_wing():
 	print("Wing Deactivated")
 
 func activate_magnet(duration):
+	Global.powerups_used += 1
+	magnet_sfx.play()
 	is_magnet_active = true
 	magnet_timer = duration
 	print("Magnet Activated! Range: ", magnet_radius)

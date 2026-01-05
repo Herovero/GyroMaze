@@ -1,5 +1,7 @@
 extends TouchScreenButton
 
+@onready var button_sfx = $"../../SFX & BGM/button_sfx"
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -9,6 +11,7 @@ func _process(delta):
 	pass
 
 func _on_released():
+	button_sfx.play()
 	var player_cam = get_tree().get_first_node_in_group("PlayerCam")
 	var overview_cam = get_tree().get_first_node_in_group("OverviewCam")
 	

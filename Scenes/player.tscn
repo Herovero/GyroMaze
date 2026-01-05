@@ -1,4 +1,4 @@
-[gd_scene load_steps=106 format=3 uid="uid://b7xfpi740plyc"]
+[gd_scene load_steps=111 format=3 uid="uid://b7xfpi740plyc"]
 
 [ext_resource type="Script" uid="uid://dwrvym4tpnud0" path="res://Scripts/player.gd" id="1_8od7v"]
 [ext_resource type="Texture2D" uid="uid://crutji3b7hat1" path="res://Assets/marbles/marble_blue.png" id="2_v84ne"]
@@ -103,6 +103,11 @@
 [ext_resource type="Texture2D" uid="uid://dtu1kyslbj3wg" path="res://Assets/power-ups/wing/_a_frm98,20.png" id="101_n4tw8"]
 [ext_resource type="Texture2D" uid="uid://tjj7l6uimdus" path="res://Assets/power-ups/wing/_a_frm99,30.png" id="102_cg4bv"]
 [ext_resource type="Texture2D" uid="uid://5b3jndwh83ru" path="res://Assets/power-ups/wing/_a_frm100,20.png" id="103_5xxh7"]
+[ext_resource type="AudioStream" uid="uid://b4irq2pm0t6he" path="res://SFX/rolling_marble.mp3" id="104_4pcjl"]
+[ext_resource type="AudioStream" uid="uid://b5clt5qor8hu3" path="res://SFX/ghost_sfx.MP3" id="105_3ath1"]
+[ext_resource type="AudioStream" uid="uid://53v7t0fvfm3l" path="res://SFX/collect_powerup_sfx.MP3" id="106_78kn1"]
+[ext_resource type="AudioStream" uid="uid://cr02e43l7ywv0" path="res://SFX/wing_sfx.MP3" id="106_bvt37"]
+[ext_resource type="AudioStream" uid="uid://ceunuyapqq7bk" path="res://SFX/magnet_sfx.MP3" id="107_kt3hj"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_5un75"]
 animations = [{
@@ -422,13 +427,14 @@ radius = 40.012497
 script = ExtResource("1_8od7v")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = 1
+z_index = 2
 texture_repeat = 2
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_v84ne")
 
 [node name="wing_sprite" type="AnimatedSprite2D" parent="."]
 visible = false
+z_index = 1
 scale = Vector2(0.25, 0.25)
 sprite_frames = SubResource("SpriteFrames_5un75")
 autoplay = "default"
@@ -441,3 +447,21 @@ shape = SubResource("CircleShape2D_6t5aa")
 [node name="PlayerCamera" type="Camera2D" parent="." groups=["PlayerCam"]]
 zoom = Vector2(0.8, 0.8)
 position_smoothing_enabled = true
+
+[node name="SFX" type="Node2D" parent="."]
+
+[node name="collect_powerup_sfx" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("106_78kn1")
+
+[node name="roll_sfx" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("104_4pcjl")
+volume_db = -18.545
+
+[node name="ghost_sfx" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("105_3ath1")
+
+[node name="wing_sfx" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("106_bvt37")
+
+[node name="magnet_sfx" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("107_kt3hj")

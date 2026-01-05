@@ -1,6 +1,7 @@
 extends Area2D
 
 @onready var fake_visual_coin: Sprite2D = $fake_visual_coin
+@onready var collect_coin_sfx = $collect_coin_sfx
 
 var player
 
@@ -17,15 +18,15 @@ func _on_body_entered(body):
 		collect_coin()
 
 func collect_coin():
+	Global.coins_collected += 1
+	collect_coin_sfx.play()
+	
 	# 1. Disable immediately so it can't be collected twice
 	call_deferred("set_monitoring", false)
-	
 	# 2. Hide the real coin (so it looks like we picked it up)
 	hide()
-	
 	# 3. Create the visual effect
 	spawn_flying_coin()
-	
 	# 4. Play Sound (Optional)
 	# $AudioStreamPlayer2D.play()
 

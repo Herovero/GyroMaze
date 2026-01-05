@@ -14,11 +14,11 @@ extends TextureRect
 @export_group("Thresholds")
 @export var limit_levels_high: int = 30
 @export var limit_levels_low: int = 5
-@export var limit_coins_high: int = 50
+@export var limit_coins_high: int = 100
 @export var limit_coins_low: int = 10
 @export var limit_deaths_high: int = 20
 
-@onready var stamp_sfx = $"../../../SFX/stamp"
+@onready var stamp_sfx = $"../../../SFX & BGM/stamp"
 
 func _ready():
 	pass

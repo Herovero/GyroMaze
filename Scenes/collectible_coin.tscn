@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://nomhjmxskkv0"]
+[gd_scene load_steps=46 format=3 uid="uid://nomhjmxskkv0"]
 
 [ext_resource type="Texture2D" uid="uid://xkokujeiydnq" path="res://Assets/collectibles/coin/_a_frm0,20.png" id="1_q0sck"]
 [ext_resource type="Script" uid="uid://6e246glq4l3d" path="res://Scripts/collectible_coin.gd" id="1_ugn34"]
@@ -42,6 +42,7 @@
 [ext_resource type="Texture2D" uid="uid://crhjk5qng30q7" path="res://Assets/collectibles/coin/_a_frm38,20.png" id="39_85424"]
 [ext_resource type="Texture2D" uid="uid://dufiq0q5egkco" path="res://Assets/collectibles/coin/_a_frm39,30.png" id="40_f24xp"]
 [ext_resource type="Texture2D" uid="uid://cigbjqfv5vbfa" path="res://Assets/collectibles/coin/_a_frm40,20.png" id="41_vjldi"]
+[ext_resource type="AudioStream" uid="uid://crjtunb8shs2f" path="res://SFX/collect_coin_sfx.MP3" id="43_6qq8u"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_qika4"]
 animations = [{
@@ -192,5 +193,8 @@ shape = SubResource("CircleShape2D_lfugp")
 visible = false
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("1_q0sck")
+
+[node name="collect_coin_sfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("43_6qq8u")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

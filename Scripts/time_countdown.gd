@@ -39,4 +39,5 @@ func _on_timer_timeout():
 	if player:
 		player.input_enabled = true
 	
+	Global.is_game_active = true
 	SignalBus.emit_signal("game_started")
