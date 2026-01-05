@@ -356,7 +356,7 @@ func spawn_wall_swaps(type: Vector2i, count: int, min_size: int, max_size: int):
 		var current_patch = [start_pos]
 		
 		# A. Remove from Maze
-		Maze.set_cell(start_pos, -1) 
+		# Maze.set_cell(start_pos, -1) 
 		# B. Add to Hazard Layer
 		hazard_tiles.set_cell(start_pos, 0, type)
 		
