@@ -662,9 +662,11 @@ autostart = true
 
 [node name="TextureRect" type="TextureRect" parent="."]
 texture_repeat = 2
-offset_left = -609.0
-offset_right = 7379.0
-offset_bottom = 3674.0
+offset_left = -3839.0
+offset_top = -1837.0
+offset_right = 4149.0
+offset_bottom = 1837.0
+scale = Vector2(2, 2)
 texture = ExtResource("8_344ge")
 stretch_mode = 1
 
