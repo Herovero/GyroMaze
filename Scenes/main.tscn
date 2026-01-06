@@ -1,4 +1,4 @@
-[gd_scene load_steps=175 format=3 uid="uid://cpv02exs4ywq1"]
+[gd_scene load_steps=176 format=3 uid="uid://cpv02exs4ywq1"]
 
 [ext_resource type="PackedScene" uid="uid://bwtlejdt7cws6" path="res://Scenes/maze_test2.tscn" id="1_21xkr"]
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="1_bo1nx"]
@@ -163,7 +163,8 @@
 [ext_resource type="AudioStream" uid="uid://cwyx6heb6fk8y" path="res://SFX/pause_sfx.MP3" id="157_dllok"]
 [ext_resource type="AudioStream" uid="uid://d8gvp6jpkgq8" path="res://SFX/unpause_sfx.MP3" id="158_0t4jf"]
 [ext_resource type="AudioStream" uid="uid://beup16tv2wjeh" path="res://SFX/button_sfx.MP3" id="159_0t4jf"]
-[ext_resource type="AudioStream" uid="uid://rb7y6xpi0n7h" path="res://BGM/Kevin MacLeod_ Local Forecast - Slower.mp3" id="164_11vbv"]
+[ext_resource type="AudioStream" uid="uid://o2i37wvlsaiq" path="res://BGM/kids-game-gaming-background-music-295075.mp3" id="164_11vbv"]
+[ext_resource type="Script" uid="uid://c33jfvof3qjfk" path="res://Scenes/main_bgm.gd" id="165_m6w5j"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_k12tt"]
 friction = 0.0
@@ -754,6 +755,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="time_remaining_hud" type="TextureRect" parent="InGameUIs"]
+modulate = Color(1, 1, 1, 0.39607844)
 offset_left = 1047.0
 offset_top = -186.0
 offset_right = 3603.0
@@ -762,6 +764,7 @@ scale = Vector2(0.12, 0.12)
 texture = ExtResource("61_hfu3o")
 
 [node name="time_remaining" type="Label" parent="InGameUIs"]
+modulate = Color(1, 1, 1, 0.5921569)
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -1031,7 +1034,7 @@ stream = ExtResource("159_0t4jf")
 [node name="main_bgm" type="AudioStreamPlayer" parent="SFX & BGM"]
 stream = ExtResource("164_11vbv")
 volume_db = -15.0
-autoplay = true
+script = ExtResource("165_m6w5j")
 
 [connection signal="released" from="InGameUIs/powerup_slot1" to="Player" method="_on_powerup_slot_1_released"]
 [connection signal="released" from="InGameUIs/powerup_slot2" to="Player" method="_on_powerup_slot_2_released"]
