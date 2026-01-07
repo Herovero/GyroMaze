@@ -1041,6 +1041,8 @@ script = ExtResource("165_m6w5j")
 [connection signal="released" from="InGameUIs/powerup_slot3" to="Player" method="_on_powerup_slot_3_released"]
 [connection signal="released" from="InGameUIs/PauseButton" to="InGameUIs/PauseButton" method="_on_released"]
 [connection signal="released" from="InGameUIs/ZoomOutButton" to="InGameUIs/ZoomOutButton" method="_on_released"]
+[connection signal="released" from="InGameUIs/result_screen_hud/PlayAgainButton" to="InGameUIs/result_screen_hud/PlayAgainButton" method="_on_released"]
+[connection signal="released" from="InGameUIs/result_screen_hud/MainMenuButton" to="InGameUIs/result_screen_hud/MainMenuButton" method="_on_released"]
 
 [editable path="Player"]
 [editable path="InGameUIs/powerup_slot1"]

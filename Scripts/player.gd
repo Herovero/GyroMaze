@@ -42,6 +42,9 @@ var magnet_strength: float = 1000.0 # How fast coins fly to you
 # hazard
 var hazard_fiery = Vector2i(1, 0)
 
+# Add this flag at the top of your script with other variables
+var is_falling: bool = false
+
 # sfx
 @onready var roll_sfx = $SFX/roll_sfx
 @onready var collect_powerup_sfx = $SFX/collect_powerup_sfx
@@ -62,6 +65,8 @@ func _ready():
 	shader_material = sprite_2d.material as ShaderMaterial
 	
 	update_inventory_ui()
+	
+	SignalBus.connect("falling_into_hole", _on_falling_into_hole)
 
 func set_start_position(pos: Vector2):
 	current_start_pos = pos
@@ -432,3 +437,65 @@ func _on_powerup_slot_2_released():
 
 func _on_powerup_slot_3_released():
 	use_item_at_index(2)
+
+func _on_falling_into_hole(hole_center_pos: Vector2):
+	# 1. GUARD: Prevent this from triggering multiple times
+	if is_falling:
+		return
+	is_falling = true
+	
+	# 2. INSTANTLY Disable Real Player
+	input_enabled = false
+	collision_mask = 0       # Ghost mode (touch nothing)
+	linear_velocity = Vector2.ZERO
+	angular_velocity = 0
+	sleeping = true          # Stop physics calculations
+	hide()                   # Vanish the real body
+	
+	# 3. CREATE THE STUNT DOUBLE
+	var stunt_double = Sprite2D.new()
+	stunt_double.texture = sprite_2d.texture
+	stunt_double.scale = sprite_2d.scale
+	stunt_double.global_position = global_position
+	stunt_double.rotation = sprite_2d.rotation
+	stunt_double.z_index = 2
+	
+	# Important: Add it to the SCENE ROOT, not the player
+	# This ensures it moves independently of the rigid body
+	get_tree().root.add_child(stunt_double)
+	
+	# 4. ANIMATE THE DOUBLE
+	var tween = create_tween()
+	tween.set_parallel(true)
+	tween.set_ease(Tween.EASE_IN)
+	tween.set_trans(Tween.TRANS_BACK)
+	
+	# Move to center, Shrink to nothing, Spin wildy
+	tween.tween_property(stunt_double, "global_position", hole_center_pos, 0.5)
+	tween.tween_property(stunt_double, "scale", Vector2.ZERO, 0.5)
+	tween.tween_property(stunt_double, "rotation", stunt_double.rotation + 10.0, 0.5)
+	
+	# Optional: Play falling sound
+	# roll_sfx.pitch_scale = 0.5
+	# roll_sfx.play()
+
+	# 5. WAIT & CLEANUP
+	await tween.finished
+	stunt_double.queue_free() # Delete the fake marble
+	
+	# 6. RESET REAL PLAYER
+	Global.deaths += 1
+	reset_position() # Teleports the hidden real body
+	
+	# Wait for physics to process the teleport
+	await get_tree().physics_frame
+	
+	# 7. RESTORE REAL PLAYER
+	show()
+	collision_mask = 1       # Restore collisions (Layer 1)
+	sleeping = false         # Wake up physics
+	sprite_2d.scale = base_scale 
+	sprite_2d.rotation = 0
+	
+	input_enabled = true
+	is_falling = false       # Reset flag so we can fall again later
