@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 
 Global="*res://Scripts/Global.gd"
 SignalBus="*res://Scripts/SignalBus.gd"
+HapticsManager="*res://Scripts/HapticsManager.gd"
 
 [display]
 

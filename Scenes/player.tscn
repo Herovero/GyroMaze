@@ -1,4 +1,4 @@
-[gd_scene load_steps=111 format=3 uid="uid://b7xfpi740plyc"]
+[gd_scene load_steps=112 format=3 uid="uid://b7xfpi740plyc"]
 
 [ext_resource type="Script" uid="uid://dwrvym4tpnud0" path="res://Scripts/player.gd" id="1_8od7v"]
 [ext_resource type="Texture2D" uid="uid://crutji3b7hat1" path="res://Assets/marbles/marble_blue.png" id="2_v84ne"]
@@ -108,6 +108,7 @@
 [ext_resource type="AudioStream" uid="uid://53v7t0fvfm3l" path="res://SFX/collect_powerup_sfx.MP3" id="106_78kn1"]
 [ext_resource type="AudioStream" uid="uid://cr02e43l7ywv0" path="res://SFX/wing_sfx.MP3" id="106_bvt37"]
 [ext_resource type="AudioStream" uid="uid://ceunuyapqq7bk" path="res://SFX/magnet_sfx.MP3" id="107_kt3hj"]
+[ext_resource type="AudioStream" uid="uid://bhbayfkv1ir0w" path="res://SFX/hit_wall2_sfx.MP3" id="109_2jrev"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_5un75"]
 animations = [{
@@ -424,6 +425,8 @@ animations = [{
 radius = 40.012497
 
 [node name="CharacterBody2D" type="RigidBody2D" groups=["Player"]]
+contact_monitor = true
+max_contacts_reported = 4
 script = ExtResource("1_8od7v")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -465,3 +468,7 @@ stream = ExtResource("106_bvt37")
 
 [node name="magnet_sfx" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("107_kt3hj")
+
+[node name="hit_wall_sfx" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("109_2jrev")
+volume_db = 5.0

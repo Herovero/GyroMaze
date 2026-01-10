@@ -45,12 +45,19 @@ var hazard_fiery = Vector2i(1, 0)
 # Add this flag at the top of your script with other variables
 var is_falling: bool = false
 
+# Settings for wall impacts
+var _previous_velocity: Vector2 = Vector2.ZERO
+var min_impact_speed: float = 100.0  # Minimum speed to trigger a "thud"
+var last_wall_hit_time: float = 0.0
+var wall_hit_cooldown: float = 0.15  # 150ms delay between hits to prevent spam
+
 # sfx
 @onready var roll_sfx = $SFX/roll_sfx
 @onready var collect_powerup_sfx = $SFX/collect_powerup_sfx
 @onready var ghost_sfx = $SFX/ghost_sfx
 @onready var wing_sfx = $SFX/wing_sfx
 @onready var magnet_sfx = $SFX/magnet_sfx
+@onready var hit_wall_sfx = $SFX/hit_wall_sfx
 
 # Tweak these numbers to fit your game's speed
 var max_speed = 300.0
@@ -78,6 +85,9 @@ func set_start_position(pos: Vector2):
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
+	# Capture the velocity BEFORE physics resolution happens
+	_previous_velocity = linear_velocity
+	
 	var input_direction = Vector2.ZERO
 	
 	if OS.has_feature("mobile"):
@@ -248,6 +258,26 @@ func _integrate_forces(state):
 		# Get the object we hit
 		var body = state.get_contact_collider_object(i)
 		
+		# Check if we hit the wall
+		if body == maze:
+			# Get the "Normal" (The direction the wall is facing)
+			# e.g., If we hit a right-side wall, normal points LEFT.
+			var normal = state.get_contact_local_normal(i)
+			
+			# 3. Calculate Impact Intensity
+			# We compare our Velocity with the Wall's Normal.
+			# dot() returns how much of our velocity is opposing the normal.
+			# If we slam head-on, this number is high. If we slide along, it's near 0.
+			# We use negative (-) because velocity goes IN, normal comes OUT.
+			var impact_intensity = -_previous_velocity.dot(normal)
+			
+			# 4. Check Threshold & Cooldown
+			var current_time = Time.get_ticks_msec() / 1000.0
+			
+			if impact_intensity > min_impact_speed and (current_time - last_wall_hit_time) > wall_hit_cooldown:
+				_play_wall_hit(impact_intensity)
+				last_wall_hit_time = current_time
+				
 		# Check if we hit the Hazard TileMapLayer
 		if body == hazard_tiles:
 			print("hit hazard?")
@@ -271,6 +301,27 @@ func _integrate_forces(state):
 				print("Burned!")
 				reset_position()
 				break # Stop checking other contacts if we are dead
+
+func _play_wall_hit(intensity: float):
+	# A. HANDLE AUDIO
+	# Map intensity (e.g., 100 to 600) to Volume (-20dB to 0dB)
+	# The harder you hit, the louder the thud.
+	var volume = lerp(-20.0, 0.0, (intensity - min_impact_speed) / 500.0)
+	hit_wall_sfx.volume_db = clamp(volume, -30.0, 0.0)
+	
+	# Random pitch slightly so it doesn't sound robotic
+	hit_wall_sfx.pitch_scale = randf_range(0.9, 1.1)
+	hit_wall_sfx.play()
+	
+	# B. HANDLE VIBRATION
+	# Only vibrate if the user is on mobile
+	if OS.has_feature("mobile"):
+		if intensity > 400.0:
+			 # HARD HIT: Longer vibration (simulated "Heavy")
+			Input.vibrate_handheld(100)
+		elif intensity > min_impact_speed:
+			 # LIGHT HIT: Short crisp tap (simulated "Light")
+			Input.vibrate_handheld(20)
 
 func collect_powerup(powerup_type: String):
 	# Logic: Find the first empty slot. If full, replace the last one.
@@ -468,12 +519,13 @@ func _on_falling_into_hole(hole_center_pos: Vector2):
 	var tween = create_tween()
 	tween.set_parallel(true)
 	tween.set_ease(Tween.EASE_IN)
-	tween.set_trans(Tween.TRANS_BACK)
+	
+	var fall_duration = 1.0
 	
 	# Move to center, Shrink to nothing, Spin wildy
-	tween.tween_property(stunt_double, "global_position", hole_center_pos, 0.5)
-	tween.tween_property(stunt_double, "scale", Vector2.ZERO, 0.5)
-	tween.tween_property(stunt_double, "rotation", stunt_double.rotation + 10.0, 0.5)
+	tween.tween_property(stunt_double, "global_position", hole_center_pos, fall_duration)
+	tween.tween_property(stunt_double, "scale", Vector2.ZERO, fall_duration)
+	tween.tween_property(stunt_double, "rotation", stunt_double.rotation + 10.0, fall_duration)
 	
 	# Optional: Play falling sound
 	# roll_sfx.pitch_scale = 0.5
@@ -494,7 +546,7 @@ func _on_falling_into_hole(hole_center_pos: Vector2):
 	show()
 	collision_mask = 1       # Restore collisions (Layer 1)
 	sleeping = false         # Wake up physics
-	sprite_2d.scale = base_scale 
+	sprite_2d.scale = base_scale
 	sprite_2d.rotation = 0
 	
 	input_enabled = true
