@@ -41,6 +41,7 @@ var magnet_strength: float = 1000.0 # How fast coins fly to you
 
 # hazard
 var hazard_fiery = Vector2i(1, 0)
+var hazard_bouncy = Vector2i(0, 0)
 
 # Add this flag at the top of your script with other variables
 var is_falling: bool = false
@@ -58,6 +59,8 @@ var wall_hit_cooldown: float = 0.15  # 150ms delay between hits to prevent spam
 @onready var wing_sfx = $SFX/wing_sfx
 @onready var magnet_sfx = $SFX/magnet_sfx
 @onready var hit_wall_sfx = $SFX/hit_wall_sfx
+@onready var burn_sfx = $SFX/burn_sfx
+@onready var bounce_sfx = $SFX/bounce_sfx
 
 # Tweak these numbers to fit your game's speed
 var max_speed = 300.0
@@ -280,7 +283,6 @@ func _integrate_forces(state):
 				
 		# Check if we hit the Hazard TileMapLayer
 		if body == hazard_tiles:
-			print("hit hazard?")
 			# Get the collision normal (direction of the wall face)
 			var normal = state.get_contact_local_normal(i)
 			# Get the collision point
@@ -294,13 +296,25 @@ func _integrate_forces(state):
 			var local_check_pos = hazard_tiles.to_local(check_pos)
 			var map_pos = hazard_tiles.local_to_map(local_check_pos)
 			
-			# Check if the tile is Fire
+			# Check if the tile is fiery wall or bouncy wall
 			if hazard_tiles.get_cell_atlas_coords(map_pos) == hazard_fiery:
-				# We can't call 'die()' directly inside integrate_forces safely sometimes,
-				# so we defer it or set a flag. Since reset_position() just sets a flag, it is safe!
-				print("Burned!")
-				reset_position()
-				break # Stop checking other contacts if we are dead
+				# Use call_deferred to safely start the animation outside the physics loop
+				call_deferred("die_from_burning")
+				break
+			if hazard_tiles.get_cell_atlas_coords(map_pos) == hazard_bouncy:
+				# 1. Calculate how hard we hit the bouncy wall
+				# We use the same formula as the regular walls
+				var impact_intensity = -_previous_velocity.dot(normal)
+				
+				# 2. Check the threshold
+				if impact_intensity > min_impact_speed:
+					# Optional: Modulate volume based on force (like you did for walls)
+					var volume = lerp(-20.0, 0.0, (impact_intensity - min_impact_speed) / 500.0)
+					bounce_sfx.volume_db = clamp(volume, -30.0, 0.0)
+							
+					# Optional: Random pitch for variety
+					bounce_sfx.pitch_scale = randf_range(0.9, 1.1)
+					bounce_sfx.play()
 
 func _play_wall_hit(intensity: float):
 	# A. HANDLE AUDIO
@@ -551,3 +565,70 @@ func _on_falling_into_hole(hole_center_pos: Vector2):
 	
 	input_enabled = true
 	is_falling = false       # Reset flag so we can fall again later
+
+func die_from_burning():
+	# 1. GUARD: Prevent double triggering
+	if is_falling:
+		return
+	is_falling = true
+	
+	# Stop the rolling sound immediately
+	roll_sfx.stop()
+	# Play the sizzle/burn sound
+	burn_sfx.play()
+	
+	# 2. DISABLE REAL PLAYER (Same as hole logic)
+	input_enabled = false
+	collision_mask = 0
+	linear_velocity = Vector2.ZERO
+	angular_velocity = 0
+	sleeping = true
+	hide()
+	
+	# 3. CREATE THE STUNT DOUBLE (The "Ash" Sprite)
+	var stunt_double = Sprite2D.new()
+	stunt_double.texture = sprite_2d.texture
+	stunt_double.scale = sprite_2d.scale
+	stunt_double.global_position = global_position
+	stunt_double.rotation = sprite_2d.rotation
+	stunt_double.z_index = 2
+	
+	get_tree().root.add_child(stunt_double)
+	
+	# 4. ANIMATE THE BURNING
+	var tween_ignite = create_tween()
+	
+	# STEP A: Flash Bright Red/Orange (Ignition) - Fast (0.1s)
+	tween_ignite.tween_property(stunt_double, "modulate", Color(3.0, 0.5, 0.0), 0.3)
+	# FORCE WAIT: The code stops here until the orange flash is 100% done
+	await tween_ignite.finished
+	
+	# STEP B: Fade to Black/Transparent (Turning to Ash) - Slower (0.8s)
+	var tween_ash = create_tween()
+	tween_ash.set_parallel(true) # Make sure shrink, spin, and fade happen together
+	tween_ash.tween_property(stunt_double, "modulate", Color(0.0, 0.0, 0.0, 0.0), 0.8) # Black & Invisible
+	tween_ash.tween_property(stunt_double, "scale", Vector2(0.2, 0.2), 0.8) # Shrivel up
+	
+	# Optional: Add a small random jitter/shake manually or via shader?
+	# For now, a simple rotation wobble works fine:
+	tween_ash.tween_property(stunt_double, "rotation", stunt_double.rotation + 1.0, 0.8)
+
+	# 5. WAIT & CLEANUP
+	await tween_ash.finished
+	stunt_double.queue_free()
+	
+	# 6. RESET REAL PLAYER
+	Global.deaths += 1
+	reset_position()
+	
+	await get_tree().create_timer(0.1).timeout
+	
+	# 7. RESTORE REAL PLAYER
+	show()
+	collision_mask = 1
+	sleeping = false
+	sprite_2d.scale = base_scale
+	sprite_2d.rotation = 0
+	
+	input_enabled = true
+	is_falling = false
