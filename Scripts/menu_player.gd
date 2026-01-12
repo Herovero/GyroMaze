@@ -2,6 +2,7 @@ extends RigidBody2D
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var wing_sprite: AnimatedSprite2D = $wing_sprite
+# @onready var progressbar: TextureProgressBar = $TextureProgressBar
 
 @export var tilt_strength: float = 3000.0
 @export var spin_speed: float = 0.02 # Controls how fast the visual spin is

@@ -81,6 +81,7 @@ script = ExtResource("4_6swd7")
 tilt_strength = 3000.0
 
 [node name="Sprite2D" parent="Player" index="0"]
+z_index = 0
 scale = Vector2(0.2, 0.2)
 
 [node name="wing_sprite" parent="Player" index="1"]
@@ -94,10 +95,6 @@ scale = Vector2(1.75, 1.75)
 [node name="PlayerCamera" parent="Player" index="3"]
 visible = false
 enabled = false
-
-[node name="TextureProgressBar" type="TextureProgressBar" parent="Player"]
-offset_right = 40.0
-offset_bottom = 40.0
 
 [node name="TextureRect" type="TextureRect" parent="."]
 z_index = -5

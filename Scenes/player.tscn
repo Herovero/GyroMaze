@@ -1,4 +1,4 @@
-[gd_scene load_steps=114 format=3 uid="uid://b7xfpi740plyc"]
+[gd_scene load_steps=115 format=3 uid="uid://b7xfpi740plyc"]
 
 [ext_resource type="Script" uid="uid://dwrvym4tpnud0" path="res://Scripts/player.gd" id="1_8od7v"]
 [ext_resource type="Texture2D" uid="uid://crutji3b7hat1" path="res://Assets/marbles/marble_blue.png" id="2_v84ne"]
@@ -111,6 +111,7 @@
 [ext_resource type="AudioStream" uid="uid://bhbayfkv1ir0w" path="res://SFX/hit_wall2_sfx.MP3" id="109_2jrev"]
 [ext_resource type="AudioStream" uid="uid://cw446voprufe0" path="res://SFX/burn_sfx.MP3" id="110_5j7nw"]
 [ext_resource type="AudioStream" uid="uid://0sbwkn2ah6yj" path="res://SFX/bounce_sfx.MP3" id="111_mrkcr"]
+[ext_resource type="Texture2D" uid="uid://bl8mumiteo4fv" path="res://Assets/progressbar.png" id="112_78kn1"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_5un75"]
 animations = [{
@@ -482,3 +483,14 @@ stream = ExtResource("110_5j7nw")
 
 [node name="bounce_sfx" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("111_mrkcr")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="."]
+visible = false
+offset_left = -96.0
+offset_top = -96.0
+offset_right = 1824.0
+offset_bottom = 1824.0
+scale = Vector2(0.1, 0.1)
+value = 50.0
+fill_mode = 4
+texture_progress = ExtResource("112_78kn1")

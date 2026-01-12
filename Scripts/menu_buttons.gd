@@ -8,6 +8,8 @@ extends Area2D
 var rpm := 1.0
 var rotating = false
 var tween: Tween
+var progress_bar: TextureProgressBar
+var bar_tween: Tween
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -42,6 +44,16 @@ func _on_body_entered(body):
 		if name == ("Play"):
 			rotating = true
 			hold_timer.start(3.0)
+			progress_bar = body.get_node("TextureProgressBar") as TextureProgressBar
+			
+		if progress_bar:
+			if bar_tween: bar_tween.kill()
+			progress_bar.visible = true
+			progress_bar.value = 0
+
+			bar_tween = create_tween()
+			bar_tween.tween_property(progress_bar, "value", 100.0, 3.0)
+
 
 func _on_hold_timeout():
 	get_tree().change_scene_to_file(next_scene)
@@ -61,4 +73,13 @@ func _on_body_exited(body):
 			if name == ("Play"):
 				rotating = false
 				hold_timer.stop()
+				
+				if bar_tween:
+					bar_tween.kill()
+					bar_tween = null
+
+				if progress_bar:
+					progress_bar.value = 0
+					progress_bar.visible = false
+
 				
