@@ -61,6 +61,7 @@ var wall_hit_cooldown: float = 0.15  # 150ms delay between hits to prevent spam
 @onready var hit_wall_sfx = $SFX/hit_wall_sfx
 @onready var burn_sfx = $SFX/burn_sfx
 @onready var bounce_sfx = $SFX/bounce_sfx
+@onready var fall_sfx = $SFX/fall_sfx
 
 # Tweak these numbers to fit your game's speed
 var max_speed = 300.0
@@ -332,10 +333,10 @@ func _play_wall_hit(intensity: float):
 	if OS.has_feature("mobile"):
 		if intensity > 400.0:
 			 # HARD HIT: Longer vibration (simulated "Heavy")
-			Input.vibrate_handheld(100)
+			HapticsManager.vibrate_heavy()
 		elif intensity > min_impact_speed:
 			 # LIGHT HIT: Short crisp tap (simulated "Light")
-			Input.vibrate_handheld(20)
+			HapticsManager.vibrate_light()
 
 func collect_powerup(powerup_type: String):
 	# Logic: Find the first empty slot. If full, replace the last one.
@@ -355,6 +356,9 @@ func collect_powerup(powerup_type: String):
 		print("Inventory: ", inventory)
 		update_inventory_ui()
 		collect_powerup_sfx.play()
+		
+		if OS.has_feature("mobile"):
+			HapticsManager.vibrate_light()
 		
 		return true
 	else:
@@ -509,6 +513,8 @@ func _on_falling_into_hole(hole_center_pos: Vector2):
 		return
 	is_falling = true
 	
+	fall_sfx.play()
+	
 	# 2. INSTANTLY Disable Real Player
 	input_enabled = false
 	collision_mask = 0       # Ghost mode (touch nothing)
@@ -576,6 +582,9 @@ func die_from_burning():
 	roll_sfx.stop()
 	# Play the sizzle/burn sound
 	burn_sfx.play()
+	
+	if OS.has_feature("mobile"):
+		HapticsManager.vibrate_heavy()
 	
 	# 2. DISABLE REAL PLAYER (Same as hole logic)
 	input_enabled = false
