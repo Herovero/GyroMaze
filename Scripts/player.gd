@@ -78,6 +78,7 @@ func _ready():
 	update_inventory_ui()
 	
 	SignalBus.connect("falling_into_hole", _on_falling_into_hole)
+	SignalBus.connect("times_up", _on_times_up)
 
 func set_start_position(pos: Vector2):
 	current_start_pos = pos
@@ -89,6 +90,7 @@ func set_start_position(pos: Vector2):
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
+	print(input_enabled)
 	# Capture the velocity BEFORE physics resolution happens
 	_previous_velocity = linear_velocity
 	
@@ -638,6 +640,15 @@ func die_from_burning():
 	sleeping = false
 	sprite_2d.scale = base_scale
 	sprite_2d.rotation = 0
-	
+	modulate.a = 1.0
+	ghost_charges = 0
 	input_enabled = true
 	is_falling = false
+
+func _on_times_up():
+	input_enabled = false
+	
+	# Kill physics immediately so they don't slide after time is up
+	linear_velocity = Vector2.ZERO
+	angular_velocity = 0
+	sleeping = true

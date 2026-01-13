@@ -463,7 +463,7 @@ volume_db = 5.0
 
 [node name="roll_sfx" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("104_4pcjl")
-volume_db = -18.545
+volume_db = -23.0
 
 [node name="ghost_sfx" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("105_3ath1")
