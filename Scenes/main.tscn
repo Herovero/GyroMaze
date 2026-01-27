@@ -164,7 +164,7 @@
 [ext_resource type="AudioStream" uid="uid://d8gvp6jpkgq8" path="res://SFX/unpause_sfx.MP3" id="158_0t4jf"]
 [ext_resource type="AudioStream" uid="uid://beup16tv2wjeh" path="res://SFX/button_sfx.MP3" id="159_0t4jf"]
 [ext_resource type="AudioStream" uid="uid://o2i37wvlsaiq" path="res://BGM/kids-game-gaming-background-music-295075.mp3" id="164_11vbv"]
-[ext_resource type="Script" path="res://Scenes/main_bgm.gd" id="165_m6w5j"]
+[ext_resource type="Script" uid="uid://c33jfvof3qjfk" path="res://Scenes/main_bgm.gd" id="165_m6w5j"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_k12tt"]
 friction = 0.0
@@ -175,10 +175,10 @@ texture = ExtResource("2_h1bgf")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 0:0/0/z_index = 2
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, 8, 8, -8, 8)
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 1:0/0 = 0
 1:0/0/z_index = 2
-1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8, -8, -8)
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 0:1/0 = 0
 0:1/0/z_index = 2
 1:1/0 = 0
