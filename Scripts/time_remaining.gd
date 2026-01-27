@@ -5,7 +5,7 @@ extends Label
 @onready var hud_transition = $"../../HUD_transition"
 @onready var five_second_remaining = $"../../SFX & BGM/five_second_remaining"
 
-@export var max_time_limit: float = 180.0
+@export var max_time_limit: float = 120.0
 
 var player
 var has_game_started: bool = false

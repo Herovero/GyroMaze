@@ -3,10 +3,13 @@ extends Label
 @onready var timer: Timer = $"../../Time_countdown"
 
 var player
+var has_game_ended: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	player = get_tree().get_first_node_in_group("Player")
+	
+	SignalBus.connect("times_up", _on_times_up)
 	
 	text = "0"
 	if not SignalBus.is_connected("switch_level", _on_level_start):
@@ -37,7 +40,11 @@ func _on_timer_timeout():
 	# When time is up, hide the label
 	visible = false
 	if player:
-		player.input_enabled = true
+		if !has_game_ended:
+			player.input_enabled = true
 	
 	Global.is_game_active = true
 	SignalBus.emit_signal("game_started")
+
+func _on_times_up():
+	has_game_ended = true

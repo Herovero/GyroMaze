@@ -1,6 +1,5 @@
-[gd_scene load_steps=30 format=4 uid="uid://dop0o8p8aubhb"]
+[gd_scene load_steps=29 format=4 uid="uid://dop0o8p8aubhb"]
 
-[ext_resource type="Script" uid="uid://bvqyshguk4ni0" path="res://Scripts/menu_music.gd" id="1_kmwmt"]
 [ext_resource type="Texture2D" uid="uid://brfgmalflxw5p" path="res://Assets/movement_tileset.png" id="1_m8nev"]
 [ext_resource type="PackedScene" uid="uid://bwtlejdt7cws6" path="res://Scenes/maze_test2.tscn" id="2_fwrfa"]
 [ext_resource type="Script" uid="uid://6n5g0nrkduwr" path="res://Scripts/menu_player.gd" id="4_6swd7"]
@@ -19,7 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://ckqon0u4m5c8r" path="res://Assets/pencil.png" id="16_1by5w"]
 [ext_resource type="FontFile" uid="uid://bj78sglhgmtv7" path="res://Fonts/Courier_Prime/CourierPrime-Italic.ttf" id="17_dldpb"]
 [ext_resource type="Script" uid="uid://cbx3hccfd46u8" path="res://Scripts/input_slider.gd" id="18_d77ms"]
-[ext_resource type="AudioStream" uid="uid://dqbxc3qan0avt" path="res://SFX/menubgm.mp3" id="18_rc6uw"]
+[ext_resource type="AudioStream" uid="uid://dqbxc3qan0avt" path="res://BGM/menubgm.mp3" id="18_rc6uw"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_k12tt"]
 friction = 0.0
@@ -95,6 +94,9 @@ scale = Vector2(1.75, 1.75)
 [node name="PlayerCamera" parent="Player" index="3"]
 visible = false
 enabled = false
+
+[node name="roll_sfx" parent="Player/SFX" index="1"]
+volume_db = -23.0
 
 [node name="TextureRect" type="TextureRect" parent="."]
 z_index = -5
@@ -369,13 +371,13 @@ Veron Siaw (1221305531)
 Jordan Lim (1221103819)"
 metadata/_edit_use_anchors_ = true
 
-[node name="Node2D" type="Node2D" parent="."]
-script = ExtResource("1_kmwmt")
+[node name="BGM" type="Node2D" parent="."]
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node2D"]
+[node name="menu_bgm" type="AudioStreamPlayer" parent="BGM"]
 stream = ExtResource("18_rc6uw")
 volume_db = -20.0
 pitch_scale = 0.95
+autoplay = true
 parameters/looping = true
 
 [connection signal="released" from="InGameUIs/powerup_slot1" to="Player" method="_on_powerup_slot_1_released"]
