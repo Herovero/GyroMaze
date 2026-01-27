@@ -8,13 +8,13 @@
 [ext_resource type="Texture2D" uid="uid://b7ck8twawfxri" path="res://Assets/uis/restart_button.png" id="6_ynf5e"]
 [ext_resource type="Script" uid="uid://qdaco07pmcty" path="res://Scripts/time_countdown.gd" id="7_6bp64"]
 [ext_resource type="PackedScene" uid="uid://cmf02qqfdbdwv" path="res://Scenes/powerup_magnet.tscn" id="7_qax2n"]
-[ext_resource type="Texture2D" uid="uid://kwratvx20eml" path="res://Assets/0000.png" id="8_344ge"]
 [ext_resource type="Script" uid="uid://cepi1p1cjfakw" path="res://Scripts/level_count.gd" id="8_ynf5e"]
 [ext_resource type="PackedScene" uid="uid://dbm528w4u35n0" path="res://Scenes/finish_point.tscn" id="10_hptm8"]
 [ext_resource type="PackedScene" uid="uid://cy81f3sgiqhtq" path="res://Scenes/powerup_slot.tscn" id="10_jkdf5"]
 [ext_resource type="PackedScene" uid="uid://ggicmeg7fv1h" path="res://Scenes/powerup_ghost.tscn" id="11_d1ilt"]
 [ext_resource type="PackedScene" uid="uid://bi5snb0ma00j1" path="res://Scenes/powerup_wing.tscn" id="12_6iyac"]
 [ext_resource type="Script" uid="uid://dcaxkqiax2bvs" path="res://Scripts/time_remaining.gd" id="12_jkdf5"]
+[ext_resource type="Texture2D" uid="uid://btt5gstcw3mc0" path="res://Assets/6a57adcc-4ca3-480a-a266-841576913e82.png" id="12_m6w5j"]
 [ext_resource type="Texture2D" uid="uid://xkokujeiydnq" path="res://Assets/collectibles/coin/_a_frm0,20.png" id="14_1semv"]
 [ext_resource type="Texture2D" uid="uid://bn1oxggt6psjy" path="res://Assets/uis/zoomout_button.png" id="14_2060n"]
 [ext_resource type="Texture2D" uid="uid://dr742mq2h5nv7" path="res://Assets/uis/pause_button.png" id="14_my4ki"]
@@ -164,7 +164,7 @@
 [ext_resource type="AudioStream" uid="uid://d8gvp6jpkgq8" path="res://SFX/unpause_sfx.MP3" id="158_0t4jf"]
 [ext_resource type="AudioStream" uid="uid://beup16tv2wjeh" path="res://SFX/button_sfx.MP3" id="159_0t4jf"]
 [ext_resource type="AudioStream" uid="uid://o2i37wvlsaiq" path="res://BGM/kids-game-gaming-background-music-295075.mp3" id="164_11vbv"]
-[ext_resource type="Script" uid="uid://c33jfvof3qjfk" path="res://Scenes/main_bgm.gd" id="165_m6w5j"]
+[ext_resource type="Script" path="res://Scenes/main_bgm.gd" id="165_m6w5j"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_k12tt"]
 friction = 0.0
@@ -172,6 +172,7 @@ bounce = 5.0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h1bgf"]
 texture = ExtResource("2_h1bgf")
+texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 0:0/0/z_index = 2
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, 8, 8, -8, 8)
@@ -184,6 +185,7 @@ texture = ExtResource("2_h1bgf")
 1:1/0/z_index = 2
 
 [sub_resource type="TileSet" id="TileSet_b3802"]
+tile_size = Vector2i(32, 32)
 physics_layer_0/collision_layer = 1
 physics_layer_0/physics_material = SubResource("PhysicsMaterial_k12tt")
 sources/0 = SubResource("TileSetAtlasSource_h1bgf")
@@ -626,10 +628,11 @@ _data = {
 [node name="Node2D" type="Node2D"]
 
 [node name="hazard_tiles" type="TileMapLayer" parent="."]
-scale = Vector2(9, 9)
+scale = Vector2(4.5, 4.5)
 tile_set = SubResource("TileSet_b3802")
 
 [node name="maze" parent="." instance=ExtResource("1_21xkr")]
+scale = Vector2(1.44, 1.44)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 script = ExtResource("2_6bp64")
@@ -663,13 +666,12 @@ autostart = true
 
 [node name="TextureRect" type="TextureRect" parent="."]
 texture_repeat = 2
-offset_left = -3839.0
-offset_top = -1837.0
-offset_right = 4149.0
-offset_bottom = 1837.0
+offset_left = -1494.0
+offset_top = -719.0
+offset_right = 3506.0
+offset_bottom = 1781.0
 scale = Vector2(2, 2)
-texture = ExtResource("8_344ge")
-stretch_mode = 1
+texture = ExtResource("12_m6w5j")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -825,6 +827,7 @@ frame_progress = 1.0
 script = ExtResource("141_adgm5")
 
 [node name="result_screen_hud" type="TextureRect" parent="InGameUIs"]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

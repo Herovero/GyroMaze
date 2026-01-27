@@ -4,11 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://brfgmalflxw5p" path="res://Assets/movement_tileset.png" id="1_m8nev"]
 [ext_resource type="PackedScene" uid="uid://bwtlejdt7cws6" path="res://Scenes/maze_test2.tscn" id="2_fwrfa"]
 [ext_resource type="Script" uid="uid://6n5g0nrkduwr" path="res://Scripts/menu_player.gd" id="4_6swd7"]
+[ext_resource type="Texture2D" uid="uid://btt5gstcw3mc0" path="res://Assets/6a57adcc-4ca3-480a-a266-841576913e82.png" id="5_d77ms"]
 [ext_resource type="Script" uid="uid://bxrmatpjxrve4" path="res://Scripts/menu_main.gd" id="6_q3rjx"]
 [ext_resource type="Texture2D" uid="uid://c51y6w3isblyh" path="res://Assets/uis/help.png" id="8_rc6uw"]
 [ext_resource type="Texture2D" uid="uid://cmffj0vo5gtq8" path="res://Assets/vinyl_play.png" id="10_g8i7c"]
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="10_u4tgj"]
-[ext_resource type="Texture2D" uid="uid://kwratvx20eml" path="res://Assets/0000.png" id="11_4opq8"]
 [ext_resource type="Script" uid="uid://g18eqt4cf3ib" path="res://Scripts/menu_buttons.gd" id="11_g8i7c"]
 [ext_resource type="Texture2D" uid="uid://bn5db481x6w25" path="res://Assets/notebook-8066538_1280.png" id="11_rfqti"]
 [ext_resource type="PackedScene" uid="uid://cy81f3sgiqhtq" path="res://Scenes/powerup_slot.tscn" id="12_c4jr8"]
@@ -103,9 +103,7 @@ offset_left = -68.0
 offset_top = -88.0
 offset_right = 8009.0
 offset_bottom = 3694.0
-texture = ExtResource("11_4opq8")
-stretch_mode = 1
-metadata/_edit_lock_ = true
+texture = ExtResource("5_d77ms")
 
 [node name="OverviewCam" type="Camera2D" parent="." groups=["OverviewCam"]]
 position = Vector2(-62.4, 0)
@@ -273,12 +271,14 @@ theme_override_fonts/normal_font = ExtResource("17_dldpb")
 theme_override_font_sizes/normal_font_size = 200
 bbcode_enabled = true
 text = "[u]Settings[/u]"
+metadata/_edit_use_anchors_ = true
 
 [node name="Settings" type="Control" parent="SettingsBackground"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
 
 [node name="SettingsLabels" type="RichTextLabel" parent="SettingsBackground/Settings"]
 z_as_relative = false
@@ -303,6 +303,7 @@ Background Music Volume
 
 
 Input Sensitivity"
+metadata/_edit_use_anchors_ = true
 
 [node name="SFXVolumeSlider" type="HSlider" parent="SettingsBackground/Settings"]
 layout_mode = 0
@@ -316,6 +317,7 @@ theme_override_styles/grabber_area_highlight = SubResource("StyleBoxLine_3p34a")
 max_value = 1.5
 step = 0.05
 value = 0.75
+metadata/_edit_use_anchors_ = true
 
 [node name="BGMVolumeSlider" type="HSlider" parent="SettingsBackground/Settings"]
 layout_mode = 0
@@ -329,6 +331,7 @@ theme_override_styles/grabber_area_highlight = SubResource("StyleBoxLine_3p34a")
 max_value = 1.5
 step = 0.05
 value = 0.75
+metadata/_edit_use_anchors_ = true
 
 [node name="InputSlider" type="HSlider" parent="SettingsBackground/Settings"]
 layout_mode = 0
@@ -344,6 +347,7 @@ max_value = 2.0
 step = 0.05
 value = 1.0
 script = ExtResource("18_d77ms")
+metadata/_edit_use_anchors_ = true
 
 [node name="CreditsLabel" type="RichTextLabel" parent="SettingsBackground"]
 custom_minimum_size = Vector2(2050, 0)
@@ -363,6 +367,7 @@ TT1L (Mr. Irfan Hadi)
 Made with love by:
 Veron Siaw (1221305531)
 Jordan Lim (1221103819)"
+metadata/_edit_use_anchors_ = true
 
 [node name="Node2D" type="Node2D" parent="."]
 script = ExtResource("1_kmwmt")
