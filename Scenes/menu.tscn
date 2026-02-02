@@ -37,11 +37,12 @@ thickness = 36
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource("10_u4tgj")]
+[node name="Player" parent="." node_paths=PackedStringArray("limit_camera") instance=ExtResource("10_u4tgj")]
 z_index = 2
 position = Vector2(3994, 1837)
 gravity_scale = 0.0
 script = ExtResource("4_6swd7")
+limit_camera = NodePath("../OverviewCam")
 tilt_strength = 3000.0
 
 [node name="Sprite2D" parent="Player" index="0"]

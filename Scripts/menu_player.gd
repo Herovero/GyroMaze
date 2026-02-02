@@ -3,6 +3,8 @@ extends RigidBody2D
 @onready var sprite_2d: Sprite2D = $Sprite2D
 # @onready var progressbar: TextureProgressBar = $TextureProgressBar
 
+@export var limit_camera: Camera2D
+
 @export var tilt_strength: float = 3000.0
 @export var spin_speed: float = 0.02 # Controls how fast the visual spin is
 
@@ -19,6 +21,9 @@ var shader_material: ShaderMaterial
 
 # Remember where the player should reset position to 
 var current_start_pos = Vector2.ZERO
+
+# Screen Boundary Variable
+var player_radius: float = 32.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -51,6 +56,51 @@ func _physics_process(delta):
 	apply_central_force(force)
 	
 	rotate_marble_visuals(delta)
+
+func _integrate_forces(state):
+	# 1. Guard: If no camera is assigned, do nothing (or fallback)
+	if limit_camera == null:
+		return
+
+	# 2. Calculate the World Size visible to the camera
+	# We take the window size (pixels) and divide by zoom to get "World Units"
+	var viewport_size = get_viewport_rect().size
+	var world_visible_size = viewport_size / limit_camera.zoom
+	
+	# 3. Get Camera Center
+	# get_screen_center_position() is safer than global_position because it accounts for anchors
+	var cam_center = limit_camera.get_screen_center_position()
+	
+	# 4. Calculate Boundaries (Left, Right, Top, Bottom)
+	var min_x = cam_center.x - (world_visible_size.x / 2.0) + player_radius
+	var max_x = cam_center.x + (world_visible_size.x / 2.0) - player_radius
+	var min_y = cam_center.y - (world_visible_size.y / 2.0) + player_radius
+	var max_y = cam_center.y + (world_visible_size.y / 2.0) - player_radius
+	
+	# 5. Clamp Position
+	var xform = state.transform
+	var pos = xform.origin
+	
+	var clamped_x = clamp(pos.x, min_x, max_x)
+	var clamped_y = clamp(pos.y, min_y, max_y)
+	
+	# 6. Apply Correction
+	if pos.x != clamped_x:
+		xform.origin.x = clamped_x
+		state.linear_velocity.x = 0 # Kill momentum into the wall
+		
+	if pos.y != clamped_y:
+		xform.origin.y = clamped_y
+		state.linear_velocity.y = 0 # Kill momentum into the wall
+		
+	state.transform = xform
+	
+	# Reset Logic
+	if should_reset:
+		state.transform.origin = current_start_pos
+		state.linear_velocity = Vector2.ZERO
+		state.angular_velocity = 0
+		should_reset = false
 
 func update_rolling_shader(delta):
 	# 1. Add the distance moved this frame to our total counter.
