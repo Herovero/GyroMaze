@@ -12,7 +12,9 @@ func _ready():
 	close_button.pressed.connect(_on_close_pressed)
 
 func _on_info_pressed():
-	info_popup.visible = !info_popup.visible
+	pass
+	#info_popup.visible = !info_popup.visible
 
 func _on_close_pressed():
-	info_popup.visible = false
+	pass
+	#info_popup.visible = false

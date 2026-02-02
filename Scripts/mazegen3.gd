@@ -140,9 +140,9 @@ func start_new_level():
 	spawn_finish()
 	if Global.current_level >= 2:
 		spawn_holes()
-	if Global.current_level > 10:
-		spawn_hazard_tiles() # Icy and Sticky Floors
-		spawn_hazard_walls() # Bouncy and Fiery Walls
+	if Global.current_level >= 11:
+		spawn_hazard_tiles() # Checks for Icy Floor (11+) and Sticky (17+)
+		spawn_hazard_walls() # # Checks for Bouncy (14+) and Fire (20+)
 	if Global.current_level >= 3:
 		spawn_coins()
 	if Global.current_level >= 5:
@@ -266,17 +266,13 @@ func move_player_to_start():
 func spawn_hazard_tiles() -> void:
 	hazard_tiles.clear()
 	
-	# 1. Spawn ICY Patches (Fast) - tile_path (0,1)
-	# We spawn 6 patches, each between 5 and 12 tiles big
-	spawn_patch(tile_path, 6, 5, 12)
+	# 1. Spawn ICY Patches (Fast) - Starts Level 11
+	if Global.current_level >= 11:
+		spawn_patch(tile_path, 6, 5, 12)
 	
-	# 2. Spawn STICKY Patches (Slow) - tile_s (1,1)
-	# We spawn 4 patches, slightly smaller
-	spawn_patch(tile_s, 4, 3, 8)
-	
-	# Note: Any tile we don't paint remains "Empty" (-1, -1).
-	# Your player.gd correctly treats "Empty" as Normal Floor (Damp 1.0),
-	# so we don't need to manually paint Normal tiles anymore!
+	# 2. Spawn STICKY Patches (Slow) - Starts Level 17
+	if Global.current_level >= 17:
+		spawn_patch(tile_s, 4, 3, 8)
 
 # --- NEW HELPER FUNCTION ---
 func spawn_patch(type: Vector2i, count: int, min_size: int, max_size: int):
@@ -329,11 +325,13 @@ func spawn_patch(type: Vector2i, count: int, min_size: int, max_size: int):
 		spawned += 1
 
 func spawn_hazard_walls() -> void:
-	# 1. Spawn Bouncy Wall Patches
-	spawn_wall_swaps(hazard_bouncy, 5, 2, 5)
+	# 1. Spawn Bouncy Wall Patches - Starts Level 14
+	if Global.current_level >= 14:
+		spawn_wall_swaps(hazard_bouncy, 5, 2, 5)
 	
-	# 2. Spawn Fiery Wall Patches
-	spawn_wall_swaps(hazard_fiery, 4, 2, 4)
+	# 2. Spawn Fiery Wall Patches - Starts Level 20
+	if Global.current_level >= 20:
+		spawn_wall_swaps(hazard_fiery, 4, 2, 4)
 
 func spawn_wall_swaps(type: Vector2i, count: int, min_size: int, max_size: int):
 	var spawned = 0
@@ -359,7 +357,7 @@ func spawn_wall_swaps(type: Vector2i, count: int, min_size: int, max_size: int):
 		var current_patch = [start_pos]
 		
 		# A. Remove from Maze
-		# Maze.set_cell(start_pos, -1) 
+		Maze.set_cell(start_pos, -1) 
 		# B. Add to Hazard Layer
 		hazard_tiles.set_cell(start_pos, 0, type)
 		
