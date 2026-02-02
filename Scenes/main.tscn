@@ -68,9 +68,9 @@
 [ext_resource type="Texture2D" uid="uid://3qn3h6ecpc4l" path="res://Assets/bedside clock.png" id="61_hfu3o"]
 [ext_resource type="FontFile" uid="uid://cp0elas21ho0b" path="res://Fonts/digital-7.ttf" id="61_ynmfv"]
 [ext_resource type="Texture2D" uid="uid://cuvvnm8ryb0ad" path="res://Assets/ButtonMediumBlueActive.png" id="62_8d8ul"]
-[ext_resource type="Script" uid="uid://cjolw4fe7laam" path="res://Scenes/resume_button.gd" id="63_tctli"]
+[ext_resource type="Script" uid="uid://cjolw4fe7laam" path="res://Scripts/resume_button.gd" id="63_tctli"]
 [ext_resource type="Texture2D" uid="uid://c1mf1764kju86" path="res://Assets/ButtonMediumGreenActive.png" id="64_tctli"]
-[ext_resource type="Script" uid="uid://bug0pes04dupg" path="res://Scenes/skip_button.gd" id="65_8d8ul"]
+[ext_resource type="Script" uid="uid://bug0pes04dupg" path="res://Scripts/skip_button.gd" id="65_8d8ul"]
 [ext_resource type="Texture2D" uid="uid://c2sasbsji7r20" path="res://Assets/ButtonMediumRedActive.png" id="66_3qdko"]
 [ext_resource type="Texture2D" uid="uid://bjdcabtwknlm7" path="res://Assets/alarm clock/_a_frm26,40.png" id="67_hfu3o"]
 [ext_resource type="Texture2D" uid="uid://co0tkcmedq1ls" path="res://Assets/alarm clock/_a_frm27,40.png" id="68_adgm5"]
@@ -147,13 +147,13 @@
 [ext_resource type="Texture2D" uid="uid://b45qcadfq0bri" path="res://Assets/alarm clock/_a_frm97,40.png" id="138_g2ehk"]
 [ext_resource type="Texture2D" uid="uid://1l7gqyd1cf4p" path="res://Assets/alarm clock/_a_frm98,40.png" id="139_b7esa"]
 [ext_resource type="Texture2D" uid="uid://dcu65rgfdo3to" path="res://Assets/alarm clock/_a_frm99,40.png" id="140_uo3nc"]
-[ext_resource type="Script" uid="uid://ble6hprlg3lfr" path="res://Scenes/alarm_clock.gd" id="141_adgm5"]
+[ext_resource type="Script" uid="uid://ble6hprlg3lfr" path="res://Scripts/alarm_clock.gd" id="141_adgm5"]
 [ext_resource type="AudioStream" uid="uid://ckoxlgaqh6jlx" path="res://SFX/5 second remaining.MP3" id="142_qxkn4"]
 [ext_resource type="Texture2D" uid="uid://c11td3pqubd7v" path="res://Assets/BackgroundSaveMenu.png" id="142_vlivj"]
 [ext_resource type="AudioStream" uid="uid://5brd41x6goxq" path="res://SFX/times up.MP3" id="143_130ps"]
-[ext_resource type="Script" uid="uid://ch0k6ciqb1g8a" path="res://Scenes/result_screen_hud.gd" id="143_gf7g1"]
+[ext_resource type="Script" uid="uid://ch0k6ciqb1g8a" path="res://Scripts/result_screen_hud.gd" id="143_gf7g1"]
 [ext_resource type="FontFile" uid="uid://cafoe8dbdcadk" path="res://Fonts/Courier_Prime/CourierPrime-Regular.ttf" id="144_pmnrr"]
-[ext_resource type="Script" uid="uid://bpsyq3b365phu" path="res://Scenes/stamp_logic.gd" id="144_wt5iu"]
+[ext_resource type="Script" uid="uid://bpsyq3b365phu" path="res://Scripts/stamp_logic.gd" id="144_wt5iu"]
 [ext_resource type="AudioStream" uid="uid://o11nlb4lp5j" path="res://SFX/paper flip.MP3" id="145_gf7g1"]
 [ext_resource type="Texture2D" uid="uid://d0kbjhpywptxt" path="res://Assets/stamps/stamp_plotarmor.png" id="145_pmnrr"]
 [ext_resource type="Texture2D" uid="uid://1ffa2piaqjri" path="res://Assets/stamps/stamp_maidenless.png" id="146_s8cid"]
@@ -171,7 +171,7 @@
 [ext_resource type="AudioStream" uid="uid://d8gvp6jpkgq8" path="res://SFX/unpause_sfx.MP3" id="158_0t4jf"]
 [ext_resource type="AudioStream" uid="uid://beup16tv2wjeh" path="res://SFX/button_sfx.MP3" id="159_0t4jf"]
 [ext_resource type="AudioStream" uid="uid://o2i37wvlsaiq" path="res://BGM/kids-game-gaming-background-music-295075.mp3" id="164_11vbv"]
-[ext_resource type="Script" uid="uid://c33jfvof3qjfk" path="res://Scenes/main_bgm.gd" id="165_m6w5j"]
+[ext_resource type="Script" uid="uid://c33jfvof3qjfk" path="res://Scripts/main_bgm.gd" id="165_m6w5j"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_k12tt"]
 friction = 0.0
@@ -722,6 +722,7 @@ texture_pressed = ExtResource("15_lx3vj")
 script = ExtResource("16_lx3vj")
 
 [node name="NextLevelButton" type="TouchScreenButton" parent="InGameUIs"]
+visible = false
 position = Vector2(2211, 902)
 scale = Vector2(0.25, 0.25)
 texture_normal = ExtResource("6_ynf5e")
@@ -1133,30 +1134,38 @@ libraries = {
 
 [node name="five_second_remaining" type="AudioStreamPlayer" parent="SFX & BGM"]
 stream = ExtResource("142_qxkn4")
+bus = &"SFX"
 
 [node name="times_up" type="AudioStreamPlayer" parent="SFX & BGM"]
 stream = ExtResource("143_130ps")
+bus = &"SFX"
 
 [node name="paper_flip" type="AudioStreamPlayer" parent="SFX & BGM"]
 stream = ExtResource("145_gf7g1")
 volume_db = -4.052
+bus = &"SFX"
 
 [node name="stamp" type="AudioStreamPlayer" parent="SFX & BGM"]
 stream = ExtResource("154_wt5iu")
+bus = &"SFX"
 
 [node name="pause_sfx" type="AudioStreamPlayer" parent="SFX & BGM"]
 process_mode = 3
 stream = ExtResource("157_dllok")
+bus = &"SFX"
 
 [node name="unpause_sfx" type="AudioStreamPlayer" parent="SFX & BGM"]
 stream = ExtResource("158_0t4jf")
+bus = &"SFX"
 
 [node name="button_sfx" type="AudioStreamPlayer" parent="SFX & BGM"]
 stream = ExtResource("159_0t4jf")
+bus = &"SFX"
 
 [node name="main_bgm" type="AudioStreamPlayer" parent="SFX & BGM"]
 stream = ExtResource("164_11vbv")
 volume_db = -15.0
+bus = &"Music"
 script = ExtResource("165_m6w5j")
 
 [connection signal="released" from="InGameUIs/powerup_slot1" to="Player" method="_on_powerup_slot_1_released"]

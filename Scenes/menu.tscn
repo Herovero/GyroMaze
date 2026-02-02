@@ -1,9 +1,10 @@
-[gd_scene load_steps=23 format=3 uid="uid://dop0o8p8aubhb"]
+[gd_scene load_steps=27 format=3 uid="uid://dop0o8p8aubhb"]
 
 [ext_resource type="Script" uid="uid://6n5g0nrkduwr" path="res://Scripts/menu_player.gd" id="4_6swd7"]
 [ext_resource type="Texture2D" uid="uid://btt5gstcw3mc0" path="res://Assets/6a57adcc-4ca3-480a-a266-841576913e82.png" id="5_d77ms"]
+[ext_resource type="Texture2D" uid="uid://rk0lt1piri7u" path="res://Assets/uis/tutorial_button.png" id="5_kmwmt"]
 [ext_resource type="Script" uid="uid://bxrmatpjxrve4" path="res://Scripts/menu_main.gd" id="6_q3rjx"]
-[ext_resource type="Texture2D" uid="uid://c51y6w3isblyh" path="res://Assets/uis/help.png" id="8_rc6uw"]
+[ext_resource type="Texture2D" uid="uid://b4x4f3w4n07gd" path="res://Assets/uis/tutorial_button_pressed.png" id="6_rc6uw"]
 [ext_resource type="Texture2D" uid="uid://cmffj0vo5gtq8" path="res://Assets/vinyl_play.png" id="10_g8i7c"]
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="10_u4tgj"]
 [ext_resource type="Script" uid="uid://g18eqt4cf3ib" path="res://Scripts/menu_buttons.gd" id="11_g8i7c"]
@@ -12,7 +13,10 @@
 [ext_resource type="Texture2D" uid="uid://cm8i7ssp3s6ui" path="res://Assets/gramophone.png" id="13_8ph6h"]
 [ext_resource type="Texture2D" uid="uid://djsr3def2h6yn" path="res://Assets/tonearm.png" id="14_5ti5v"]
 [ext_resource type="Texture2D" uid="uid://rnrva06tai0d" path="res://Assets/tonearmhead.png" id="15_5ti5v"]
+[ext_resource type="Script" uid="uid://dyedqv8rc1iaw" path="res://Scenes/info_button.gd" id="15_d77ms"]
 [ext_resource type="Texture2D" uid="uid://ckqon0u4m5c8r" path="res://Assets/pencil.png" id="16_1by5w"]
+[ext_resource type="Script" uid="uid://cm5pewan18ctq" path="res://Scripts/sfx_volume_slider.gd" id="16_rc6uw"]
+[ext_resource type="Script" uid="uid://bt31y5r50yq12" path="res://Scripts/bgm_volume_slider.gd" id="17_d77ms"]
 [ext_resource type="FontFile" uid="uid://bj78sglhgmtv7" path="res://Fonts/Courier_Prime/CourierPrime-Italic.ttf" id="17_dldpb"]
 [ext_resource type="Script" uid="uid://cbx3hccfd46u8" path="res://Scripts/input_slider.gd" id="18_d77ms"]
 [ext_resource type="AudioStream" uid="uid://dqbxc3qan0avt" path="res://BGM/menubgm.mp3" id="18_rc6uw"]
@@ -87,12 +91,6 @@ metadata/_edit_use_anchors_ = true
 
 [node name="InGameUIs" type="CanvasLayer" parent="."]
 script = ExtResource("6_q3rjx")
-
-[node name="InfoButton" type="TouchScreenButton" parent="InGameUIs"]
-z_index = 5
-position = Vector2(2134, 15)
-scale = Vector2(0.25, 0.25)
-texture_normal = ExtResource("8_rc6uw")
 
 [node name="InfoPopup" type="Control" parent="InGameUIs"]
 layout_mode = 3
@@ -203,12 +201,20 @@ texture = ExtResource("11_rfqti")
 [node name="Timer" type="Timer" parent="SettingsBackground"]
 
 [node name="Hand" type="Sprite2D" parent="SettingsBackground"]
-z_index = 3
+z_index = 5
 z_as_relative = false
 position = Vector2(2533.4756, -880.13184)
 scale = Vector2(7, 7)
 texture = ExtResource("16_1by5w")
 offset = Vector2(-280, -130)
+
+[node name="InfoButton" type="TouchScreenButton" parent="SettingsBackground"]
+position = Vector2(148.56409, -2042.4677)
+rotation = -0.31415927
+scale = Vector2(4, 4)
+texture_normal = ExtResource("5_kmwmt")
+texture_pressed = ExtResource("6_rc6uw")
+script = ExtResource("15_d77ms")
 
 [node name="SettingsTitle" type="RichTextLabel" parent="SettingsBackground"]
 offset_left = -720.85
@@ -255,6 +261,24 @@ Background Music Volume
 Input Sensitivity"
 metadata/_edit_use_anchors_ = true
 
+[node name="TutorialLabel" type="RichTextLabel" parent="SettingsBackground/Settings"]
+visible = false
+z_as_relative = false
+custom_minimum_size = Vector2(2050, 0)
+layout_mode = 0
+offset_left = -754.8203
+offset_top = -680.6236
+offset_right = 1295.1797
+offset_bottom = 432.8847
+mouse_filter = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_constants/underline_alpha = 100
+theme_override_fonts/normal_font = ExtResource("17_dldpb")
+theme_override_font_sizes/normal_font_size = 92
+bbcode_enabled = true
+text = "Tilt to roll and dodge hazards! Collect Coins for score, Power-ups for abilities, and Timers to keep the clock running. How many levels can you clear?"
+metadata/_edit_use_anchors_ = true
+
 [node name="SFXVolumeSlider" type="HSlider" parent="SettingsBackground/Settings"]
 layout_mode = 0
 offset_left = -740.1082
@@ -267,6 +291,7 @@ theme_override_styles/grabber_area_highlight = SubResource("StyleBoxLine_3p34a")
 max_value = 1.5
 step = 0.05
 value = 0.75
+script = ExtResource("16_rc6uw")
 metadata/_edit_use_anchors_ = true
 
 [node name="BGMVolumeSlider" type="HSlider" parent="SettingsBackground/Settings"]
@@ -281,6 +306,7 @@ theme_override_styles/grabber_area_highlight = SubResource("StyleBoxLine_3p34a")
 max_value = 1.5
 step = 0.05
 value = 0.75
+script = ExtResource("17_d77ms")
 metadata/_edit_use_anchors_ = true
 
 [node name="InputSlider" type="HSlider" parent="SettingsBackground/Settings"]
@@ -326,8 +352,12 @@ stream = ExtResource("18_rc6uw")
 volume_db = -20.0
 pitch_scale = 0.95
 autoplay = true
+bus = &"Music"
 parameters/looping = true
 
 [connection signal="body_entered" from="Play" to="Player" method="_on_body_entered"]
+[connection signal="released" from="SettingsBackground/InfoButton" to="SettingsBackground/InfoButton" method="_on_released"]
+[connection signal="value_changed" from="SettingsBackground/Settings/SFXVolumeSlider" to="SettingsBackground/Settings/SFXVolumeSlider" method="_on_value_changed"]
+[connection signal="value_changed" from="SettingsBackground/Settings/BGMVolumeSlider" to="SettingsBackground/Settings/BGMVolumeSlider" method="_on_value_changed"]
 
 [editable path="Player"]

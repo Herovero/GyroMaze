@@ -460,33 +460,42 @@ position_smoothing_enabled = true
 [node name="collect_powerup_sfx" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("106_78kn1")
 volume_db = 5.0
+bus = &"SFX"
 
 [node name="roll_sfx" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("104_4pcjl")
 volume_db = -23.0
+bus = &"SFX"
 
 [node name="ghost_sfx" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("105_3ath1")
+bus = &"SFX"
 
 [node name="wing_sfx" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("106_bvt37")
 volume_db = 2.0
+bus = &"SFX"
 
 [node name="magnet_sfx" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("107_kt3hj")
+bus = &"SFX"
 
 [node name="hit_wall_sfx" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("109_2jrev")
 volume_db = 5.0
+bus = &"SFX"
 
 [node name="burn_sfx" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("110_5j7nw")
+bus = &"SFX"
 
 [node name="bounce_sfx" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("111_mrkcr")
+bus = &"SFX"
 
 [node name="fall_sfx" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("112_nwtn4")
+bus = &"SFX"
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="."]
 visible = false

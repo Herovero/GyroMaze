@@ -5,6 +5,8 @@ extends Area2D
 @onready var hand = $"../SettingsBackground/Hand"
 @onready var hold_timer: Timer = $Timer
 @onready var setting = $"../SettingsBackground/Settings"
+@onready var info_button = $"../SettingsBackground/InfoButton"
+
 var rpm := 1.0
 var rotating = false
 var tween: Tween
@@ -13,6 +15,7 @@ var bar_tween: Tween
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	info_button.hide()
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 	if name == ("Play"):
@@ -53,6 +56,8 @@ func _on_body_entered(body):
 
 			bar_tween = create_tween()
 			bar_tween.tween_property(progress_bar, "value", 100.0, 3.0)
+		
+		info_button.show()
 
 
 func _on_hold_timeout():
@@ -81,5 +86,6 @@ func _on_body_exited(body):
 				if progress_bar:
 					progress_bar.value = 0
 					progress_bar.visible = false
-
-				
+			
+			await get_tree().create_timer(1).timeout
+			info_button.hide()

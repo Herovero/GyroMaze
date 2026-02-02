@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-@onready var info_button := $InfoButton
+@onready var info_button = $"../SettingsBackground/InfoButton"
 @onready var info_popup := $InfoPopup
 @onready var close_button := $InfoPopup/PopupPanel/CloseButton
 @onready var menu_bgm = $"../BGM/menu_bgm"

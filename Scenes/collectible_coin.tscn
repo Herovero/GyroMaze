@@ -196,5 +196,6 @@ texture = ExtResource("1_q0sck")
 
 [node name="collect_coin_sfx" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("43_6qq8u")
+bus = &"SFX"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

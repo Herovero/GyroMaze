@@ -485,5 +485,6 @@ text = "+ 10s"
 [node name="collect_timer_sfx" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("83_poqfn")
 volume_db = -3.5
+bus = &"SFX"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
