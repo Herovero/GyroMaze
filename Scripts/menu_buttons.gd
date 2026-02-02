@@ -1,10 +1,10 @@
 extends Area2D
 
 @export var next_scene: String = "res://Scenes/main.tscn"
-@onready var sprite = $Sprite2D
-@onready var hand = $Hand
+@onready var sprite = $"../Player/Sprite2D"
+@onready var hand = $"../SettingsBackground/Hand"
 @onready var hold_timer: Timer = $Timer
-@onready var setting = $Settings
+@onready var setting = $"../SettingsBackground/Hand"
 var rpm := 1.0
 var rotating = false
 var tween: Tween
