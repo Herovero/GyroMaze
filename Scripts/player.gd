@@ -259,6 +259,9 @@ func _integrate_forces(state):
 		new_transform.y = Vector2(0, 1) # Y axis points Down
 		state.transform = new_transform
 	
+	if ghost_charges > 0:
+		return
+	
 	# iterate through all current contacts using the 'state' object
 	for i in range(state.get_contact_count()):
 		# Get the object we hit
@@ -412,37 +415,45 @@ func activate_ghost(charges: int):
 	#print("Ghost Mode Activated! Charges: ", ghost_charges)
 
 func handle_ghost_logic():
-	# Convert global position to local since maze scale is 9.0
+	# 1. Check Main Maze (Standard Walls)
 	var local_pos = maze.to_local(global_position)
-	
-	# Get the tile coordinate under the player
 	var tile_pos = maze.local_to_map(local_pos)
-	#print(tile_pos)
+	var maze_tile_coords = maze.get_cell_atlas_coords(tile_pos)
 	
-	# 2. Check what kind of tile is there (Layer 0)
-	var tile_atlas_coords = maze.get_cell_atlas_coords(tile_pos)
-	#print(tile_atlas_coords)
+	# 2. Check Hazard Tiles (Bouncy/Fiery)
+	var local_pos_haz = hazard_tiles.to_local(global_position)
+	var tile_pos_haz = hazard_tiles.local_to_map(local_pos_haz)
+	var hazard_tile_coords = hazard_tiles.get_cell_atlas_coords(tile_pos_haz)
+
+	# --- DEATH CHECK ---
+	# If we are inside a Fire Wall, die immediately.
+	# Ghost mode does NOT protect against heat!
+	if hazard_tile_coords == hazard_fiery:
+		die_from_burning()
+		return # Stop processing so we don't consume charges while dying
 	
-	# Based on your mazegen script: Wall is (0,0), Floor is (0,1)
-	var is_wall = (tile_atlas_coords == Vector2i(0, 0))
+	# 3. Wall Logic (Charge Consumption)
+	var is_in_maze_wall = (maze_tile_coords == Vector2i(0, 0))
+	var is_in_bouncy_wall = (hazard_tile_coords == hazard_bouncy)
 	
-	if is_wall:
-		# We are currently inside a wall
+	# We combine them so passing through EITHER counts as "Inside a Wall"
+	var is_inside_any_wall = is_in_maze_wall or is_in_bouncy_wall
+	
+	if is_inside_any_wall:
+		# We are currently phasing through a wall
 		was_inside_wall = true
 	else:
-		# We are currently on the floor
+		# We are currently in open space
 		if was_inside_wall:
-			# We JUST exited a wall! Consumed 1 charge.
+			# We just exited a wall block! Consume 1 charge.
 			ghost_charges -= 1
 			was_inside_wall = false
-			#print("Passed through wall! Charges left: ", ghost_charges)
 			
-			# If we ran out of charges, turn solid again
+			# If out of charges, become solid again
 			if ghost_charges <= 0:
 				ghost_charges = 0
-				collision_mask = 1 # Reset to default (Collide with Walls/Layer 1)
-				modulate.a = 1.0 # Fully opaque
-				#print("Ghost Mode Deactivated")
+				collision_mask = 1 # Restore collisions
+				modulate.a = 1.0   # Restore opacity
 
 func activate_wing(duration):
 	Global.powerups_used += 1

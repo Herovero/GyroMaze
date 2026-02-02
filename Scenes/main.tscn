@@ -722,7 +722,6 @@ texture_pressed = ExtResource("15_lx3vj")
 script = ExtResource("16_lx3vj")
 
 [node name="NextLevelButton" type="TouchScreenButton" parent="InGameUIs"]
-visible = false
 position = Vector2(2211, 902)
 scale = Vector2(0.25, 0.25)
 texture_normal = ExtResource("6_ynf5e")
