@@ -30,7 +30,7 @@ signal done
 @onready var Maze = $"../maze"
 @onready var hazard_tiles = $"../hazard_tiles"
 
-var effective_tile_size = 16 * 9.0 
+var effective_tile_size = 16 * 9
 
 @export var hole_scene: PackedScene  # Drag your Hole.tscn here in Inspector
 @export var hole_count: int = 10     # How many holes do you want?
@@ -122,7 +122,9 @@ func start_new_level():
 	fill_map_with_walls()
 	
 	# Recalculate possible rooms for the generator (should match rooms_x/y)
+	@warning_ignore("integer_division")
 	var possible_rooms_x = (map_width - 1) / step_size
+	@warning_ignore("integer_division")
 	var possible_rooms_y = (map_height - 1) / step_size
 	
 	# Pick random start
@@ -250,6 +252,7 @@ func move_player_to_start():
 		# Calculate the PIXEL center of the large room
 		# Start Pos (Top-Left) + Half the thickness of the room
 		var room_pixel_size = effective_tile_size * path_thickness
+		@warning_ignore("integer_division")
 		var center_offset = Vector2(room_pixel_size / 2, room_pixel_size / 2)
 		
 		var start_pixel_pos = (Vector2(maze_pos) * effective_tile_size) + center_offset
@@ -395,6 +398,7 @@ func spawn_finish() -> void:
 	new_finish.add_to_group("LevelTrash")
 	
 	# Position it (Center of tile)
+	@warning_ignore("integer_division")
 	var center_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
 	new_finish.position = (Vector2(best_pos) * effective_tile_size) + center_offset
 	
@@ -463,7 +467,9 @@ func spawn_holes() -> void:
 	hole_positions.clear()
 	
 	# Calculate how many "Rooms" exist
+	@warning_ignore("integer_division")
 	var rooms_x = (map_width - 1) / step_size
+	@warning_ignore("integer_division")
 	var rooms_y = (map_height - 1) / step_size
 
 	while holes_spawned < hole_count and attempts < 2000:
@@ -480,6 +486,7 @@ func spawn_holes() -> void:
 		
 		# 3. Check the Center of that room
 		# We add roughly half the path thickness to find the center
+		@warning_ignore("integer_division")
 		var center_offset = int(path_thickness / 2)
 		var check_pos = Vector2i(tile_x + center_offset, tile_y + center_offset)
 
@@ -516,10 +523,12 @@ func spawn_holes() -> void:
 
 		# Calculate pixel position for the hole
 		# We use the specific check_pos which is now CENTERED in the path
+		@warning_ignore("integer_division")
 		var pixel_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
 		new_hole.position = (Vector2(check_pos) * effective_tile_size) + pixel_offset
 		
 		# Calculate the Base Center Position (As before)
+		@warning_ignore("integer_division")
 		var base_pixel_pos = (Vector2(check_pos) * effective_tile_size) + Vector2(effective_tile_size / 2, effective_tile_size / 2)
 		
 		# Randomize size (keep it slightly smaller than path_thickness to avoid clipping)
@@ -551,14 +560,20 @@ func spawn_holes() -> void:
 
 func spawn_powerups() -> void:
 	# Debugs counter
+	@warning_ignore("unused_variable")
 	var fail_wall = 0
+	@warning_ignore("unused_variable")
 	var fail_player_dist = 0
+	@warning_ignore("unused_variable")
 	var fail_occupied = 0
+	@warning_ignore("unused_variable")
 	var fail_hole_dist = 0
+	@warning_ignore("unused_variable")
 	var fail_spread_dist = 0
 	
 	var area = map_width * map_height
-	var calculated_count = int(area / 350.0)
+	@warning_ignore("integer_division")
+	var calculated_count = int(area / 350)
 	var powerups_to_spawn = clamp(calculated_count, 1, 4)
 	var spawned_count = 0
 	var attempts = 0
@@ -626,6 +641,7 @@ func spawn_powerups() -> void:
 				var new_item = item_scene.instantiate()
 				new_item.z_index = 3
 				new_item.add_to_group("LevelTrash")
+				@warning_ignore("integer_division")
 				var center_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
 				new_item.position = (Vector2(check_pos) * effective_tile_size) + center_offset
 				get_parent().call_deferred("add_child", new_item)
@@ -654,7 +670,8 @@ func spawn_coins() -> void:
 	var area = map_width * map_height
 	# Approx 1 coin every 100 tiles.
 	# Example: Small Map (375 tiles) = 3 coins. Large Map (1125 tiles) = 11 coins.
-	var calculated_count = int(area / 50.0)
+	@warning_ignore("integer_division")
+	var calculated_count = int(area / 50)
 	var coins_to_spawn = clamp(calculated_count, 3, 20)
 	#var coins_to_spawn = randi_range(5, 15) 
 	
@@ -698,6 +715,7 @@ func spawn_coins() -> void:
 			# IMPORTANT: Tag for cleanup!
 			new_coin.add_to_group("LevelTrash")
 			
+			@warning_ignore("integer_division")
 			var center_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
 			new_coin.position = (Vector2(check_pos) * effective_tile_size) + center_offset
 			
@@ -715,7 +733,8 @@ func spawn_timers() -> void:
 	
 	var area = map_width * map_height
 	# Small Map = 1 Timer. Large Map = 2-3 Timers.
-	var calculated_count = int(area / 100.0)
+	@warning_ignore("integer_division")
+	var calculated_count = int(area / 100)
 	var timers_to_spawn = clamp(calculated_count, 2, 15)
 	var spawned_count = 0
 	var attempts = 0
@@ -760,6 +779,7 @@ func spawn_timers() -> void:
 			# IMPORTANT: Tag for cleanup so it deletes on level switch
 			new_timer.add_to_group("LevelTrash")
 			
+			@warning_ignore("integer_division")
 			var center_offset = Vector2(effective_tile_size / 2, effective_tile_size / 2)
 			new_timer.position = (Vector2(check_pos) * effective_tile_size) + center_offset
 			

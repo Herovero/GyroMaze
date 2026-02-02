@@ -1,7 +1,6 @@
 extends RigidBody2D
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
-@onready var wing_sprite: AnimatedSprite2D = $wing_sprite
 # @onready var progressbar: TextureProgressBar = $TextureProgressBar
 
 @export var tilt_strength: float = 3000.0
@@ -21,25 +20,10 @@ var shader_material: ShaderMaterial
 # Remember where the player should reset position to 
 var current_start_pos = Vector2.ZERO
 
-var inventory = ["none", "none", "none"]
-@onready var slots = [$"../InGameUIs/powerup_slot1", 
-					  $"../InGameUIs/powerup_slot2", 
-					  $"../InGameUIs/powerup_slot3",
-					 ]
-
-@onready var maze: TileMapLayer = $"../maze"
-
-# Power up activations
-var was_inside_wall: bool = false
-var wing_timer = 0.0
-var is_flying: bool = false
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	lock_rotation = false
 	shader_material = sprite_2d.material as ShaderMaterial
-	
-	update_inventory_ui()
 
 func set_start_position(pos: Vector2):
 	current_start_pos = pos
@@ -67,11 +51,6 @@ func _physics_process(delta):
 	apply_central_force(force)
 	
 	rotate_marble_visuals(delta)
-	
-	if is_flying:
-		wing_timer -= delta
-		if wing_timer <= 0:
-			deactivate_wing()
 
 func update_rolling_shader(delta):
 	# 1. Add the distance moved this frame to our total counter.
@@ -83,9 +62,6 @@ func update_rolling_shader(delta):
 		shader_material.set_shader_parameter("roll_offset", rolled_accumulator)
 		
 func rotate_marble_visuals(delta):
-	if is_flying:
-		return
-		
 	# 1. Get horizontal movement (Right = Clockwise, Left = Counter-Clockwise)
 	var x_spin = linear_velocity.x
 	
@@ -104,78 +80,8 @@ func rotate_marble_visuals(delta):
 func _input(_event):
 	pass
 
-func collect_powerup(powerup_type: String):
-	# Logic: Find the first empty slot. If full, replace the last one.
-	
-	var slot_found = -1
-	
-	# Check Slot 0, then 1, then 2
-	for i in range(3):
-		if inventory[i] == "none":
-			slot_found = i
-			break
-	
-	if slot_found != -1:
-		# Found an empty spot! Fill it.
-		inventory[slot_found] = powerup_type
-		print("Picked up: ", powerup_type)
-		print("Inventory: ", inventory)
-		update_inventory_ui()
-		
-		return true
-	else:
-		# return false ensures power up stay on ground 
-		print("Inventory full!")
-		return false
-
-func use_item_at_index(index: int):
-	var type = inventory[index]
-	
-	if type == "none":
-		return # Empty slot, do nothing
-	
-	# Activate the effect
-	if type == "ghost":
-		activate_ghost(3)
-	elif type == "wing":
-		activate_wing(5.0)
-		
-	# Clear JUST this slot
-	inventory[index] = "none"
-	
-	# Optional: Shift items? (e.g. Item 2 moves to Item 1?)
-	# For now, let's keep it simple: Just clear the slot.
-	
-	update_inventory_ui()
-
-func update_inventory_ui():
-	for i in range(3):
-		var type = inventory[i]
-		var button_node = slots[i]
-		
-		if button_node.has_method("update_visuals"):
-			button_node.update_visuals(type)
-
-func activate_ghost(charges: int):
-	pass
-
-func activate_wing(duration):
-	pass
-
-func deactivate_wing():
-	pass
-
-func _on_powerup_slot_1_released():
-	use_item_at_index(0)
-
-func _on_powerup_slot_2_released():
-	use_item_at_index(1)
-
-func _on_powerup_slot_3_released():
-	use_item_at_index(2)
-
-func _on_area_2d_body_entered(body: Node2D) -> void:
+func _on_area_2d_body_entered(_body: Node2D) -> void:
 	pass # Replace with function body.
 
-func _on_body_entered(body: Node2D) -> void:
+func _on_body_entered(_body: Node2D) -> void:
 	pass # Replace with function body.

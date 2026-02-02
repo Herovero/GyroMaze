@@ -10,7 +10,7 @@ func _ready():
 	player = get_tree().get_nodes_in_group("Player")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass
 
 func _on_body_entered(body):

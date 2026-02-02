@@ -1,4 +1,4 @@
-[gd_scene load_steps=182 format=3 uid="uid://cpv02exs4ywq1"]
+[gd_scene load_steps=183 format=3 uid="uid://cpv02exs4ywq1"]
 
 [ext_resource type="PackedScene" uid="uid://bwtlejdt7cws6" path="res://Scenes/maze_test2.tscn" id="1_21xkr"]
 [ext_resource type="PackedScene" uid="uid://b7xfpi740plyc" path="res://Scenes/player.tscn" id="1_bo1nx"]
@@ -79,6 +79,7 @@
 [ext_resource type="Texture2D" uid="uid://w5gqw4pttrhx" path="res://Assets/alarm clock/_a_frm30,40.png" id="71_odn5n"]
 [ext_resource type="Texture2D" uid="uid://dlw1hkgpmqhbn" path="res://Assets/alarm clock/_a_frm31,40.png" id="72_b12iu"]
 [ext_resource type="Texture2D" uid="uid://cxgjggud6v8ir" path="res://Assets/alarm clock/_a_frm32,40.png" id="73_gf7g1"]
+[ext_resource type="FontFile" uid="uid://cx7g57kvhwcir" path="res://Fonts/Orbitron-Regular.ttf" id="74_3qdko"]
 [ext_resource type="Texture2D" uid="uid://de3ur3y0squf5" path="res://Assets/alarm clock/_a_frm33,40.png" id="74_102yd"]
 [ext_resource type="Texture2D" uid="uid://jyfsg1u2fgqc" path="res://Assets/alarm clock/_a_frm34,40.png" id="75_rtmaq"]
 [ext_resource type="Texture2D" uid="uid://bn5jqqdk6ea6j" path="res://Assets/alarm clock/_a_frm35,40.png" id="76_eqnci"]
@@ -775,7 +776,6 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="PAUSED_label" type="Label" parent="InGameUIs/PauseMenu"]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -788,7 +788,9 @@ offset_right = 386.0
 offset_bottom = -183.5
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_color = Color(0.8745098, 0.84313726, 0, 1)
 theme_override_constants/outline_size = 40
+theme_override_fonts/font = ExtResource("144_pmnrr")
 theme_override_font_sizes/font_size = 150
 text = "PAUSED"
 horizontal_alignment = 1
@@ -898,12 +900,14 @@ script = ExtResource("12_jkdf5")
 
 [node name="time_countdown" type="Label" parent="InGameUIs"]
 z_index = 2
+offset_top = -208.0
 offset_right = 2400.0
-offset_bottom = 1080.0
-theme_override_colors/font_color = Color(0.99600416, 0.9688861, 1, 1)
+offset_bottom = 872.0
+theme_override_colors/font_color = Color(0.8745098, 0.84313726, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_y = 1
 theme_override_constants/outline_size = 25
+theme_override_fonts/font = ExtResource("74_3qdko")
 theme_override_font_sizes/font_size = 100
 text = "3"
 horizontal_alignment = 1

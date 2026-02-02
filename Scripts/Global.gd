@@ -30,6 +30,6 @@ func reset_stats():
 # Helper to get the nice "MM:SS" string for your result screen
 func get_time_formatted() -> String:
 	var total_seconds = int(time_spent)
-	var minutes = total_seconds / 60
+	var minutes = total_seconds / 60.0
 	var seconds = total_seconds % 60
 	return "%d:%02d" % [minutes, seconds]

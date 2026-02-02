@@ -32,7 +32,7 @@ func _ready():
 	timer.timeout.connect(_on_timer_timeout)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if not timer.is_stopped():
 		var time_left = timer.time_left
 		update_display(time_left)
@@ -52,7 +52,8 @@ func _process(delta):
 
 func update_display(time_in_seconds):
 	var total_seconds = int(ceil(time_in_seconds))
-	var minutes = total_seconds / 60
+	@warning_ignore("integer_division")
+	var minutes = total_seconds / 60.0
 	var seconds = total_seconds % 60
 	# Format string with padding
 	# "%02d" means "make sure this number has at least 2 digits" (e.g., 5 becomes 05)
@@ -91,6 +92,7 @@ func _on_game_started():
 	hud_transition.play("display_time_remaining")
 	timer.start(saved_time)
 
+@warning_ignore("shadowed_variable")
 func _on_add_time(amount):
 	if not timer.is_stopped():
 		var current_time = timer.time_left
