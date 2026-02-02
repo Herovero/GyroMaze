@@ -3,7 +3,7 @@ extends Node
 
 func vibrate_light():
 	# 15-20ms feels like a crisp "tick" or "taptic" feedback
-	Input.vibrate_handheld(15)
+	Input.vibrate_handheld(30)
 
 func vibrate_heavy():
 	# 100ms+ feels like a heavy thud or notification
