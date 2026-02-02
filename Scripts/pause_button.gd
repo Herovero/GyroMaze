@@ -1,6 +1,6 @@
 extends TouchScreenButton
 
-@onready var paused_label: Label = $"../PAUSED_label"
+@onready var paused_label: Label = $"../PauseMenu/PAUSED_label"
 @onready var pause_sfx = $"../../SFX & BGM/pause_sfx"
 @onready var unpause_sfx = $"../../SFX & BGM/unpause_sfx"
 

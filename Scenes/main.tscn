@@ -737,17 +737,26 @@ autoplay = "default"
 frame = 29
 frame_progress = 0.28274602
 
-[node name="PAUSED_label" type="Label" parent="InGameUIs"]
+[node name="PauseMenu" type="Control" parent="InGameUIs"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 814.0
+offset_top = 403.5
+offset_right = 854.0
+offset_bottom = 443.5
+
+[node name="PAUSED_label" type="Label" parent="InGameUIs/PauseMenu"]
 visible = false
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -386.0
-offset_top = -136.5
-offset_right = 386.0
-offset_bottom = 136.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 752.0
+offset_bottom = 253.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/outline_size = 40
@@ -755,6 +764,31 @@ theme_override_font_sizes/font_size = 150
 text = "PAUSED"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="InGameUIs/PauseMenu"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 254.5
+offset_right = 760.0
+offset_bottom = 307.5
+
+[node name="Button" type="Button" parent="InGameUIs/PauseMenu/HBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Continue"
+
+[node name="Button2" type="Button" parent="InGameUIs/PauseMenu/HBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Restart"
+
+[node name="Button3" type="Button" parent="InGameUIs/PauseMenu/HBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Quit"
 
 [node name="time_remaining_hud" type="TextureRect" parent="InGameUIs"]
 modulate = Color(1, 1, 1, 0.39607844)
