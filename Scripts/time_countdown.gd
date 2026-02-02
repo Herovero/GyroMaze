@@ -29,6 +29,7 @@ func _process(delta):
 		text = str(int(ceil(timer.time_left)))
 
 func _on_level_start():
+	Global.is_game_active = false
 	player.input_enabled = false
 	
 	visible = true

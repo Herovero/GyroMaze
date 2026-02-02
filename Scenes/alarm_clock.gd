@@ -7,8 +7,6 @@ extends AnimatedSprite2D
 @onready var powerup_slot_2 = $"../powerup_slot2"
 @onready var powerup_slot_3 = $"../powerup_slot3"
 @onready var pause_button = $"../PauseButton"
-@onready var resume_button = $"../ResumeButton"
-@onready var reset_button = $"../ResetButton"
 @onready var zoom_out_button = $"../ZoomOutButton"
 @onready var coin_hud = $"../coin_HUD"
 @onready var time_remaining_hud = $"../time_remaining_hud"
@@ -33,8 +31,6 @@ func _on_times_up():
 	powerup_slot_2.visible = false
 	powerup_slot_3.visible = false
 	pause_button.visible = false
-	resume_button.visible = false
-	reset_button.visible = false
 	zoom_out_button.visible = false
 	coin_hud.visible = false
 	time_remaining_hud.visible = false

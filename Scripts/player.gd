@@ -90,7 +90,7 @@ func set_start_position(pos: Vector2):
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
-	print(input_enabled)
+	#print(input_enabled)
 	# Capture the velocity BEFORE physics resolution happens
 	_previous_velocity = linear_velocity
 	
@@ -354,8 +354,8 @@ func collect_powerup(powerup_type: String):
 	if slot_found != -1:
 		# Found an empty spot! Fill it.
 		inventory[slot_found] = powerup_type
-		print("Picked up: ", powerup_type)
-		print("Inventory: ", inventory)
+		#print("Picked up: ", powerup_type)
+		#print("Inventory: ", inventory)
 		update_inventory_ui()
 		collect_powerup_sfx.play()
 		
@@ -365,7 +365,7 @@ func collect_powerup(powerup_type: String):
 		return true
 	else:
 		# return false ensures power up stay on ground 
-		print("Inventory full!")
+		#print("Inventory full!")
 		return false
 
 func use_item_at_index(index: int):
@@ -409,7 +409,7 @@ func activate_ghost(charges: int):
 	
 	# Visual Cue: Make player semi-transparent
 	modulate.a = 0.5
-	print("Ghost Mode Activated! Charges: ", ghost_charges)
+	#print("Ghost Mode Activated! Charges: ", ghost_charges)
 
 func handle_ghost_logic():
 	# Convert global position to local since maze scale is 9.0
@@ -435,14 +435,14 @@ func handle_ghost_logic():
 			# We JUST exited a wall! Consumed 1 charge.
 			ghost_charges -= 1
 			was_inside_wall = false
-			print("Passed through wall! Charges left: ", ghost_charges)
+			#print("Passed through wall! Charges left: ", ghost_charges)
 			
 			# If we ran out of charges, turn solid again
 			if ghost_charges <= 0:
 				ghost_charges = 0
 				collision_mask = 1 # Reset to default (Collide with Walls/Layer 1)
 				modulate.a = 1.0 # Fully opaque
-				print("Ghost Mode Deactivated")
+				#print("Ghost Mode Deactivated")
 
 func activate_wing(duration):
 	Global.powerups_used += 1
@@ -454,7 +454,7 @@ func activate_wing(duration):
 	force_rotation_lock = true
 	sprite_2d.rotation = 0
 	
-	print("Wing Activated! Flying for ", duration, "s")
+	#print("Wing Activated! Flying for ", duration, "s")
 
 func deactivate_wing():
 	is_flying = false
@@ -462,14 +462,14 @@ func deactivate_wing():
 	
 	force_rotation_lock = false
 	
-	print("Wing Deactivated")
+	#print("Wing Deactivated")
 
 func activate_magnet(duration):
 	Global.powerups_used += 1
 	magnet_sfx.play()
 	is_magnet_active = true
 	magnet_timer = duration
-	print("Magnet Activated! Range: ", magnet_radius)
+	#print("Magnet Activated! Range: ", magnet_radius)
 
 func handle_magnet_logic(delta):
 	# 1. Find all coins in the level

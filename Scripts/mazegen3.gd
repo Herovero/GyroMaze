@@ -447,7 +447,7 @@ func get_furthest_point(start_pos: Vector2i) -> Vector2i:
 				visited[next_pos] = true
 				queue.push_back({ "pos": next_pos, "dist": current_dist + 1 })
 	
-	print("Found furthest point at distance: ", max_dist)
+	#print("Found furthest point at distance: ", max_dist)
 	return furthest_tile
 
 func spawn_holes() -> void:
@@ -547,7 +547,7 @@ func spawn_holes() -> void:
 		get_parent().call_deferred("add_child", new_hole)
 		holes_spawned += 1
 			
-	print("Spawned ", holes_spawned, " of ", hole_count, " holes")
+	#print("Spawned ", holes_spawned, " of ", hole_count, " holes")
 
 func spawn_powerups() -> void:
 	# Debugs counter
@@ -635,17 +635,18 @@ func spawn_powerups() -> void:
 				
 				spawned_count += 1
 	
-	print("Powerups Spawned: ", spawned_count, "/", powerups_to_spawn)
-	print("--- Powerup Spawn Report ---")
-	print("Success: ", spawned_count, "/", powerups_to_spawn)
+	#print("Powerups Spawned: ", spawned_count, "/", powerups_to_spawn)
+	#print("--- Powerup Spawn Report ---")
+	#print("Success: ", spawned_count, "/", powerups_to_spawn)
 	if spawned_count < powerups_to_spawn:
-		print("FAIL REASONS (Total Attempts: ", attempts, "):")
-		print("  - Hit Wall/Void: ", fail_wall)
-		print("  - Too Close to Start/End: ", fail_player_dist)
-		print("  - Spot Taken (Occupied): ", fail_occupied)
-		print("  - Too Close to Holes: ", fail_hole_dist)
-		print("  - Too Close to Other Powerup: ", fail_spread_dist)
-	print("----------------------------")
+		pass
+		#print("FAIL REASONS (Total Attempts: ", attempts, "):")
+		#print("  - Hit Wall/Void: ", fail_wall)
+		#print("  - Too Close to Start/End: ", fail_player_dist)
+		#print("  - Spot Taken (Occupied): ", fail_occupied)
+		#print("  - Too Close to Holes: ", fail_hole_dist)
+		#print("  - Too Close to Other Powerup: ", fail_spread_dist)
+	#print("----------------------------")
 
 func spawn_coins() -> void:
 	if not coin_scene: return
@@ -707,7 +708,7 @@ func spawn_coins() -> void:
 			
 			spawned_count += 1
 			
-	print("Coins Spawned: ", spawned_count, "/", coins_to_spawn)
+	#print("Coins Spawned: ", spawned_count, "/", coins_to_spawn)
 
 func spawn_timers() -> void:
 	if not timer_scene: return
@@ -769,4 +770,4 @@ func spawn_timers() -> void:
 			
 			spawned_count += 1
 	
-	print("Timers Spawned: ", spawned_count, "/", timers_to_spawn)
+	#print("Timers Spawned: ", spawned_count, "/", timers_to_spawn)

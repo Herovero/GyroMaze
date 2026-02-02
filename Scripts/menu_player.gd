@@ -101,7 +101,7 @@ func rotate_marble_visuals(delta):
 	
 	sprite_2d.rotation += total_spin
 
-func _input(event):
+func _input(_event):
 	pass
 
 func collect_powerup(powerup_type: String):

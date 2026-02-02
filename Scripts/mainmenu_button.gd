@@ -9,4 +9,7 @@ func _process(delta):
 	pass
 
 func _on_released():
+	get_tree().paused = false
+	Global.reset_stats()
 	get_tree().change_scene_to_file("res://Scenes/menu.tscn")
+	

@@ -35,7 +35,7 @@ func spawn_flying_coin():
 	var fake_coin = Sprite2D.new()
 	fake_coin.texture = fake_visual_coin.texture
 	fake_coin.scale = fake_visual_coin.global_scale
-	fake_coin.z_index = 100 
+	fake_coin.z_index = 1
 	
 	# --- B. FIND THE DESTINATION (Target Icon) ---
 	var target_node = get_tree().get_first_node_in_group("CoinHUD")

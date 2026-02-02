@@ -96,14 +96,14 @@ func _on_add_time(amount):
 		var current_time = timer.time_left
 		var new_time = min(current_time + amount, max_time_limit)
 		timer.start(new_time)
-		print_debug("Time Added! New time: ", new_time)
+		#print_debug("Time Added! New time: ", new_time)
 
 func _on_timer_timeout():
 	# Update the display one last time so it clearly shows "0 : 00"
 	update_display(0)
 	
 	# Emit the signal
-	print_debug("Time is up!")
+	#print_debug("Time is up!")
 	SignalBus.emit_signal("times_up")
 	Global.is_game_active = false
 	
