@@ -380,10 +380,16 @@ func use_item_at_index(index: int):
 	# Activate the effect
 	if type == "ghost":
 		activate_ghost(3)
+		if OS.has_feature("mobile"):
+			HapticsManager.vibrate_light()
 	elif type == "wing":
 		activate_wing(8.0)
+		if OS.has_feature("mobile"):
+			HapticsManager.vibrate_light()
 	elif type == "magnet":
 		activate_magnet(15.0)
+		if OS.has_feature("mobile"):
+			HapticsManager.vibrate_light()
 		
 	# Clear JUST this slot
 	inventory[index] = "none"
@@ -548,6 +554,9 @@ func _on_falling_into_hole(hole_center_pos: Vector2):
 	# This ensures it moves independently of the rigid body
 	get_tree().root.add_child(stunt_double)
 	
+	if OS.has_feature("mobile"):
+			HapticsManager.vibrate_light()
+	
 	# 4. ANIMATE THE DOUBLE
 	var tween = create_tween()
 	tween.set_parallel(true)
@@ -596,9 +605,6 @@ func die_from_burning():
 	# Play the sizzle/burn sound
 	burn_sfx.play()
 	
-	if OS.has_feature("mobile"):
-		HapticsManager.vibrate_heavy()
-	
 	# 2. DISABLE REAL PLAYER (Same as hole logic)
 	input_enabled = false
 	collision_mask = 0
@@ -627,10 +633,13 @@ func die_from_burning():
 	
 	# STEP B: Fade to Black/Transparent (Turning to Ash) - Slower (0.8s)
 	var tween_ash = create_tween()
+	
 	tween_ash.set_parallel(true) # Make sure shrink, spin, and fade happen together
 	tween_ash.tween_property(stunt_double, "modulate", Color(0.0, 0.0, 0.0, 0.0), 0.8) # Black & Invisible
 	tween_ash.tween_property(stunt_double, "scale", Vector2(0.2, 0.2), 0.8) # Shrivel up
 	
+	if OS.has_feature("mobile"):
+		HapticsManager.vibrate_heavy()
 	# Optional: Add a small random jitter/shake manually or via shader?
 	# For now, a simple rotation wobble works fine:
 	tween_ash.tween_property(stunt_double, "rotation", stunt_double.rotation + 1.0, 0.8)

@@ -17,6 +17,8 @@ func _process(_delta):
 
 func _on_body_entered(body):
 	if body.is_in_group("Player"):
+		if OS.has_feature("mobile"):
+			HapticsManager.vibrate_light()
 		SignalBus.emit_signal("add_time", time_bonus)
 		animation_player.play("increase")
 		collect_timer_sfx.play()

@@ -7,7 +7,7 @@ func vibrate_light():
 
 func vibrate_heavy():
 	# 100ms+ feels like a heavy thud or notification
-	Input.vibrate_handheld(150)
+	Input.vibrate_handheld(100)
 
 func vibrate_pattern():
 	# You can fake a complex pattern by calling them in sequence using a Timer or Tweens
