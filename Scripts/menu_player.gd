@@ -28,15 +28,11 @@ var inventory = ["none", "none", "none"]
 					 ]
 
 @onready var maze: TileMapLayer = $"../maze"
-@onready var hazard_tiles: TileMapLayer = $"../hazard_tiles"
 
 # Power up activations
 var was_inside_wall: bool = false
 var wing_timer = 0.0
 var is_flying: bool = false
-
-# hazard
-var hazard_fiery = Vector2i(1, 0)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
