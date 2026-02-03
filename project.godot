@@ -14,7 +14,7 @@ config/name="TiltMaze"
 run/main_scene="uid://dop0o8p8aubhb"
 config/features=PackedStringArray("4.5", "Mobile")
 boot_splash/show_image=false
-config/icon="uid://crutji3b7hat1"
+config/icon="uid://dj56ay77rp4xp"
 
 [autoload]
 

@@ -8,6 +8,11 @@ extends RigidBody2D
 @export var tilt_strength: float = 3000.0
 @export var spin_speed: float = 0.02 # Controls how fast the visual spin is
 
+@onready var game_logo = $"../InGameUIs/GameLogo"
+var logo_start_pos: Vector2 = Vector2.ZERO
+@export var logo_offset_amount: float = 100.0 # How many pixels it moves
+@export var logo_smooth_speed: float = 5.0   # How fast it floats back
+
 # @onready var base_scale = sprite_2d.scale * 10
 
 var input_enabled: bool = true
@@ -29,6 +34,9 @@ var player_radius: float = 32.0
 func _ready():
 	lock_rotation = false
 	shader_material = sprite_2d.material as ShaderMaterial
+	
+	if game_logo:
+		logo_start_pos = game_logo.position
 
 func set_start_position(pos: Vector2):
 	current_start_pos = pos
@@ -56,6 +64,16 @@ func _physics_process(delta):
 	apply_central_force(force)
 	
 	rotate_marble_visuals(delta)
+	
+	# --- 2. ANIMATE THE LOGO ---
+	if game_logo:
+		# Calculate where the logo WANTS to be based on tilt
+		# We multiply input_direction by our offset amount
+		var target_pos = logo_start_pos + (input_direction * logo_offset_amount)
+		
+		# Smoothly move the logo to that position (Linear Interpolation)
+		# This ensures it slides back gently when you stop tilting
+		game_logo.position = game_logo.position.lerp(target_pos, delta * logo_smooth_speed)
 
 func _integrate_forces(state):
 	# 1. Guard: If no camera is assigned, do nothing (or fallback)

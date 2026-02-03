@@ -48,6 +48,8 @@ gravity_scale = 0.0
 script = ExtResource("4_6swd7")
 limit_camera = NodePath("../OverviewCam")
 tilt_strength = 3000.0
+logo_offset_amount = 300.0
+logo_smooth_speed = 5.0
 
 [node name="Sprite2D" parent="Player" index="0"]
 z_index = 0
