@@ -1,6 +1,12 @@
 # TiltMaze
 
-Hypercasual marble maze mobile game that applies real life physics and intuitive gyroscope control.
+<img width="1266" height="567" alt="game screenshot" src="https://github.com/user-attachments/assets/8e1f717a-0ac5-4d56-9fa1-0fea51ae3758" />
+
+Tilt Maze is an opinionated, physics-based puzzle game built for Android devices, the game focuses on the physical immersion of tilt controls and the challenge of navigating an infinite sequence of procedurally generated mazes within a time limit.
+
+The game uses input from the accelerometer, has dynamic physics tiles, and procedural maze generation (graph traversal with DFS). The game was designed to feel immersive through skeuomorphic design and phone vibrations upon hitting walls.
+
+We built this game because we wanted to deliver a purely fun mobile game experience.
 
 Attributions:
 <a href="https://lordicon.com/">Icons by Lordicon.com</a>
